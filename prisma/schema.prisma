@@ -12,3 +12,85 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum UserRole {
+  CLIENT
+  ADMIN
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
+  role      UserRole  @default(CLIENT)
+  createdAt DateTime  @default(now()) @map("create_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  budgets Budget[]
+
+  @@map("users")
+}
+
+model Budget {
+  id        String    @id @default(uuid())
+  title     String
+  createdAt DateTime  @default(now()) @map("create_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  ownerId   String    @map("owner_id")
+
+  categories   Category[]
+  transactions Transaction[]
+
+  owner User @relation(fields: [ownerId], references: [id])
+
+  @@map("budgets")
+}
+
+enum TypeTransaction {
+  EXPENSES
+  INCOMES
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  description String
+  createdAt   DateTime        @default(now()) @map("create_at")
+  updatedAt   DateTime?       @updatedAt @map("updated_at")
+  amount      Float
+  type        TypeTransaction @default(EXPENSES)
+  budgetId    String
+  categoryId  String
+
+  Budget   Budget   @relation(fields: [budgetId], references: [id])
+  Category Category @relation(fields: [categoryId], references: [id])
+
+  @@map("transactions")
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now()) @map("create_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  budgetId  String
+
+  transactions  Transaction[]
+  subcategories SubCategory[]
+
+  Budget Budget @relation(fields: [budgetId], references: [id])
+
+  @@map("categories")
+}
+
+model SubCategory {
+  id         String    @id @default(uuid())
+  name       String
+  createdAt  DateTime  @default(now()) @map("create_at")
+  updatedAt  DateTime? @updatedAt @map("updated_at")
+  categoryId String
+
+  Category Category @relation(fields: [categoryId], references: [id])
+
+  @@map("subcategories")
+}
