@@ -6,7 +6,7 @@ import { Test } from '@nestjs/testing'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
 
-describe('Create Budget (E2E)', () => {
+describe('Fetch Budget (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -22,7 +22,7 @@ describe('Create Budget (E2E)', () => {
     await app.init()
   })
 
-  test('[POST] /budgets', async () => {
+  test('[GET] /budgets', async () => {
     const user = await prisma.user.create({
       data: {
         name: 'John Doe',
@@ -32,22 +32,28 @@ describe('Create Budget (E2E)', () => {
       },
     })
     const accessToken = jwt.sign({ sub: user.id })
+
+    await prisma.budget.create({
+      data: {
+        name: 'My budget',
+        ownerId: user.id,
+      },
+    })
+
     const response = await request(app.getHttpServer())
-      .post('/budgets')
+      .get('/budgets')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'My budget',
         ownerId: user.id,
       })
 
-    expect(response.statusCode).toEqual(201)
+    expect(response.statusCode).toEqual(200)
 
-    const budgetOnDB = await prisma.budget.findFirst({
-      where: {
+    expect(response.body).toEqual({
+      budgets: expect.objectContaining({
         name: 'My budget',
-      },
+      }),
     })
-
-    expect(budgetOnDB).toBeTruthy()
   })
 })
