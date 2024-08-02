@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
 # @name create_account
-POST {{baseUrl}}/users
+POST {{baseUrl}}/accounts
 Content-Type: application/json
 
 {
@@ -23,19 +23,18 @@ Content-Type: application/json
 
 ###
 
-# @name create_question
-POST {{baseUrl}}/questions
+# @name create_budget
+POST {{baseUrl}}/budgets
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "title": "New question3",
-  "content": "This is a new question"
+  "name": "New Budget"
 }
 
 ###
 
-# @name fetch_recent_questions
-GET {{baseUrl}}/questions?page=1
+# @name fetch_budget
+GET {{baseUrl}}/budgets
 Content-Type: application/json
 Authorization: Bearer {{authToken}}

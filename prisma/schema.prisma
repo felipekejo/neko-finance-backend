@@ -34,17 +34,31 @@ model User {
 
 model Budget {
   id        String    @id @default(uuid())
-  title     String
+  name      String
   createdAt DateTime  @default(now()) @map("create_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
   ownerId   String    @map("owner_id")
 
   categories   Category[]
   transactions Transaction[]
+  accounts     Account[]
 
   owner User @relation(fields: [ownerId], references: [id])
 
   @@map("budgets")
+}
+
+model Account {
+  id        String    @id @default(uuid())
+  name      String
+  balance   Float     @default(0)
+  createdAt DateTime  @default(now()) @map("create_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  budgetId  String
+
+  Budget Budget @relation(fields: [budgetId], references: [id])
+
+  @@map("accounts")
 }
 
 enum TypeTransaction {

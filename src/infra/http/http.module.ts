@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common'
 import { PrismaService } from '../database/prisma/prisma.service'
-import { CreateUserController } from './controller/create-user.controller'
+import { AuthenticateController } from './controller/authenticate.controller'
+import { CreateUserController } from './controller/create-account.controller'
+import { CreateBudgetController } from './controller/create-budget.controller'
+import { FetchBudgetController } from './controller/fetch-budget.controller'
 
 @Module({
   imports: [],
-  controllers: [CreateUserController],
+  controllers: [
+    CreateUserController,
+    AuthenticateController,
+    CreateBudgetController,
+    FetchBudgetController,
+  ],
   providers: [PrismaService],
 })
 export class HttpModule {}

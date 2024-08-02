@@ -11,20 +11,20 @@ import { PrismaService } from 'src/infra/database/prisma/prisma.service'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
-const createAccountBodySchema = z.object({
+const createUserBodySchema = z.object({
   name: z.string(),
   email: z.string().email(),
   password: z.string().min(6),
 })
-type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
-@Controller('users')
+type CreateUserBodySchema = z.infer<typeof createUserBodySchema>
+@Controller('/users')
 export class CreateUserController {
   constructor(private prisma: PrismaService) {}
 
   @Post()
   @HttpCode(201)
-  @UsePipes(new ZodValidationPipe(createAccountBodySchema))
-  async handle(@Body() body: CreateAccountBodySchema) {
+  @UsePipes(new ZodValidationPipe(createUserBodySchema))
+  async handle(@Body() body: CreateUserBodySchema) {
     const { name, email, password } = body
 
     const userWithSameEmail = await this.prisma.user.findUnique({
