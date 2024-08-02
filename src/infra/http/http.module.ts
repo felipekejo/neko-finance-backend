@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
 import { PrismaService } from '../database/prisma/prisma.service'
 import { AuthenticateController } from './controller/authenticate.controller'
-import { CreateUserController } from './controller/create-account.controller'
 import { CreateBudgetController } from './controller/create-budget.controller'
+import { CreateUserController } from './controller/create-user.controller'
 import { FetchBudgetController } from './controller/fetch-budget.controller'
 
 @Module({
