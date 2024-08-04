@@ -67,12 +67,11 @@ enum TypeTransaction {
 }
 
 model Transaction {
-  id          String          @id @default(uuid())
+  id          String    @id @default(uuid())
   description String
-  createdAt   DateTime        @default(now()) @map("create_at")
-  updatedAt   DateTime?       @updatedAt @map("updated_at")
+  createdAt   DateTime  @default(now()) @map("create_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
   amount      Float
-  type        TypeTransaction @default(EXPENSES)
   budgetId    String
   categoryId  String
 
@@ -83,11 +82,12 @@ model Transaction {
 }
 
 model Category {
-  id        String    @id @default(uuid())
+  id        String          @id @default(uuid())
   name      String
-  createdAt DateTime  @default(now()) @map("create_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  createdAt DateTime        @default(now()) @map("create_at")
+  updatedAt DateTime?       @updatedAt @map("updated_at")
   budgetId  String
+  type      TypeTransaction @default(EXPENSES)
 
   transactions  Transaction[]
   subcategories SubCategory[]
