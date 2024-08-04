@@ -17,6 +17,14 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
     PrismaTransactionsRepository,
     PrismaSubcategoriesRepository,
   ],
-  exports: [PrismaService],
+  exports: [
+    PrismaService,
+    PrismaAccountsRepository,
+    PrismaBudgetsRepository,
+    PrismaCategoryRepository,
+    PrismaUsersRepository,
+    PrismaTransactionsRepository,
+    PrismaSubcategoriesRepository,
+  ],
 })
 export class DatabaseModule {}
