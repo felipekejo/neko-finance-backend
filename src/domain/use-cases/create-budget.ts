@@ -1,20 +1,20 @@
 import { Budget } from '../entities/budget'
-// import { BudgetsRepository } from '../repositories/budget-repository'
+import { BudgetsRepository } from '../repositories/budget-repository'
 
 interface CreateBudgetUseCaseRequest {
   name: string
   ownerId: string
 }
 
-interface CreateBudgetUseCaseResponse {
-  budget: Budget
-}
+// interface CreateBudgetUseCaseResponse {
+//   budget: Budget
+// }
 
 export class CreateBudgetUseCase {
-  // constructor(private budgetsRepository: BudgetsRepository) {}
+  constructor(private budgetsRepository: BudgetsRepository) {}
 
   async execute({ name, ownerId }: CreateBudgetUseCaseRequest) {
-    const budget = new Budget(name, ownerId)
+    const budget = new Budget({ name, ownerId })
 
     return { budget }
   }

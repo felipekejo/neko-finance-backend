@@ -1,6 +1,6 @@
-import { Budget, Prisma } from '@prisma/client'
+import { Budget } from '../entities/budget'
 
 export interface BudgetsRepository {
-  create(data: Prisma.BudgetCreateInput): Promise<Budget>
-  findById(id: string): Promise<Budget | null>
+  create(budget: Budget): Promise<void>
+  // findById(id: string): Promise<Budget | null>
 }
