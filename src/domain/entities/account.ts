@@ -1,9 +1,13 @@
 import { Entity } from '@/core/entities/entity'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 interface AccountProps {
+  ownerId: UniqueEntityID
+  budgetId: UniqueEntityID
   name: string
-  ownerId: string
-  budgetId: string
+  createdAt: Date
+  updatedAt?: Date
+  balance: number
 }
 
 export class Account extends Entity<AccountProps> {

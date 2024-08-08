@@ -1,8 +1,11 @@
 import { Entity } from '@/core/entities/entity'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 interface BudgetProps {
+  ownerId: UniqueEntityID
   name: string
-  ownerId: string
+  createdAt: Date
+  updatedAt?: Date
 }
 
 export class Budget extends Entity<BudgetProps> {
