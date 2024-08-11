@@ -6,6 +6,10 @@ interface UserProps {
 }
 
 export class User extends Entity<UserProps> {
+  get name() {
+    return this.props.name
+  }
+
   static create(props: UserProps, id?: UniqueEntityID) {
     const user = new User(
       {
@@ -14,9 +18,5 @@ export class User extends Entity<UserProps> {
       id,
     )
     return user
-  }
-
-  get name() {
-    return this.props.name
   }
 }

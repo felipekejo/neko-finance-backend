@@ -10,6 +10,31 @@ interface BudgetProps {
 }
 
 export class Budget extends Entity<BudgetProps> {
+  get name() {
+    return this.props.name
+  }
+
+  get ownerId() {
+    return this.props.ownerId
+  }
+
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date()
+  }
+
+  set name(name: string) {
+    this.props.name = name
+    this.touch()
+  }
+
   static create(
     props: Optional<BudgetProps, 'createdAt'>,
     id?: UniqueEntityID,
@@ -22,13 +47,5 @@ export class Budget extends Entity<BudgetProps> {
       id,
     )
     return budget
-  }
-
-  get name() {
-    return this.props.name
-  }
-
-  get ownerId() {
-    return this.props.ownerId
   }
 }

@@ -12,6 +12,39 @@ interface AccountProps {
 }
 
 export class Account extends Entity<AccountProps> {
+  get name() {
+    return this.props.name
+  }
+
+  set name(name: string) {
+    this.props.name = name
+    this.touch()
+  }
+
+  get ownerId() {
+    return this.props.ownerId
+  }
+
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  get budgetId() {
+    return this.props.budgetId
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date()
+  }
+
+  get balance() {
+    return this.props.balance
+  }
+
   static create(
     props: Optional<AccountProps, 'createdAt'>,
     id?: UniqueEntityID,
@@ -24,17 +57,5 @@ export class Account extends Entity<AccountProps> {
       id,
     )
     return account
-  }
-
-  get name() {
-    return this.props.name
-  }
-
-  get ownerId() {
-    return this.props.ownerId
-  }
-
-  get budgetId() {
-    return this.props.budgetId
   }
 }

@@ -12,6 +12,49 @@ interface TransactionProps {
 }
 
 export class Transaction extends Entity<TransactionProps> {
+  get budgetId() {
+    return this.props.budgetId
+  }
+
+  get accountId() {
+    return this.props.accountId
+  }
+
+  set accountId(accountId: UniqueEntityID) {
+    this.props.accountId = accountId
+    this.touch()
+  }
+
+  get description() {
+    return this.props.description
+  }
+
+  set description(description: string) {
+    this.props.description = description
+    this.touch()
+  }
+
+  get amount() {
+    return this.props.amount
+  }
+
+  set amount(amount: number) {
+    this.props.amount = amount
+    this.touch()
+  }
+
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date()
+  }
+
   static create(
     props: Optional<TransactionProps, 'createdAt'>,
     id?: UniqueEntityID,
@@ -24,13 +67,5 @@ export class Transaction extends Entity<TransactionProps> {
       id,
     )
     return transaction
-  }
-
-  get description() {
-    return this.props.description
-  }
-
-  get amount() {
-    return this.props.amount
   }
 }
