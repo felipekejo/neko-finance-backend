@@ -14,14 +14,14 @@ export class Budget extends Entity<BudgetProps> {
     props: Optional<BudgetProps, 'createdAt'>,
     id?: UniqueEntityID,
   ) {
-    const transaction = new Budget(
+    const budget = new Budget(
       {
         ...props,
         createdAt: new Date(),
       },
       id,
     )
-    return transaction
+    return budget
   }
 
   get name() {

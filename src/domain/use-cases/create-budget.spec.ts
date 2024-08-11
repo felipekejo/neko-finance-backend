@@ -16,11 +16,11 @@ describe('Create Budget Use Case', () => {
   })
 
   it('should be able to create a new budget', async () => {
-    const { budget } = await sut.execute({
+    const budget = await sut.execute({
       name: 'New Budget',
       ownerId: 'user-01',
     })
 
-    expect(budget.id).toEqual(expect.any(String))
+    expect(budget.name).toEqual('New Budget')
   })
 })

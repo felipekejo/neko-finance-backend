@@ -1,3 +1,4 @@
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Budget } from '../entities/budget'
 import { BudgetsRepository } from '../repositories/budget-repository'
 
@@ -14,8 +15,11 @@ export class CreateBudgetUseCase {
   constructor(private budgetsRepository: BudgetsRepository) {}
 
   async execute({ name, ownerId }: CreateBudgetUseCaseRequest) {
-    const budget = new Budget({ name, ownerId })
-
-    return { budget }
+    const budget = Budget.create({
+      name,
+      ownerId: new UniqueEntityID(ownerId),
+    })
+    await this.budgetsRepository.create(budget)
+    return budget
   }
 }

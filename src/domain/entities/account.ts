@@ -16,14 +16,14 @@ export class Account extends Entity<AccountProps> {
     props: Optional<AccountProps, 'createdAt'>,
     id?: UniqueEntityID,
   ) {
-    const transaction = new Account(
+    const account = new Account(
       {
         ...props,
         createdAt: new Date(),
       },
       id,
     )
-    return transaction
+    return account
   }
 
   get name() {
