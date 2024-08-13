@@ -2,5 +2,5 @@ import { Budget } from '../entities/budget'
 
 export interface BudgetsRepository {
   create(budget: Budget): Promise<void>
-  // findById(id: string): Promise<Budget | null>
+  findById(id: string): Promise<Budget | null>
 }

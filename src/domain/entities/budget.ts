@@ -1,12 +1,12 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { Optional } from '@prisma/client/runtime/library'
+import { Optional } from '@/core/types/optional'
 
-interface BudgetProps {
+export interface BudgetProps {
   ownerId: UniqueEntityID
   name: string
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export class Budget extends Entity<BudgetProps> {

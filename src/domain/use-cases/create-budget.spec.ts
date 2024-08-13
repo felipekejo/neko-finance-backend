@@ -1,26 +1,23 @@
-import { Budget } from '../entities/budget'
-import { BudgetsRepository } from '../repositories/budget-repository'
+import { InMemoryBudgetsRepository } from 'test/repositories/in-memory-budgets-repository'
 import { CreateBudgetUseCase } from './create-budget'
 
-// let inMemoryBudgetsRepository: InMemoryBudgetsRepository
+let inMemoryBudgetsRepository: InMemoryBudgetsRepository
 let sut: CreateBudgetUseCase
 
 describe('Create Budget Use Case', () => {
   beforeEach(() => {
-    const fakeBudgetsRepository: BudgetsRepository = {
-      create: async (budget: Budget) => {},
-    }
-    // inMemoryBudgetsRepository = new InMemoryBudgetsRepository()
+    inMemoryBudgetsRepository = new InMemoryBudgetsRepository()
 
-    sut = new CreateBudgetUseCase(fakeBudgetsRepository)
+    sut = new CreateBudgetUseCase(inMemoryBudgetsRepository)
   })
 
   it('should be able to create a new budget', async () => {
-    const budget = await sut.execute({
+    const { budget } = await sut.execute({
       name: 'New Budget',
       ownerId: 'user-01',
     })
 
-    expect(budget.name).toEqual('New Budget')
+    expect(budget.id).toBeTruthy()
+    expect(inMemoryBudgetsRepository.items[0].id).toEqual(budget.id)
   })
 })

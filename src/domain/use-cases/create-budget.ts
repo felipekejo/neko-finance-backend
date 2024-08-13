@@ -7,9 +7,9 @@ interface CreateBudgetUseCaseRequest {
   ownerId: string
 }
 
-// interface CreateBudgetUseCaseResponse {
-//   budget: Budget
-// }
+interface CreateBudgetUseCaseResponse {
+  budget: Budget
+}
 
 export class CreateBudgetUseCase {
   constructor(private budgetsRepository: BudgetsRepository) {}
@@ -20,6 +20,6 @@ export class CreateBudgetUseCase {
       ownerId: new UniqueEntityID(ownerId),
     })
     await this.budgetsRepository.create(budget)
-    return budget
+    return { budget }
   }
 }
