@@ -6,7 +6,7 @@ interface BudgetProps {
   ownerId: UniqueEntityID
   name: string
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export class Budget extends Entity<BudgetProps> {

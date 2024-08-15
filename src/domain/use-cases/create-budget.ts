@@ -7,19 +7,21 @@ interface CreateBudgetUseCaseRequest {
   ownerId: string
 }
 
-// interface CreateBudgetUseCaseResponse {
-//   budget: Budget
-// }
+interface CreateBudgetUseCaseResponse {
+  budget: Budget
+}
 
 export class CreateBudgetUseCase {
   constructor(private budgetsRepository: BudgetsRepository) {}
 
-  async execute({ name, ownerId }: CreateBudgetUseCaseRequest) {
+  async execute({ name, ownerId }: CreateBudgetUseCaseRequest):Promise<CreateBudgetUseCaseResponse> {
     const budget = Budget.create({
       name,
       ownerId: new UniqueEntityID(ownerId),
+      updatedAt: null
     })
     await this.budgetsRepository.create(budget)
-    return budget
+
+    return {budget}
   }
 }
