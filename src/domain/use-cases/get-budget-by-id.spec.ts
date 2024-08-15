@@ -6,7 +6,7 @@ import { GetBudgetByIdUseCase } from './get-budget-by-id'
 let inMemoryBudgetsRepository: InMemoryBudgetsRepository
 let sut: GetBudgetByIdUseCase
 
-describe('Create Budget Use Case', () => {
+describe('Get Budget by IdUse Case', () => {
   beforeEach(() => {
     inMemoryBudgetsRepository = new InMemoryBudgetsRepository()
 
@@ -18,9 +18,11 @@ describe('Create Budget Use Case', () => {
       name: 'New Budget',
       ownerId: new UniqueEntityID(),
     })
+
+    await inMemoryBudgetsRepository.create(newBudget)
     console.log(newBudget.id.toString())
     const { budget } = await sut.execute({
-      id: newBudget.id.toString(),
+      id: newBudget.id.toValue(),
     })
     console.log(budget)
     expect(budget.id).toBeTruthy()

@@ -15,7 +15,7 @@ export class GetBudgetByIdUseCase {
   async execute({
     id,
   }: GetBudgetByIdUseCaseRequest): Promise<GetBudgetByIdUseCaseResponse> {
-    const budget = this.budgetsRepository.findById(id)
+    const budget = await this.budgetsRepository.findById(id)
     if (!budget) {
       throw new Error('Budget not found')
     }

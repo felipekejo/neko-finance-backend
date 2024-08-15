@@ -18,7 +18,6 @@ export class CreateBudgetUseCase {
     const budget = Budget.create({
       name,
       ownerId: new UniqueEntityID(ownerId),
-      updatedAt: null
     })
     await this.budgetsRepository.create(budget)
     return { budget }
