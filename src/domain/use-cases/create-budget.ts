@@ -21,7 +21,6 @@ export class CreateBudgetUseCase {
       updatedAt: null
     })
     await this.budgetsRepository.create(budget)
-
-    return {budget}
+    return { budget }
   }
 }

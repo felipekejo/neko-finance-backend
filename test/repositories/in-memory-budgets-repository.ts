@@ -1,27 +1,24 @@
-import { Budget, Prisma } from '@prisma/client'
-
+import { Budget } from '@/domain/entities/budget'
 import { BudgetsRepository } from '@/domain/repositories//budget-repository'
-import { randomUUID } from 'node:crypto'
 
 export class InMemoryBudgetsRepository implements BudgetsRepository {
   public items: Budget[] = []
 
-  async create(data: Prisma.BudgetCreateInput) {
-    const budget = {
-      id: randomUUID(),
-      name: data.name,
-      createdAt: new Date(),
-      updatedAt: null,
-      ownerId: data.owner.connect?.id,
-    }
+  async create(data: Budget) {
+    // const budget = {
+    //   name: data.name,
+    //   ownerId: data.ownerId,
+    //   createdAt: new Date(),
+    //   updatedAt: null,
+    // }
 
-    this.items.push(budget)
+    this.items.push(data)
 
-    return budget
+    // return { budget }
   }
 
   async findById(id: string) {
-    const budget = this.items.find((item) => item.id === id)
+    const budget = this.items.find((item) => item.id.toString() === id)
     if (!budget) {
       return null
     }
