@@ -5,7 +5,7 @@ import { GetBudgetByIdUseCase } from './get-budget-by-id'
 let inMemoryBudgetsRepository: InMemoryBudgetsRepository
 let sut: GetBudgetByIdUseCase
 
-describe('Get Budget by IdUse Case', () => {
+describe('Get Budget by Id Use Case', () => {
   beforeEach(() => {
     inMemoryBudgetsRepository = new InMemoryBudgetsRepository()
 

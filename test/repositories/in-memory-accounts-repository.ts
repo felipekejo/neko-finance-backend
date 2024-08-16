@@ -4,6 +4,7 @@ import { AccountsRepository } from '@/domain/repositories/account-repository'
 
 
 export class InMemoryAccountsRepository implements AccountsRepository {
+
   public items: Account[] = []
 
   async findById(id: string) {
@@ -20,5 +21,12 @@ export class InMemoryAccountsRepository implements AccountsRepository {
 
     this.items.push(account)
 
+  }
+
+  async delete(account: Account): Promise<void> {
+    
+    const itemIndex = this.items.findIndex((item) => item.id === account.id)
+
+    this.items.splice(itemIndex, 1)
   }
 }
