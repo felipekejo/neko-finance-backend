@@ -29,4 +29,12 @@ export class InMemoryAccountsRepository implements AccountsRepository {
 
     this.items.splice(itemIndex, 1)
   }
+
+  async save(account: Account): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === account.id)
+
+    this.items[itemIndex] = account
+    
+  }
+
 }

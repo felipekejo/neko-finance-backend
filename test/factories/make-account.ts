@@ -10,7 +10,7 @@ export function makeAccount(
     name: faker.lorem.sentence(),
     ownerId: new UniqueEntityID(),
     budgetId: new UniqueEntityID(),
-    balance:faker.number.int(),
+    balance:0,
     ...override
   },id)
 

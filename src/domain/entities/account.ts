@@ -45,6 +45,11 @@ export class Account extends Entity<AccountProps> {
     return this.props.balance
   }
 
+  set balance(balance: number) {
+    this.props.balance = balance
+    this.touch()
+  }
+
   static create(
     props: Optional<AccountProps, 'createdAt'>,
     id?: UniqueEntityID,
