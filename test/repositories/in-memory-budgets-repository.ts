@@ -1,5 +1,5 @@
 import { Budget } from '@/domain/entities/budget'
-import { BudgetsRepository } from '@/domain/repositories//budget-repository'
+import { BudgetsRepository } from '@/domain/repositories/budget-repository'
 
 export class InMemoryBudgetsRepository implements BudgetsRepository {
 

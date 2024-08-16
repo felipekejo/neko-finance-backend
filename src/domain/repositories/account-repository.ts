@@ -1,6 +1,6 @@
-import { Account, Prisma } from '@prisma/client'
+import { Account } from "../entities/account"
 
 export interface AccountsRepository {
-  create(data: Prisma.AccountCreateManyInput): Promise<Account>
+  create(account: Account): Promise<void>
   findById(id: string): Promise<Account | null>
 }
