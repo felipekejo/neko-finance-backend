@@ -5,7 +5,7 @@ import { CreateAccountUseCase } from "./create-account"
 let inMemoryAccountsRepository: InMemoryAccountsRepository
 let sut: CreateAccountUseCase
 
-describe('Create Budget Use Case', () => {
+describe('Create Account Use Case', () => {
   beforeEach(() => {
     inMemoryAccountsRepository = new InMemoryAccountsRepository()
 
