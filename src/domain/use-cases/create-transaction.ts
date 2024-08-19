@@ -1,5 +1,6 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Transaction } from '../entities/transaction'
+import { AccountsRepository } from '../repositories/account-repository'
 import { TransactionsRepository } from '../repositories/transaction-repository'
 
 interface CreateTransactionUseCaseRequest {
@@ -14,7 +15,10 @@ interface CreateTransactionUseCaseResponse {
 }
 
 export class CreateTransactionUseCase {
-  constructor(private transactionsRepository: TransactionsRepository) {}
+  constructor(
+    private transactionsRepository: TransactionsRepository,
+    private accountsRepository: AccountsRepository,
+  ) {}
 
   async execute({
     description,
@@ -29,6 +33,13 @@ export class CreateTransactionUseCase {
       amount,
     })
     await this.transactionsRepository.create(transaction)
+
+    const account = await this.accountsRepository.findById(accountId)
+    if (account) {
+      account.balance += amount
+      await this.accountsRepository.save(account)
+    }
+
     return { transaction }
   }
 }
