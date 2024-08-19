@@ -42,7 +42,7 @@ export class Budget extends Entity<BudgetProps> {
     const budget = new Budget(
       {
         ...props,
-        createdAt: new Date(),
+        createdAt: props.createdAt ?? new Date(),
       },
       id,
     )

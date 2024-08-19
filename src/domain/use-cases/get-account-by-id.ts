@@ -1,6 +1,5 @@
-import { Account } from "../entities/account"
-import { AccountsRepository } from "../repositories/account-repository"
-
+import { Account } from '../entities/account'
+import { AccountsRepository } from '../repositories/account-repository'
 
 interface GetAccountByIdUseCaseRequest {
   id: string

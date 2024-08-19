@@ -2,12 +2,11 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-
 type UserRole = 'ADMIN' | 'CLIENT'
 interface UserProps {
   name: string
   email: string
-  password:string
+  password: string
   role: UserRole
   createdAt: Date
   updatedAt?: Date
@@ -25,6 +24,7 @@ export class User extends Entity<UserProps> {
   get password() {
     return this.props.password
   }
+
   set password(password: string) {
     this.props.password = password
     this.touch()
@@ -55,7 +55,7 @@ export class User extends Entity<UserProps> {
     const user = new User(
       {
         ...props,
-        createdAt: new Date(),
+        createdAt: props.createdAt ?? new Date(),
       },
       id,
     )

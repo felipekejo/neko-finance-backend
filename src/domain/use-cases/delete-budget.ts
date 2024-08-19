@@ -5,14 +5,15 @@ interface DeleteBudgetUseCaseRequest {
   ownerId: string
 }
 
-interface DeleteBudgetUseCaseResponse {
-
-}
+interface DeleteBudgetUseCaseResponse {}
 
 export class DeleteBudgetUseCase {
   constructor(private budgetsRepository: BudgetsRepository) {}
 
-  async execute({ budgetId, ownerId }: DeleteBudgetUseCaseRequest):Promise<DeleteBudgetUseCaseResponse> {
+  async execute({
+    budgetId,
+    ownerId,
+  }: DeleteBudgetUseCaseRequest): Promise<DeleteBudgetUseCaseResponse> {
     const budget = await this.budgetsRepository.findById(budgetId)
 
     if (!budget) {
@@ -24,6 +25,6 @@ export class DeleteBudgetUseCase {
     }
 
     await this.budgetsRepository.delete(budget)
-    return {  }
+    return {}
   }
 }

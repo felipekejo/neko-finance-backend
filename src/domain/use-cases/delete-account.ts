@@ -5,14 +5,15 @@ interface DeleteAccountUseCaseRequest {
   ownerId: string
 }
 
-interface DeleteAccountUseCaseResponse {
-
-}
+interface DeleteAccountUseCaseResponse {}
 
 export class DeleteAccountUseCase {
   constructor(private accountsRepository: AccountsRepository) {}
 
-  async execute({ accountId, ownerId }: DeleteAccountUseCaseRequest):Promise<DeleteAccountUseCaseResponse> {
+  async execute({
+    accountId,
+    ownerId,
+  }: DeleteAccountUseCaseRequest): Promise<DeleteAccountUseCaseResponse> {
     const account = await this.accountsRepository.findById(accountId)
 
     if (!account) {
@@ -24,6 +25,6 @@ export class DeleteAccountUseCase {
     }
 
     await this.accountsRepository.delete(account)
-    return {  }
+    return {}
   }
 }

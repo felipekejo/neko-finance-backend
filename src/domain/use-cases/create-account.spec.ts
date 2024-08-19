@@ -1,6 +1,5 @@
-import { InMemoryAccountsRepository } from "test/repositories/in-memory-accounts-repository"
-import { CreateAccountUseCase } from "./create-account"
-
+import { InMemoryAccountsRepository } from 'test/repositories/in-memory-accounts-repository'
+import { CreateAccountUseCase } from './create-account'
 
 let inMemoryAccountsRepository: InMemoryAccountsRepository
 let sut: CreateAccountUseCase
@@ -17,7 +16,7 @@ describe('Create Account Use Case', () => {
       name: 'New account',
       ownerId: 'user-01',
       budgetId: 'budget-01',
-      balance: 0
+      balance: 0,
     })
 
     expect(account.id).toBeTruthy()

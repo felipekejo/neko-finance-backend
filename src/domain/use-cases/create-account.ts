@@ -16,7 +16,12 @@ interface CreateAccountUseCaseResponse {
 export class CreateAccountUseCase {
   constructor(private accountsRepository: AccountsRepository) {}
 
-  async execute({ name, ownerId, budgetId, balance }: CreateAccountUseCaseRequest):Promise<CreateAccountUseCaseResponse> {
+  async execute({
+    name,
+    ownerId,
+    budgetId,
+    balance,
+  }: CreateAccountUseCaseRequest): Promise<CreateAccountUseCaseResponse> {
     const account = Account.create({
       name,
       ownerId: new UniqueEntityID(ownerId),

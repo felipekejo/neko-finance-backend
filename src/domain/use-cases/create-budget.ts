@@ -14,7 +14,10 @@ interface CreateBudgetUseCaseResponse {
 export class CreateBudgetUseCase {
   constructor(private budgetsRepository: BudgetsRepository) {}
 
-  async execute({ name, ownerId }: CreateBudgetUseCaseRequest):Promise<CreateBudgetUseCaseResponse> {
+  async execute({
+    name,
+    ownerId,
+  }: CreateBudgetUseCaseRequest): Promise<CreateBudgetUseCaseResponse> {
     const budget = Budget.create({
       name,
       ownerId: new UniqueEntityID(ownerId),

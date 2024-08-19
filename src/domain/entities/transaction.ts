@@ -2,7 +2,7 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-interface TransactionProps {
+export interface TransactionProps {
   budgetId: UniqueEntityID
   accountId: UniqueEntityID
   description: string
@@ -62,7 +62,7 @@ export class Transaction extends Entity<TransactionProps> {
     const transaction = new Transaction(
       {
         ...props,
-        createdAt: new Date(),
+        createdAt: props.createdAt ?? new Date(),
       },
       id,
     )

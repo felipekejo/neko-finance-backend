@@ -16,7 +16,12 @@ interface CreateTransactionUseCaseResponse {
 export class CreateTransactionUseCase {
   constructor(private transactionsRepository: TransactionsRepository) {}
 
-  async execute({ description, accountId, budgetId, amount }: CreateTransactionUseCaseRequest):Promise<CreateTransactionUseCaseResponse> {
+  async execute({
+    description,
+    accountId,
+    budgetId,
+    amount,
+  }: CreateTransactionUseCaseRequest): Promise<CreateTransactionUseCaseResponse> {
     const transaction = Transaction.create({
       description,
       accountId: new UniqueEntityID(accountId),

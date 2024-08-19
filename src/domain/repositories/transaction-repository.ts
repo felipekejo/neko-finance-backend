@@ -1,9 +1,10 @@
-import { Transaction } from "../entities/transaction"
-
+import { PaginationParams } from '@/core/repositories/pagination-params'
+import { Transaction } from '../entities/transaction'
 
 export interface TransactionsRepository {
   create(transaction: Transaction): Promise<void>
   findById(id: string): Promise<Transaction | null>
+  findManyRecent(params: PaginationParams): Promise<Transaction[]>
   // findByBudgetId(budgetId: string): Promise<Transaction[]>
   // findByAccountId(accountId: string): Promise<Transaction[]>
   // findByCategoryId(

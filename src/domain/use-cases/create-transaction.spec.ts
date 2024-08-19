@@ -1,7 +1,5 @@
-import { InMemoryTransactionsRepository } from "test/repositories/in-memory-transactions-repository"
-import { CreateTransactionUseCase } from "./create-transaction"
-
-
+import { InMemoryTransactionsRepository } from 'test/repositories/in-memory-transactions-repository'
+import { CreateTransactionUseCase } from './create-transaction'
 
 let inMemoryTransactionsRepository: InMemoryTransactionsRepository
 let sut: CreateTransactionUseCase
@@ -18,7 +16,7 @@ describe('Create Transaction Use Case', () => {
       description: 'New transaction',
       accountId: 'account-01',
       budgetId: 'budget-01',
-      amount: 100
+      amount: 100,
     })
 
     expect(transaction.id).toBeTruthy()

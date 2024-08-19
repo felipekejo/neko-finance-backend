@@ -14,9 +14,12 @@ describe('Delete Budget Use Case', () => {
   })
 
   it('should be able to delete a budget', async () => {
-    const newBudget = makeBudget({
-      ownerId: new UniqueEntityID('user-01'),
-    },new UniqueEntityID('budget-01'))
+    const newBudget = makeBudget(
+      {
+        ownerId: new UniqueEntityID('user-01'),
+      },
+      new UniqueEntityID('budget-01'),
+    )
 
     await inMemoryBudgetsRepository.create(newBudget)
 
@@ -25,21 +28,20 @@ describe('Delete Budget Use Case', () => {
       ownerId: 'user-01',
     })
 
-  
     expect(inMemoryBudgetsRepository.items).toHaveLength(0)
   })
 
   it('should not be able to delete a budget if you are not the owner', async () => {
-    const newBudget = makeBudget({
-      ownerId: new UniqueEntityID('user-01'),
-    },new UniqueEntityID('budget-01'))
+    const newBudget = makeBudget(
+      {
+        ownerId: new UniqueEntityID('user-01'),
+      },
+      new UniqueEntityID('budget-01'),
+    )
 
     await inMemoryBudgetsRepository.create(newBudget)
 
-    
-
-  
-    expect(()=>{
+    expect(() => {
       return sut.execute({
         budgetId: 'budget-01',
         ownerId: 'user-02',

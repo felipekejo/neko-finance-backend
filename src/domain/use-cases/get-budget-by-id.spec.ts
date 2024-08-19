@@ -14,7 +14,7 @@ describe('Get Budget by Id Use Case', () => {
 
   it('should be able to get a budget by id', async () => {
     const newBudget = makeBudget()
-   
+
     await inMemoryBudgetsRepository.create(newBudget)
 
     const { budget } = await sut.execute({

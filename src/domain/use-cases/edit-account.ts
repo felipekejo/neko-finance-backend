@@ -7,14 +7,17 @@ interface EditAccountUseCaseRequest {
   balance: number
 }
 
-interface EditAccountUseCaseResponse {
-
-}
+interface EditAccountUseCaseResponse {}
 
 export class EditAccountUseCase {
   constructor(private accountsRepository: AccountsRepository) {}
 
-  async execute({ accountId, ownerId, name, balance }: EditAccountUseCaseRequest):Promise<EditAccountUseCaseResponse> {
+  async execute({
+    accountId,
+    ownerId,
+    name,
+    balance,
+  }: EditAccountUseCaseRequest): Promise<EditAccountUseCaseResponse> {
     const account = await this.accountsRepository.findById(accountId)
 
     if (!account) {
@@ -27,8 +30,8 @@ export class EditAccountUseCase {
 
     account.name = name
     account.balance = balance
-    
+
     await this.accountsRepository.save(account)
-    return {  }
+    return {}
   }
 }
