@@ -3,6 +3,7 @@ import { CategoriesRepository } from '@/domain/repositories/category-repository'
 
 
 export class InMemoryCategoriesRepository implements CategoriesRepository {
+
   public items: Category[] = []
   async create(category: Category) {
 
@@ -16,5 +17,15 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
       return null
     }
     return category
+  }
+
+  async delete(category: Category): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === category.id)
+    this.items.splice(itemIndex, 1)
+  }
+  async save(category: Category): Promise<void> {
+    const itemIndex = this.items.findIndex((item) =>  item.id === category.id)
+
+    this.items[itemIndex] = category
   }
 }
