@@ -3,7 +3,7 @@ import { UniqueEntityID } from "@/core/entities/unique-entity-id"
 import { Optional } from "@/core/types/optional"
 
 
-type TypeTransaction = 'EXPENSES' | 'INCOME'
+type TypeTransaction = 'EXPENSES' | 'INCOMES'
 interface CategoryProps{
   name:string
   createdAt: Date
