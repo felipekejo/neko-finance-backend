@@ -1,6 +1,9 @@
-import { Category, Prisma } from '@prisma/client'
+import { Category } from "../entities/category"
+
 
 export interface CategoriesRepository {
-  create(data: Prisma.CategoryUncheckedCreateInput): Promise<Category>
+  create(category: Category): Promise<void>
   findById(id: string): Promise<Category | null>
+  delete(category: Category): Promise<void>
+  save(category: Category): Promise<void>
 }

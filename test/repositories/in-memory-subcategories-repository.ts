@@ -1,15 +1,15 @@
+import { Subcategory } from '@/domain/entities/subcategory'
 import { SubcategoriesRepository } from '@/domain/repositories/subcategory-repository'
-import { Prisma, SubCategory } from '@prisma/client'
-import { randomUUID } from 'crypto'
 
 export class InMemorySubcategoriesRepository
   implements SubcategoriesRepository
 {
-  public items: SubCategory[] = []
+
+  public items: Subcategory[] = []
 
   async findById(id: string) {
     const subcategory = this.items.find((item) => {
-      return item.id === id
+      return item.id.toString() === id
     })
 
     if (!subcategory) {
@@ -19,15 +19,18 @@ export class InMemorySubcategoriesRepository
     return subcategory
   }
 
-  async create(data: Prisma.SubCategoryUncheckedCreateInput) {
-    const subCategory = {
-      id: data.id ?? randomUUID(),
-      name: data.name,
-      categoryId: data.categoryId,
-      createdAt: new Date(),
-      updatedAt: null,
-    }
+  async create(subcategory: Subcategory) {
 
-    return subCategory
+    this.items.push(subcategory)
+  }
+
+  async delete(subcategory: Subcategory): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === subcategory.id)
+    this.items.splice(itemIndex, 1)
+  }
+  async save(subcategory: Subcategory): Promise<void> {
+    const itemIndex = this.items.findIndex((item) =>  item.id === subcategory.id)
+
+    this.items[itemIndex] = subcategory
   }
 }

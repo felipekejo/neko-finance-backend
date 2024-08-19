@@ -1,6 +1,9 @@
-import { Prisma, SubCategory } from '@prisma/client'
+import { Subcategory } from "../entities/subcategory"
+
 
 export interface SubcategoriesRepository {
-  create(data: Prisma.SubCategoryUncheckedCreateInput): Promise<SubCategory>
-  findById(id: string): Promise<SubCategory | null>
+  create(subcategory: Subcategory): Promise<void>
+  findById(id: string): Promise<Subcategory | null>
+  delete(subcategory: Subcategory): Promise<void>
+  save(subcategory: Subcategory): Promise<void>
 }
