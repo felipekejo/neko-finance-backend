@@ -1,6 +1,5 @@
-import { Subcategory } from "../entities/subcategory"
-import { SubcategoriesRepository } from "../repositories/subcategory-repository"
-
+import { Subcategory } from '../entities/subcategory'
+import { SubcategoriesRepository } from '../repositories/subcategory-repository'
 
 interface GetSubcategoryByIdUseCaseRequest {
   id: string

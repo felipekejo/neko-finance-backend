@@ -1,14 +1,10 @@
 import { Category } from '@/domain/entities/category'
 import { CategoriesRepository } from '@/domain/repositories/category-repository'
 
-
 export class InMemoryCategoriesRepository implements CategoriesRepository {
-
   public items: Category[] = []
   async create(category: Category) {
-
     this.items.push(category)
-
   }
 
   async findById(id: string) {
@@ -23,8 +19,9 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
     const itemIndex = this.items.findIndex((item) => item.id === category.id)
     this.items.splice(itemIndex, 1)
   }
+
   async save(category: Category): Promise<void> {
-    const itemIndex = this.items.findIndex((item) =>  item.id === category.id)
+    const itemIndex = this.items.findIndex((item) => item.id === category.id)
 
     this.items[itemIndex] = category
   }

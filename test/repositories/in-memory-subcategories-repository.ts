@@ -4,7 +4,6 @@ import { SubcategoriesRepository } from '@/domain/repositories/subcategory-repos
 export class InMemorySubcategoriesRepository
   implements SubcategoriesRepository
 {
-
   public items: Subcategory[] = []
 
   async findById(id: string) {
@@ -20,7 +19,6 @@ export class InMemorySubcategoriesRepository
   }
 
   async create(subcategory: Subcategory) {
-
     this.items.push(subcategory)
   }
 
@@ -28,8 +26,9 @@ export class InMemorySubcategoriesRepository
     const itemIndex = this.items.findIndex((item) => item.id === subcategory.id)
     this.items.splice(itemIndex, 1)
   }
+
   async save(subcategory: Subcategory): Promise<void> {
-    const itemIndex = this.items.findIndex((item) =>  item.id === subcategory.id)
+    const itemIndex = this.items.findIndex((item) => item.id === subcategory.id)
 
     this.items[itemIndex] = subcategory
   }

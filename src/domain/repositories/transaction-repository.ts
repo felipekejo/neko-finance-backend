@@ -34,5 +34,5 @@ export interface TransactionsRepository {
 
   save(transaction: Transaction): Promise<void>
 
-  delete(id: string): Promise<void>
+  delete(transaction: Transaction): Promise<void>
 }

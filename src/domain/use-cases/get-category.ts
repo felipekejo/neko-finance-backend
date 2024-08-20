@@ -1,6 +1,5 @@
-import { Category } from "../entities/category"
-import { CategoriesRepository } from "../repositories/category-repository"
-
+import { Category } from '../entities/category'
+import { CategoriesRepository } from '../repositories/category-repository'
 
 interface GetCategoryByIdUseCaseRequest {
   id: string

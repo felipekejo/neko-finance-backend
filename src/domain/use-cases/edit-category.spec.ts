@@ -3,8 +3,6 @@ import { makeCategory } from 'test/factories/make-category'
 import { InMemoryCategoriesRepository } from 'test/repositories/in-memory-category-repository'
 import { EditCategoryUseCase } from './edit-category'
 
-
-
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository
 let sut: EditCategoryUseCase
 
@@ -16,39 +14,44 @@ describe('Edit Category Use Case', () => {
   })
 
   it('should be able to edit a category', async () => {
-    const newCategory = makeCategory({
-      budgetId: new UniqueEntityID('budget-01'),
-      type: 'EXPENSES'
-    },new UniqueEntityID('category-01'))
+    const newCategory = makeCategory(
+      {
+        budgetId: new UniqueEntityID('budget-01'),
+        type: 'EXPENSES',
+      },
+      new UniqueEntityID('category-01'),
+    )
 
     await inMemoryCategoriesRepository.create(newCategory)
-console.log(inMemoryCategoriesRepository.items)
+    console.log(inMemoryCategoriesRepository.items)
     await sut.execute({
       categoryId: 'category-01',
-      type:'INCOMES',
+      type: 'INCOMES',
       name: 'new category',
       budgetId: 'budget-01',
     })
 
-  
     expect(inMemoryCategoriesRepository.items[0]).toMatchObject({
-      type:'INCOMES',
+      type: 'INCOMES',
       name: 'new category',
     })
   })
 
   it('should not be able to edit a account if you do not have budget id', async () => {
-    const newCategory = makeCategory({
-      budgetId: new UniqueEntityID('budget-01'),
-      type: 'EXPENSES'
-    },new UniqueEntityID('category-01'))
+    const newCategory = makeCategory(
+      {
+        budgetId: new UniqueEntityID('budget-01'),
+        type: 'EXPENSES',
+      },
+      new UniqueEntityID('category-01'),
+    )
 
     await inMemoryCategoriesRepository.create(newCategory)
 
-    expect(()=>{
+    expect(() => {
       return sut.execute({
         categoryId: 'category-01',
-        type:'INCOMES',
+        type: 'INCOMES',
         name: 'new category',
         budgetId: 'budget-02',
       })

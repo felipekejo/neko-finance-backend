@@ -1,8 +1,7 @@
-import { UniqueEntityID } from "@/core/entities/unique-entity-id"
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-import { Subcategory } from "../entities/subcategory"
-import { SubcategoriesRepository } from "../repositories/subcategory-repository"
-
+import { Subcategory } from '../entities/subcategory'
+import { SubcategoriesRepository } from '../repositories/subcategory-repository'
 
 interface CreateSubcategoryUseCaseRequest {
   name: string
@@ -14,13 +13,15 @@ interface CreateSubcategoryUseCaseResponse {
 }
 
 export class CreateSubcategoryUseCase {
-  constructor(private subcategoriesRepository:SubcategoriesRepository){}
+  constructor(private subcategoriesRepository: SubcategoriesRepository) {}
 
-  async execute({ name, categoryId }: CreateSubcategoryUseCaseRequest):Promise<CreateSubcategoryUseCaseResponse> {
+  async execute({
+    name,
+    categoryId,
+  }: CreateSubcategoryUseCaseRequest): Promise<CreateSubcategoryUseCaseResponse> {
     const subcategory = Subcategory.create({
       name,
-      categoryId:new UniqueEntityID(categoryId),
-      
+      categoryId: new UniqueEntityID(categoryId),
     })
 
     await this.subcategoriesRepository.create(subcategory)
