@@ -30,4 +30,9 @@ export class InMemoryBudgetsRepository implements BudgetsRepository {
 
     this.items.splice(itemIndex, 1)
   }
+
+  async save(budget: Budget): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === budget.id)
+    this.items[itemIndex] = budget
+  }
 }

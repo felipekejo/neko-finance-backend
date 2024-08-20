@@ -2,6 +2,7 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
+export type TypeTransaction = 'EXPENSES' | 'INCOMES'
 export interface TransactionProps {
   budgetId: UniqueEntityID
   accountId: UniqueEntityID
@@ -9,6 +10,7 @@ export interface TransactionProps {
   amount: number
   createdAt: Date
   updatedAt?: Date
+  type: TypeTransaction
 }
 
 export class Transaction extends Entity<TransactionProps> {
@@ -53,6 +55,15 @@ export class Transaction extends Entity<TransactionProps> {
 
   private touch() {
     this.props.updatedAt = new Date()
+  }
+
+  get type() {
+    return this.props.type
+  }
+
+  set type(type: TypeTransaction) {
+    this.props.type = type
+    this.touch()
   }
 
   static create(

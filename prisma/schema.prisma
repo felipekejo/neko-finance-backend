@@ -67,13 +67,14 @@ enum TypeTransaction {
 }
 
 model Transaction {
-  id          String    @id @default(uuid())
+  id          String          @id @default(uuid())
   description String
-  createdAt   DateTime  @default(now()) @map("create_at")
-  updatedAt   DateTime? @updatedAt @map("updated_at")
+  createdAt   DateTime        @default(now()) @map("create_at")
+  updatedAt   DateTime?       @updatedAt @map("updated_at")
   amount      Float
   budgetId    String
   categoryId  String
+  type        TypeTransaction
 
   Budget   Budget   @relation(fields: [budgetId], references: [id])
   Category Category @relation(fields: [categoryId], references: [id])
