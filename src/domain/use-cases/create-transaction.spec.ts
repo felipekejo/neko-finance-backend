@@ -36,7 +36,7 @@ describe('Create Transaction Use Case', () => {
     const newAccount = makeAccount(
       {
         ownerId: new UniqueEntityID('user-01'),
-        balance: 0,
+        balance: 100,
       },
       new UniqueEntityID('account-01'),
     )
@@ -49,7 +49,7 @@ describe('Create Transaction Use Case', () => {
       amount: 100,
     })
 
-    expect(inMemoryAccountsRepository.items[0].balance).toEqual(100)
+    expect(inMemoryAccountsRepository.items[0].balance).toEqual(200)
   })
 
   it('should be able to decrease the account balance', async () => {

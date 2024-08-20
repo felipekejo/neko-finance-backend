@@ -1,6 +1,6 @@
 import { makeCategory } from 'test/factories/make-category'
 import { InMemoryCategoriesRepository } from 'test/repositories/in-memory-category-repository'
-import { GetCategoryByIdUseCase } from './get-category'
+import { GetCategoryByIdUseCase } from './get-category-by-id'
 
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository
 let sut: GetCategoryByIdUseCase

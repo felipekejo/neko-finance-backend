@@ -32,9 +32,7 @@ export class DeleteTransactionUseCase {
     if (!transaction) {
       throw new Error('Transaction not found')
     }
-    if (transaction.budgetId.toString() !== budgetId) {
-      throw new Error('Unauthorized')
-    }
+
     if (budget.ownerId.toString() !== ownerId) {
       throw new Error('Unauthorized')
     }

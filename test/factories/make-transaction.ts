@@ -6,12 +6,17 @@ export function makeTransaction(
   override: Partial<TransactionProps> = {},
   id?: UniqueEntityID,
 ) {
+  enum TypeTransaction {
+    EXPENSES = 'EXPENSES',
+    INCOMES = 'INCOMES',
+  }
   const transaction = Transaction.create(
     {
       description: faker.lorem.sentence(),
       accountId: new UniqueEntityID(),
       budgetId: new UniqueEntityID(),
       amount: faker.number.int(),
+      type: faker.helpers.enumValue(TypeTransaction),
       ...override,
     },
     id,

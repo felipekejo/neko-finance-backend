@@ -1,6 +1,6 @@
 import { makeSubcategory } from 'test/factories/make-subcategory'
 import { InMemorySubcategoriesRepository } from 'test/repositories/in-memory-subcategories-repository'
-import { GetSubcategoryByIdUseCase } from './get-subcategory'
+import { GetSubcategoryByIdUseCase } from './get-subcategory-by-id'
 
 let inMemorySubcategoriesRepository: InMemorySubcategoriesRepository
 let sut: GetSubcategoryByIdUseCase

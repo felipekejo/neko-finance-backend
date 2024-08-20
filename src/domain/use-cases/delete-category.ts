@@ -1,18 +1,15 @@
-import { TypeTransaction } from '../entities/category'
 import { BudgetsRepository } from '../repositories/budget-repository'
 import { CategoriesRepository } from '../repositories/category-repository'
 
-interface EditCategoryUseCaseRequest {
+interface DeleteCategoryUseCaseRequest {
   categoryId: string
-  budgetId: string
-  name: string
-  type: TypeTransaction
   ownerId: string
+  budgetId: string
 }
 
-interface EditCategoryUseCaseResponse {}
+interface DeleteCategoryUseCaseResponse {}
 
-export class EditCategoryUseCase {
+export class DeleteCategoryUseCase {
   constructor(
     private categoriesRepository: CategoriesRepository,
     private budgetsRepository: BudgetsRepository,
@@ -20,16 +17,16 @@ export class EditCategoryUseCase {
 
   async execute({
     categoryId,
-    budgetId,
-    name,
-    type,
     ownerId,
-  }: EditCategoryUseCaseRequest): Promise<EditCategoryUseCaseResponse> {
+    budgetId,
+  }: DeleteCategoryUseCaseRequest): Promise<DeleteCategoryUseCaseResponse> {
     const category = await this.categoriesRepository.findById(categoryId)
-    const budget = await this.budgetsRepository.findById(budgetId)
+
     if (!category) {
       throw new Error('Category not found')
     }
+    const budget = await this.budgetsRepository.findById(budgetId)
+
     if (!budget) {
       throw new Error('Budget not found')
     }
@@ -38,10 +35,7 @@ export class EditCategoryUseCase {
       throw new Error('Unauthorized')
     }
 
-    category.name = name
-    category.type = type
-
-    await this.categoriesRepository.save(category)
+    await this.categoriesRepository.delete(category)
     return {}
   }
 }

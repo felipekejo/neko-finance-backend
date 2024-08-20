@@ -6,11 +6,6 @@ export function makeSubcategory(
   override: Partial<SubcategoryProps> = {},
   id?: UniqueEntityID,
 ) {
-  enum TypeTransaction {
-    EXPENSES = 'EXPENSES',
-    INCOMES = 'INCOMES',
-  }
-
   const subcategory = Subcategory.create(
     {
       name: faker.lorem.sentence(),
