@@ -1,3 +1,4 @@
+import { Either, left, right } from '@/core/either'
 import { AccountsRepository } from '../repositories/account-repository'
 
 interface DeleteAccountUseCaseRequest {
@@ -5,7 +6,7 @@ interface DeleteAccountUseCaseRequest {
   ownerId: string
 }
 
-interface DeleteAccountUseCaseResponse {}
+type DeleteAccountUseCaseResponse = Either<string, {}>
 
 export class DeleteAccountUseCase {
   constructor(private accountsRepository: AccountsRepository) {}
@@ -17,14 +18,14 @@ export class DeleteAccountUseCase {
     const account = await this.accountsRepository.findById(accountId)
 
     if (!account) {
-      throw new Error('Account not found')
+      return left('Account not found')
     }
 
     if (account.ownerId.toString() !== ownerId) {
-      throw new Error('Unauthorized')
+      return left('Unauthorized')
     }
 
     await this.accountsRepository.delete(account)
-    return {}
+    return right({})
   }
 }
