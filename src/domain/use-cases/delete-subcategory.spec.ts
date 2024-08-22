@@ -4,6 +4,7 @@ import { makeSubcategory } from 'test/factories/make-subcategory'
 import { InMemoryBudgetsRepository } from 'test/repositories/in-memory-budgets-repository'
 import { InMemorySubcategoriesRepository } from 'test/repositories/in-memory-subcategories-repository'
 import { DeleteSubcategoryUseCase } from './delete-subcategory'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 let inMemorySubcategoriesRepository: InMemorySubcategoriesRepository
 let inMemoryBudgetsRepository: InMemoryBudgetsRepository
@@ -59,12 +60,13 @@ describe('Delete Subcategory Use Case', () => {
     await inMemoryBudgetsRepository.create(newBudget)
     await inMemorySubcategoriesRepository.create(newSubcategory)
 
-    expect(() => {
-      return sut.execute({
-        subcategoryId: 'subcategory-01',
-        ownerId: 'user-02',
-        budgetId: 'budget-01',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      subcategoryId: 'subcategory-01',
+      ownerId: 'user-02',
+      budgetId: 'budget-01',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(UnauthorizedError)
   })
 })

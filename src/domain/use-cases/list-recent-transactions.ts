@@ -1,3 +1,4 @@
+import { Either, right } from '@/core/either'
 import { Transaction } from '../entities/transaction'
 import { TransactionsRepository } from '../repositories/transaction-repository'
 
@@ -5,9 +6,12 @@ interface ListRecentTransactionsUseCaseRequest {
   page: number
 }
 
-interface ListRecentTransactionsUseCaseResponse {
-  transactions: Transaction[]
-}
+type ListRecentTransactionsUseCaseResponse = Either<
+  null,
+  {
+    transactions: Transaction[]
+  }
+>
 
 export class ListRecentTransactionsUseCase {
   constructor(private transactionsRepository: TransactionsRepository) {}
@@ -18,6 +22,6 @@ export class ListRecentTransactionsUseCase {
     const transactions = await this.transactionsRepository.findManyRecent({
       page,
     })
-    return { transactions }
+    return right({ transactions })
   }
 }

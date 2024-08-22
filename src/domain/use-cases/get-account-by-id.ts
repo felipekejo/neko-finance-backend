@@ -1,3 +1,4 @@
+import { Either, right } from '@/core/either'
 import { Account } from '../entities/account'
 import { AccountsRepository } from '../repositories/account-repository'
 
@@ -5,9 +6,12 @@ interface GetAccountByIdUseCaseRequest {
   id: string
 }
 
-interface GetAccountByIdUseCaseResponse {
-  account: Account
-}
+type GetAccountByIdUseCaseResponse = Either<
+  null,
+  {
+    account: Account
+  }
+>
 
 export class GetAccountByIdUseCase {
   constructor(private accountsRepository: AccountsRepository) {}
@@ -19,6 +23,6 @@ export class GetAccountByIdUseCase {
     if (!account) {
       throw new Error('Account not found')
     }
-    return { account }
+    return right({ account })
   }
 }

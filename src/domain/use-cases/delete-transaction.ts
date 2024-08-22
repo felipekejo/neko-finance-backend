@@ -1,5 +1,8 @@
+import { Either, left, right } from '@/core/either'
 import { BudgetsRepository } from '../repositories/budget-repository'
 import { TransactionsRepository } from '../repositories/transaction-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 interface DeleteTransactionUseCaseRequest {
   transactionId: string
@@ -7,7 +10,10 @@ interface DeleteTransactionUseCaseRequest {
   ownerId: string
 }
 
-interface DeleteTransactionUseCaseResponse {}
+type DeleteTransactionUseCaseResponse = Either<
+  ResourceNotFoundError | UnauthorizedError,
+  {}
+>
 
 export class DeleteTransactionUseCase {
   constructor(
@@ -26,18 +32,18 @@ export class DeleteTransactionUseCase {
     const budget = await this.budgetsRepository.findById(budgetId)
 
     if (!budget) {
-      throw new Error('Budget not found')
+      return left(new ResourceNotFoundError())
     }
 
     if (!transaction) {
-      throw new Error('Transaction not found')
+      return left(new ResourceNotFoundError())
     }
 
     if (budget.ownerId.toString() !== ownerId) {
-      throw new Error('Unauthorized')
+      return left(new UnauthorizedError())
     }
 
     await this.transactionsRepository.delete(transaction)
-    return {}
+    return right({})
   }
 }

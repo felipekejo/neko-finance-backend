@@ -4,6 +4,7 @@ import { makeTransaction } from 'test/factories/make-transaction'
 import { InMemoryAccountsRepository } from 'test/repositories/in-memory-accounts-repository'
 import { InMemoryTransactionsRepository } from 'test/repositories/in-memory-transactions-repository'
 import { EditTransactionUseCase } from './edit-transaction'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 let inMemoryTransactionsRepository: InMemoryTransactionsRepository
 let inMemoryAccountsRepository: InMemoryAccountsRepository
@@ -74,17 +75,18 @@ describe('Edit Transaction Use Case', () => {
 
     await inMemoryTransactionsRepository.create(newTransaction)
 
-    expect(() => {
-      return sut.execute({
-        ownerId: 'user-02',
-        transactionId: 'transaction-01',
-        accountId: 'account-01',
-        type: 'INCOMES',
-        amount: 200,
-        description: 'new description',
-        budgetId: 'budget-01',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      ownerId: 'user-02',
+      transactionId: 'transaction-01',
+      accountId: 'account-01',
+      type: 'INCOMES',
+      amount: 200,
+      description: 'new description',
+      budgetId: 'budget-01',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(UnauthorizedError)
   })
 
   // it('should be able to update the balance of the new and old account', async () => {

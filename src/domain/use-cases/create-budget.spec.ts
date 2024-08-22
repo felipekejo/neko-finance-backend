@@ -12,12 +12,14 @@ describe('Create Budget Use Case', () => {
   })
 
   it('should be able to create a new budget', async () => {
-    const { budget } = await sut.execute({
+    const result = await sut.execute({
       name: 'New Budget',
       ownerId: 'user-01',
     })
 
-    expect(budget.id).toBeTruthy()
-    expect(inMemoryBudgetsRepository.items[0].id).toEqual(budget.id)
+    expect(result.isRight()).toBe(true)
+    expect(inMemoryBudgetsRepository.items[0].id).toEqual(
+      result.value?.budget.id,
+    )
   })
 })

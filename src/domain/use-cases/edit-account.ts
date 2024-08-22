@@ -1,4 +1,7 @@
+import { Either, left, right } from '@/core/either'
 import { AccountsRepository } from '../repositories/account-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 interface EditAccountUseCaseRequest {
   accountId: string
@@ -7,7 +10,10 @@ interface EditAccountUseCaseRequest {
   balance: number
 }
 
-interface EditAccountUseCaseResponse {}
+type EditAccountUseCaseResponse = Either<
+  ResourceNotFoundError | UnauthorizedError,
+  {}
+>
 
 export class EditAccountUseCase {
   constructor(private accountsRepository: AccountsRepository) {}
@@ -21,17 +27,17 @@ export class EditAccountUseCase {
     const account = await this.accountsRepository.findById(accountId)
 
     if (!account) {
-      throw new Error('Account not found')
+      return left(new ResourceNotFoundError())
     }
 
     if (account.ownerId.toString() !== ownerId) {
-      throw new Error('Unauthorized')
+      return left(new UnauthorizedError())
     }
 
     account.name = name
     account.balance = balance
 
     await this.accountsRepository.save(account)
-    return {}
+    return right({})
   }
 }

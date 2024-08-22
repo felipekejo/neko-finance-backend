@@ -1,13 +1,18 @@
+import { Either, left, right } from '@/core/either'
 import { Subcategory } from '../entities/subcategory'
 import { SubcategoriesRepository } from '../repositories/subcategory-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface GetSubcategoryByIdUseCaseRequest {
   id: string
 }
 
-interface GetSubcategoryByIdUseCaseResponse {
-  subcategory: Subcategory
-}
+type GetSubcategoryByIdUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    subcategory: Subcategory
+  }
+>
 
 export class GetSubcategoryByIdUseCase {
   constructor(private subcategoriesRepository: SubcategoriesRepository) {}
@@ -17,8 +22,8 @@ export class GetSubcategoryByIdUseCase {
   }: GetSubcategoryByIdUseCaseRequest): Promise<GetSubcategoryByIdUseCaseResponse> {
     const subcategory = await this.subcategoriesRepository.findById(id)
     if (!subcategory) {
-      throw new Error('Subcategory not found')
+      return left(new ResourceNotFoundError())
     }
-    return { subcategory }
+    return right({ subcategory })
   }
 }

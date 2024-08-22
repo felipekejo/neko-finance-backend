@@ -14,11 +14,16 @@ describe('Get Account by Id Use Case', () => {
     const newTransaction = makeTransaction()
     await inMemoryTransactionsRepository.create(newTransaction)
 
-    const { transaction } = await sut.execute({
+    const result = await sut.execute({
       id: newTransaction.id.toValue(),
     })
 
-    expect(transaction.id).toBeTruthy()
-    expect(transaction.description).toEqual(newTransaction.description)
+    expect(result.isRight()).toBe(true)
+    expect(result.value).toMatchObject({
+      transaction: {
+        id: newTransaction.id,
+        description: newTransaction.description,
+      },
+    })
   })
 })

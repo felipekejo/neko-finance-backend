@@ -17,11 +17,16 @@ describe('Get Budget by Id Use Case', () => {
 
     await inMemoryBudgetsRepository.create(newBudget)
 
-    const { budget } = await sut.execute({
+    const result = await sut.execute({
       id: newBudget.id.toValue(),
     })
 
-    expect(budget.id).toBeTruthy()
-    expect(budget.name).toEqual(newBudget.name)
+    expect(result.isRight()).toBe(true)
+    expect(result.value).toMatchObject({
+      budget: {
+        id: newBudget.id,
+        name: newBudget.name,
+      },
+    })
   })
 })

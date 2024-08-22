@@ -4,6 +4,7 @@ import { makeCategory } from 'test/factories/make-category'
 import { InMemoryBudgetsRepository } from 'test/repositories/in-memory-budgets-repository'
 import { InMemoryCategoriesRepository } from 'test/repositories/in-memory-category-repository'
 import { EditCategoryUseCase } from './edit-category'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository
 let inMemoryBudgetsRepository: InMemoryBudgetsRepository
@@ -68,14 +69,15 @@ describe('Edit Category Use Case', () => {
     await inMemoryCategoriesRepository.create(newCategory)
     await inMemoryBudgetsRepository.create(newBudget)
 
-    expect(() => {
-      return sut.execute({
-        categoryId: 'category-01',
-        type: 'INCOMES',
-        name: 'new category',
-        budgetId: 'budget-02',
-        ownerId: 'user-02',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      categoryId: 'category-01',
+      type: 'INCOMES',
+      name: 'new category',
+      budgetId: 'budget-01',
+      ownerId: 'user-02',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(UnauthorizedError)
   })
 })

@@ -2,6 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeAccount } from 'test/factories/make-account'
 import { InMemoryAccountsRepository } from 'test/repositories/in-memory-accounts-repository'
 import { DeleteAccountUseCase } from './delete-account'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 let inMemoryAccountsRepository: InMemoryAccountsRepository
 let sut: DeleteAccountUseCase
@@ -41,11 +42,12 @@ describe('Delete Account Use Case', () => {
 
     await inMemoryAccountsRepository.create(newAccount)
 
-    expect(() => {
-      return sut.execute({
-        accountId: 'account-01',
-        ownerId: 'user-02',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      accountId: 'account-01',
+      ownerId: 'user-02',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(UnauthorizedError)
   })
 })

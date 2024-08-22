@@ -1,3 +1,4 @@
+import { Either, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Category } from '../entities/category'
 import { CategoriesRepository } from '../repositories/category-repository'
@@ -9,9 +10,12 @@ interface CreateCategoryUseCaseRequest {
   type: TypeTransaction
 }
 
-interface CreateCategoryUseCaseResponse {
-  category: Category
-}
+type CreateCategoryUseCaseResponse = Either<
+  null,
+  {
+    category: Category
+  }
+>
 
 export class CreateCategoryUseCase {
   constructor(private categoriesRepository: CategoriesRepository) {}
@@ -29,6 +33,6 @@ export class CreateCategoryUseCase {
 
     await this.categoriesRepository.create(category)
 
-    return { category }
+    return right({ category })
   }
 }

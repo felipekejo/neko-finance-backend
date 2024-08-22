@@ -1,13 +1,18 @@
+import { Either, left, right } from '@/core/either'
 import { Budget } from '../entities/budget'
 import { BudgetsRepository } from '../repositories/budget-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface GetBudgetByIdUseCaseRequest {
   id: string
 }
 
-interface GetBudgetByIdUseCaseResponse {
-  budget: Budget
-}
+type GetBudgetByIdUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    budget: Budget
+  }
+>
 
 export class GetBudgetByIdUseCase {
   constructor(private budgetsRepository: BudgetsRepository) {}
@@ -17,8 +22,8 @@ export class GetBudgetByIdUseCase {
   }: GetBudgetByIdUseCaseRequest): Promise<GetBudgetByIdUseCaseResponse> {
     const budget = await this.budgetsRepository.findById(id)
     if (!budget) {
-      throw new Error('Budget not found')
+      return left(new ResourceNotFoundError())
     }
-    return { budget }
+    return right({ budget })
   }
 }

@@ -14,11 +14,16 @@ describe('Get Subcategory by Id Use Case', () => {
     const newSubcategory = makeSubcategory()
     await inMemorySubcategoriesRepository.create(newSubcategory)
 
-    const { subcategory } = await sut.execute({
+    const result = await sut.execute({
       id: newSubcategory.id.toValue(),
     })
 
-    expect(subcategory.id).toBeTruthy()
-    expect(subcategory.name).toEqual(newSubcategory.name)
+    expect(result.isRight()).toBe(true)
+    expect(result.value).toMatchObject({
+      subcategory: {
+        id: newSubcategory.id,
+        name: newSubcategory.name,
+      },
+    })
   })
 })

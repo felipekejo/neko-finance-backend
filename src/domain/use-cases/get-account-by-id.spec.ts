@@ -14,11 +14,11 @@ describe('Get Account by Id Use Case', () => {
     const newAccount = makeAccount()
     await inMemoryAccountsRepository.create(newAccount)
 
-    const { account } = await sut.execute({
+    const result = await sut.execute({
       id: newAccount.id.toValue(),
     })
 
-    expect(account.id).toBeTruthy()
-    expect(account.name).toEqual(newAccount.name)
+    expect(result.isRight()).toBe(true)
+    expect(result.value?.account.id).toEqual(newAccount.id)
   })
 })

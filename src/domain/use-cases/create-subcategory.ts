@@ -1,5 +1,6 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
+import { Either, right } from '@/core/either'
 import { Subcategory } from '../entities/subcategory'
 import { SubcategoriesRepository } from '../repositories/subcategory-repository'
 
@@ -8,9 +9,12 @@ interface CreateSubcategoryUseCaseRequest {
   categoryId: string
 }
 
-interface CreateSubcategoryUseCaseResponse {
-  subcategory: Subcategory
-}
+type CreateSubcategoryUseCaseResponse = Either<
+  null,
+  {
+    subcategory: Subcategory
+  }
+>
 
 export class CreateSubcategoryUseCase {
   constructor(private subcategoriesRepository: SubcategoriesRepository) {}
@@ -26,6 +30,6 @@ export class CreateSubcategoryUseCase {
 
     await this.subcategoriesRepository.create(subcategory)
 
-    return { subcategory }
+    return right({ subcategory })
   }
 }

@@ -14,11 +14,17 @@ describe('Get Account by Id Use Case', () => {
     const newCategory = makeCategory()
     await inMemoryCategoriesRepository.create(newCategory)
 
-    const { category } = await sut.execute({
+    const result = await sut.execute({
       id: newCategory.id.toValue(),
     })
 
-    expect(category.id).toBeTruthy()
-    expect(category.name).toEqual(newCategory.name)
+    expect(result.isRight()).toBe(true)
+
+    expect(result.value).toMatchObject({
+      category: {
+        id: newCategory.id,
+        name: newCategory.name,
+      },
+    })
   })
 })

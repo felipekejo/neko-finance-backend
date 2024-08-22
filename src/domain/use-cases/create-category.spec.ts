@@ -11,13 +11,15 @@ describe('Create Category Use Case', () => {
   })
 
   it('should be able to create a new category', async () => {
-    const { category } = await sut.execute({
+    const result = await sut.execute({
       name: 'new category',
       budgetId: 'budget-01',
       type: 'INCOMES',
     })
 
-    expect(category.id).toBeTruthy()
-    expect(inMemoryCategoriesRepository.items[0].id).toEqual(category.id)
+    expect(result.isRight()).toBe(true)
+    expect(inMemoryCategoriesRepository.items[0].id).toEqual(
+      result.value?.category.id,
+    )
   })
 })

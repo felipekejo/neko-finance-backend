@@ -1,7 +1,10 @@
+import { Either, left, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { TypeTransaction } from '../entities/transaction'
 import { AccountsRepository } from '../repositories/account-repository'
 import { TransactionsRepository } from '../repositories/transaction-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 interface EditTransactionUseCaseRequest {
   transactionId: string
@@ -13,7 +16,10 @@ interface EditTransactionUseCaseRequest {
   type: TypeTransaction
 }
 
-interface EditTransactionUseCaseResponse {}
+type EditTransactionUseCaseResponse = Either<
+  ResourceNotFoundError | UnauthorizedError,
+  {}
+>
 
 export class EditTransactionUseCase {
   constructor(
@@ -22,7 +28,6 @@ export class EditTransactionUseCase {
   ) {}
 
   async execute({
-    budgetId,
     transactionId,
     ownerId,
     accountId,
@@ -32,15 +37,15 @@ export class EditTransactionUseCase {
   }: EditTransactionUseCaseRequest): Promise<EditTransactionUseCaseResponse> {
     const transaction =
       await this.transactionsRepository.findById(transactionId)
-    if (!transaction) throw new Error('Transaction not found')
-    console.log(transaction)
+    if (!transaction) return left(new ResourceNotFoundError())
+
     const oldAccountId = transaction.accountId.toString()
     const oldAmount = transaction.amount
     const oldType = transaction.type
 
     const account = await this.accountsRepository.findById(accountId)
     if (!account || account.ownerId.toString() !== ownerId) {
-      throw new Error('Unauthorized or Account not found')
+      return left(new UnauthorizedError())
     }
 
     transaction.description = description
@@ -65,12 +70,10 @@ export class EditTransactionUseCase {
         account.balance -= amount
       }
     }
-    console.log(account)
-    console.log(transaction)
 
     await this.accountsRepository.save(account)
     await this.transactionsRepository.save(transaction)
 
-    return {}
+    return right({})
   }
 }

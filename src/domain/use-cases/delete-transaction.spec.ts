@@ -4,6 +4,7 @@ import { makeTransaction } from 'test/factories/make-transaction'
 import { InMemoryBudgetsRepository } from 'test/repositories/in-memory-budgets-repository'
 import { InMemoryTransactionsRepository } from 'test/repositories/in-memory-transactions-repository'
 import { DeleteTransactionUseCase } from './delete-transaction'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 let inMemoryTransactionsRepository: InMemoryTransactionsRepository
 let inMemoryBudgetsRepository: InMemoryBudgetsRepository
@@ -63,13 +64,13 @@ describe('Delete Transaction Use Case', () => {
     await inMemoryBudgetsRepository.create(newBudget)
 
     await inMemoryTransactionsRepository.create(newTransaction)
+    const result = await sut.execute({
+      ownerId: 'user-02',
+      transactionId: 'transaction-01',
+      budgetId: 'budget-01',
+    })
 
-    expect(() => {
-      return sut.execute({
-        ownerId: 'user-02',
-        transactionId: 'transaction-01',
-        budgetId: 'budget-01',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(UnauthorizedError)
   })
 })

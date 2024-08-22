@@ -2,6 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeBudget } from 'test/factories/make-budget'
 import { InMemoryBudgetsRepository } from 'test/repositories/in-memory-budgets-repository'
 import { DeleteBudgetUseCase } from './delete-budget'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 let inMemoryBudgetsRepository: InMemoryBudgetsRepository
 let sut: DeleteBudgetUseCase
@@ -41,11 +42,12 @@ describe('Delete Budget Use Case', () => {
 
     await inMemoryBudgetsRepository.create(newBudget)
 
-    expect(() => {
-      return sut.execute({
-        budgetId: 'budget-01',
-        ownerId: 'user-02',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      budgetId: 'budget-01',
+      ownerId: 'user-02',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(UnauthorizedError)
   })
 })

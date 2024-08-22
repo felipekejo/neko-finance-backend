@@ -1,3 +1,4 @@
+import { Either, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Transaction, TypeTransaction } from '../entities/transaction'
 import { AccountsRepository } from '../repositories/account-repository'
@@ -11,9 +12,12 @@ interface CreateTransactionUseCaseRequest {
   type: TypeTransaction
 }
 
-interface CreateTransactionUseCaseResponse {
-  transaction: Transaction
-}
+type CreateTransactionUseCaseResponse = Either<
+  null,
+  {
+    transaction: Transaction
+  }
+>
 
 export class CreateTransactionUseCase {
   constructor(
@@ -47,6 +51,6 @@ export class CreateTransactionUseCase {
       await this.accountsRepository.save(account)
     }
 
-    return { transaction }
+    return right({ transaction })
   }
 }

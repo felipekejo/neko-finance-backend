@@ -20,7 +20,7 @@ describe('Create Transaction Use Case', () => {
   })
 
   it('should be able to create a new account', async () => {
-    const { transaction } = await sut.execute({
+    const result = await sut.execute({
       description: 'New transaction',
       accountId: 'account-01',
       budgetId: 'budget-01',
@@ -28,8 +28,10 @@ describe('Create Transaction Use Case', () => {
       amount: 100,
     })
 
-    expect(transaction.id).toBeTruthy()
-    expect(inMemoryTransactionsRepository.items[0].id).toEqual(transaction.id)
+    expect(result.isRight()).toBe(true)
+    expect(inMemoryTransactionsRepository.items[0]).toEqual(
+      result.value?.transaction,
+    )
   })
 
   it('should be able to increase the account balance', async () => {

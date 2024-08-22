@@ -22,9 +22,9 @@ describe('List Recent Transactions Use Case', () => {
       makeTransaction({ createdAt: new Date('2021-01-03') }),
     )
 
-    const { transactions } = await sut.execute({ page: 1 })
+    const result = await sut.execute({ page: 1 })
 
-    expect(transactions).toEqual([
+    expect(result.value?.transactions).toEqual([
       expect.objectContaining({ createdAt: new Date('2021-01-03') }),
       expect.objectContaining({ createdAt: new Date('2021-01-02') }),
       expect.objectContaining({ createdAt: new Date('2021-01-01') }),
@@ -36,8 +36,8 @@ describe('List Recent Transactions Use Case', () => {
       await inMemoryTransactionsRepository.create(makeTransaction())
     }
 
-    const { transactions } = await sut.execute({ page: 2 })
-
-    expect(transactions).toHaveLength(2)
+    const result = await sut.execute({ page: 2 })
+    console.log(result)
+    expect(result.value?.transactions).toHaveLength(2)
   })
 })

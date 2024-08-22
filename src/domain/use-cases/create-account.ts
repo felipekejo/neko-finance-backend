@@ -1,3 +1,4 @@
+import { Either, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Account } from '../entities/account'
 import { AccountsRepository } from '../repositories/account-repository'
@@ -9,9 +10,12 @@ interface CreateAccountUseCaseRequest {
   balance: number
 }
 
-interface CreateAccountUseCaseResponse {
-  account: Account
-}
+type CreateAccountUseCaseResponse = Either<
+  null,
+  {
+    account: Account
+  }
+>
 
 export class CreateAccountUseCase {
   constructor(private accountsRepository: AccountsRepository) {}
@@ -29,6 +33,6 @@ export class CreateAccountUseCase {
       balance,
     })
     await this.accountsRepository.create(account)
-    return { account }
+    return right({ account })
   }
 }

@@ -1,5 +1,8 @@
+import { Either, left, right } from '@/core/either'
 import { BudgetsRepository } from '../repositories/budget-repository'
 import { SubcategoriesRepository } from '../repositories/subcategory-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 interface DeleteSubcategoryUseCaseRequest {
   subcategoryId: string
@@ -7,7 +10,10 @@ interface DeleteSubcategoryUseCaseRequest {
   budgetId: string
 }
 
-interface DeleteSubcategoryUseCaseResponse {}
+type DeleteSubcategoryUseCaseResponse = Either<
+  ResourceNotFoundError | UnauthorizedError,
+  {}
+>
 
 export class DeleteSubcategoryUseCase {
   constructor(
@@ -24,19 +30,19 @@ export class DeleteSubcategoryUseCase {
       await this.subcategoriesRepository.findById(subcategoryId)
 
     if (!subcategory) {
-      throw new Error('Subcategory not found')
+      return left(new ResourceNotFoundError())
     }
     const budget = await this.budgetsRepository.findById(budgetId)
 
     if (!budget) {
-      throw new Error('Budget not found')
+      return left(new ResourceNotFoundError())
     }
 
     if (budget.ownerId.toString() !== ownerId) {
-      throw new Error('Unauthorized')
+      return left(new UnauthorizedError())
     }
 
     await this.subcategoriesRepository.delete(subcategory)
-    return {}
+    return right({})
   }
 }

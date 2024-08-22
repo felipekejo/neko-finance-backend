@@ -1,6 +1,9 @@
+import { Either, left, right } from '@/core/either'
 import { TypeTransaction } from '../entities/category'
 import { BudgetsRepository } from '../repositories/budget-repository'
 import { CategoriesRepository } from '../repositories/category-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 interface EditCategoryUseCaseRequest {
   categoryId: string
@@ -10,7 +13,10 @@ interface EditCategoryUseCaseRequest {
   ownerId: string
 }
 
-interface EditCategoryUseCaseResponse {}
+type EditCategoryUseCaseResponse = Either<
+  ResourceNotFoundError | UnauthorizedError,
+  {}
+>
 
 export class EditCategoryUseCase {
   constructor(
@@ -28,20 +34,20 @@ export class EditCategoryUseCase {
     const category = await this.categoriesRepository.findById(categoryId)
     const budget = await this.budgetsRepository.findById(budgetId)
     if (!category) {
-      throw new Error('Category not found')
+      return left(new ResourceNotFoundError())
     }
     if (!budget) {
-      throw new Error('Budget not found')
+      return left(new ResourceNotFoundError())
     }
 
     if (budget.ownerId.toString() !== ownerId) {
-      throw new Error('Unauthorized')
+      return left(new UnauthorizedError())
     }
 
     category.name = name
     category.type = type
 
     await this.categoriesRepository.save(category)
-    return {}
+    return right({})
   }
 }

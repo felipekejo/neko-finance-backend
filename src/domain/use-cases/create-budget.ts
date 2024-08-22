@@ -1,3 +1,4 @@
+import { Either, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Budget } from '../entities/budget'
 import { BudgetsRepository } from '../repositories/budget-repository'
@@ -7,10 +8,12 @@ interface CreateBudgetUseCaseRequest {
   ownerId: string
 }
 
-interface CreateBudgetUseCaseResponse {
-  budget: Budget
-}
-
+type CreateBudgetUseCaseResponse = Either<
+  null,
+  {
+    budget: Budget
+  }
+>
 export class CreateBudgetUseCase {
   constructor(private budgetsRepository: BudgetsRepository) {}
 
@@ -23,6 +26,6 @@ export class CreateBudgetUseCase {
       ownerId: new UniqueEntityID(ownerId),
     })
     await this.budgetsRepository.create(budget)
-    return { budget }
+    return right({ budget })
   }
 }

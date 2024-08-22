@@ -3,7 +3,7 @@ import { Either, left, right } from './either'
 describe('Either', () => {
   function doSomething(shouldSuccess: boolean): Either<string, number> {
     if (shouldSuccess) {
-      return right('Success')
+      return right(10)
     } else {
       return left('Error')
     }

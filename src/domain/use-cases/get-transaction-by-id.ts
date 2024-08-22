@@ -1,13 +1,18 @@
+import { Either, left, right } from '@/core/either'
 import { Transaction } from '../entities/transaction'
 import { TransactionsRepository } from '../repositories/transaction-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface GetTransactionByIdUseCaseRequest {
   id: string
 }
 
-interface GetTransactionByIdUseCaseResponse {
-  transaction: Transaction
-}
+type GetTransactionByIdUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    transaction: Transaction
+  }
+>
 
 export class GetTransactionByIdUseCase {
   constructor(private transactionsRepository: TransactionsRepository) {}
@@ -17,8 +22,8 @@ export class GetTransactionByIdUseCase {
   }: GetTransactionByIdUseCaseRequest): Promise<GetTransactionByIdUseCaseResponse> {
     const transaction = await this.transactionsRepository.findById(id)
     if (!transaction) {
-      throw new Error('Transaction not found')
+      return left(new ResourceNotFoundError())
     }
-    return { transaction }
+    return right({ transaction })
   }
 }

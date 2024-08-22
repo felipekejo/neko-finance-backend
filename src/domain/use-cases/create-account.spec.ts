@@ -12,14 +12,16 @@ describe('Create Account Use Case', () => {
   })
 
   it('should be able to create a new account', async () => {
-    const { account } = await sut.execute({
+    const result = await sut.execute({
       name: 'New account',
       ownerId: 'user-01',
       budgetId: 'budget-01',
       balance: 0,
     })
 
-    expect(account.id).toBeTruthy()
-    expect(inMemoryAccountsRepository.items[0].id).toEqual(account.id)
+    expect(result.isRight()).toBe(true)
+    expect(inMemoryAccountsRepository.items[0].id).toEqual(
+      result.value?.account.id,
+    )
   })
 })
