@@ -1,4 +1,4 @@
-import { Entity } from '@/core/entities/entity'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
@@ -11,7 +11,7 @@ export interface AccountProps {
   balance: number
 }
 
-export class Account extends Entity<AccountProps> {
+export class Account extends AggregateRoot<AccountProps> {
   get name() {
     return this.props.name
   }
