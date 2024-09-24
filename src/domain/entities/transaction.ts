@@ -9,7 +9,7 @@ export interface TransactionProps {
   description: string
   amount: number
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
   type: TypeTransaction
 }
 

@@ -9,7 +9,7 @@ interface UserProps {
   password: string
   role: UserRole
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export class User extends Entity<UserProps> {

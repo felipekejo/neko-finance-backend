@@ -27,7 +27,8 @@ model User {
   createdAt DateTime  @default(now()) @map("create_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
-  budgets Budget[]
+  accounts Account[]
+  budgets  Budget[]
 
   @@map("users")
 }
@@ -50,6 +51,7 @@ model Budget {
 
 model Account {
   id           String        @id @default(uuid())
+  ownerId      String        @map("owner_id")
   name         String
   balance      Float         @default(0)
   createdAt    DateTime      @default(now()) @map("create_at")
@@ -58,6 +60,7 @@ model Account {
   transactions Transaction[]
 
   Budget Budget @relation(fields: [budgetId], references: [id])
+  owner  User   @relation(fields: [ownerId], references: [id])
 
   @@map("accounts")
 }

@@ -1,13 +1,21 @@
+import { Account } from '@/domain/entities/account'
 import { AccountsRepository } from '@/domain/repositories/account-repository'
 import { Injectable } from '@nestjs/common'
-import { Prisma, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
+import { PrismaAccountMapper } from '../mappers/prisma-accounts-mapper'
 
 @Injectable()
 export class PrismaAccountsRepository implements AccountsRepository {
   constructor(private readonly prisma: PrismaClient) {}
-  async create(data: Prisma.AccountCreateManyInput) {
+
+  async create(data: Account) {
     const account = await this.prisma.account.create({
-      data,
+      data: {
+        name: data.name,
+        budgetId: data.budgetId.toString(),
+        balance: data.balance,
+        ownerId: data.ownerId.toString(),
+      },
     })
 
     return account
@@ -24,6 +32,6 @@ export class PrismaAccountsRepository implements AccountsRepository {
       return null
     }
 
-    return account
+    return PrismaAccountMapper.toDomain(account)
   }
 }

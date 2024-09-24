@@ -7,7 +7,7 @@ export interface AccountProps {
   budgetId: UniqueEntityID
   name: string
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
   balance: number
 }
 
