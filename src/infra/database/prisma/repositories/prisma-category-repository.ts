@@ -1,16 +1,36 @@
+import { Category } from '@/domain/entities/category'
 import { CategoriesRepository } from '@/domain/repositories/category-repository'
 import { Injectable } from '@nestjs/common'
-import { Prisma, PrismaClient } from '@prisma/client'
+import { PrismaCategoryMapper } from '../mappers/prisma-category-mapper'
+import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaCategoryRepository implements CategoriesRepository {
-  constructor(private readonly prisma: PrismaClient) {}
-  async create(data: Prisma.CategoryUncheckedCreateInput) {
-    const category = await this.prisma.category.create({
+  constructor(private readonly prisma: PrismaService) {}
+  async delete(category: Category) {
+    const data = PrismaCategoryMapper.toPrisma(category)
+    await this.prisma.category.delete({
+      where: {
+        id: data.id,
+      },
+    })
+  }
+
+  async save(category: Category) {
+    const data = PrismaCategoryMapper.toPrisma(category)
+    await this.prisma.category.update({
+      where: {
+        id: data.id,
+      },
       data,
     })
+  }
 
-    return category
+  async create(category: Category) {
+    const data = PrismaCategoryMapper.toPrisma(category)
+    await this.prisma.category.create({
+      data,
+    })
   }
 
   async findById(id: string) {
@@ -20,6 +40,10 @@ export class PrismaCategoryRepository implements CategoriesRepository {
       },
     })
 
-    return category
+    if (!category) {
+      return null
+    }
+
+    return PrismaCategoryMapper.toDomain(category)
   }
 }

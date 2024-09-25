@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Category } from '@/domain/entities/category'
 import { Prisma, Category as PrismaCategory } from '@prisma/client'
 
-export class PrismaAccountMapper {
+export class PrismaCategoryMapper {
   static toDomain(raw: PrismaCategory): Category {
     return Category.create(
       {

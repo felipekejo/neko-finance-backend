@@ -1,15 +1,14 @@
-import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Transaction } from '../entities/transaction'
 
 export interface TransactionsRepository {
   create(transaction: Transaction): Promise<void>
   findById(id: string): Promise<Transaction | null>
-  findManyRecent(params: PaginationParams): Promise<Transaction[]>
-  findManyByMonthAndType(
-    month: string,
-    type: 'INCOMES' | 'EXPENSES',
-    accountId: string,
-  ): Promise<Transaction[]>
+  // findManyRecent(params: PaginationParams): Promise<Transaction[]>
+  // findManyByMonthAndType(
+  //   month: string,
+  //   type: 'INCOMES' | 'EXPENSES',
+  //   accountId: string,
+  // ): Promise<Transaction[]>
   // findByBudgetId(budgetId: string): Promise<Transaction[]>
   // findByAccountId(accountId: string): Promise<Transaction[]>
   // findByCategoryId(

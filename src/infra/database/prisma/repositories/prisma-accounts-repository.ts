@@ -1,12 +1,12 @@
 import { Account } from '@/domain/entities/account'
 import { AccountsRepository } from '@/domain/repositories/account-repository'
 import { Injectable } from '@nestjs/common'
-import { PrismaClient } from '@prisma/client'
 import { PrismaAccountMapper } from '../mappers/prisma-accounts-mapper'
+import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaAccountsRepository implements AccountsRepository {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(account: Account) {
     const data = PrismaAccountMapper.toPrisma(account)

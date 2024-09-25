@@ -1,3 +1,4 @@
+import { UsersRepository } from '@/domain/repositories/user-repository'
 import { Module } from '@nestjs/common'
 import { PrismaService } from './prisma/prisma.service'
 import { PrismaAccountsRepository } from './prisma/repositories/prisma-accounts-repository'
@@ -13,7 +14,10 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
     PrismaAccountsRepository,
     PrismaBudgetsRepository,
     PrismaCategoryRepository,
-    PrismaUsersRepository,
+    {
+      provide: UsersRepository,
+      useClass: PrismaUsersRepository,
+    },
     PrismaTransactionsRepository,
     PrismaSubcategoriesRepository,
   ],
@@ -22,7 +26,7 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
     PrismaAccountsRepository,
     PrismaBudgetsRepository,
     PrismaCategoryRepository,
-    PrismaUsersRepository,
+    UsersRepository,
     PrismaTransactionsRepository,
     PrismaSubcategoriesRepository,
   ],

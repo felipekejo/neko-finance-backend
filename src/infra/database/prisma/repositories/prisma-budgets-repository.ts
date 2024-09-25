@@ -1,12 +1,12 @@
 import { Budget } from '@/domain/entities/budget'
 import { BudgetsRepository } from '@/domain/repositories/budget-repository'
 import { Injectable } from '@nestjs/common'
-import { PrismaClient } from '@prisma/client'
 import { PrismaBudgetMapper } from '../mappers/prisma-budget-mapper'
+import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaBudgetsRepository implements BudgetsRepository {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findById(id: string) {
     const budget = await this.prisma.budget.findUnique({

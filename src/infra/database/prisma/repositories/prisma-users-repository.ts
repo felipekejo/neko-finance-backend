@@ -1,11 +1,13 @@
 import { UsersRepository } from '@/domain/repositories/user-repository'
 import { Injectable } from '@nestjs/common'
 
-import { Prisma, PrismaClient } from '@prisma/client'
+import { User } from '@/domain/entities/user'
+import { PrismaUsersMapper } from '../mappers/prisma-users-mapper'
+import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findById(id: string) {
     const user = await this.prisma.user.findUnique({
@@ -13,8 +15,11 @@ export class PrismaUsersRepository implements UsersRepository {
         id,
       },
     })
+    if (!user) {
+      return null
+    }
 
-    return user
+    return PrismaUsersMapper.toDomain(user)
   }
 
   async findByEmail(email: string) {
@@ -24,13 +29,17 @@ export class PrismaUsersRepository implements UsersRepository {
       },
     })
 
-    return user
+    if (!user) {
+      return null
+    }
+
+    return PrismaUsersMapper.toDomain(user)
   }
 
-  async create(data: Prisma.UserCreateInput) {
-    const user = await this.prisma.user.create({
+  async create(user: User) {
+    const data = PrismaUsersMapper.toPrisma(user)
+    await this.prisma.user.create({
       data,
     })
-    return user
   }
 }
