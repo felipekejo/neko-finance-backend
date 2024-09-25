@@ -8,17 +8,12 @@ import { PrismaAccountMapper } from '../mappers/prisma-accounts-mapper'
 export class PrismaAccountsRepository implements AccountsRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async create(data: Account) {
-    const account = await this.prisma.account.create({
-      data: {
-        name: data.name,
-        budgetId: data.budgetId.toString(),
-        balance: data.balance,
-        ownerId: data.ownerId.toString(),
-      },
-    })
+  async create(account: Account) {
+    const data = PrismaAccountMapper.toPrisma(account)
 
-    return account
+    await this.prisma.account.create({
+      data,
+    })
   }
 
   async findById(id: string) {
@@ -33,5 +28,25 @@ export class PrismaAccountsRepository implements AccountsRepository {
     }
 
     return PrismaAccountMapper.toDomain(account)
+  }
+
+  async delete(account: Account) {
+    const data = PrismaAccountMapper.toPrisma(account)
+    await this.prisma.account.delete({
+      where: {
+        id: data.id,
+      },
+    })
+  }
+
+  async save(account: Account) {
+    const data = PrismaAccountMapper.toPrisma(account)
+
+    await this.prisma.account.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    })
   }
 }

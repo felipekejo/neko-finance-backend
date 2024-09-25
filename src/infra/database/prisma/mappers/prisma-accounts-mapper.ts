@@ -1,6 +1,6 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Account } from '@/domain/entities/account'
-import { Account as PrismaAccount } from '@prisma/client'
+import { Prisma, Account as PrismaAccount } from '@prisma/client'
 
 export class PrismaAccountMapper {
   static toDomain(raw: PrismaAccount): Account {
@@ -15,5 +15,17 @@ export class PrismaAccountMapper {
       },
       new UniqueEntityID(raw.id),
     )
+  }
+
+  static toPrisma(account: Account): Prisma.AccountUncheckedCreateInput {
+    return {
+      id: account.id.toString(),
+      name: account.name,
+      ownerId: account.ownerId.toString(),
+      budgetId: account.budgetId.toString(),
+      balance: account.balance,
+      createdAt: account.createdAt,
+      updatedAt: account.updatedAt,
+    }
   }
 }
