@@ -11,6 +11,7 @@ export interface TransactionProps {
   createdAt: Date
   updatedAt?: Date | null
   type: TypeTransaction
+  date: Date
 }
 
 export class Transaction extends Entity<TransactionProps> {
@@ -63,6 +64,15 @@ export class Transaction extends Entity<TransactionProps> {
 
   set type(type: TypeTransaction) {
     this.props.type = type
+    this.touch()
+  }
+
+  get date() {
+    return this.props.date
+  }
+
+  set date(date: Date) {
+    this.props.date = date
     this.touch()
   }
 
