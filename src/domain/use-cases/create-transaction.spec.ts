@@ -26,6 +26,7 @@ describe('Create Transaction Use Case', () => {
       budgetId: 'budget-01',
       type: 'INCOMES',
       amount: 100,
+      date: new Date(),
     })
 
     expect(result.isRight()).toBe(true)
@@ -49,6 +50,7 @@ describe('Create Transaction Use Case', () => {
       budgetId: 'budget-01',
       type: 'INCOMES',
       amount: 100,
+      date: new Date(),
     })
 
     expect(inMemoryAccountsRepository.items[0].balance).toEqual(200)
@@ -69,6 +71,7 @@ describe('Create Transaction Use Case', () => {
       budgetId: 'budget-01',
       type: 'EXPENSES',
       amount: 100,
+      date: new Date(),
     })
 
     expect(inMemoryAccountsRepository.items[0].balance).toEqual(100)
