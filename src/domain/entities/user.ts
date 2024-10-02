@@ -2,8 +2,8 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-type UserRole = 'ADMIN' | 'CLIENT'
-interface UserProps {
+export type UserRole = 'ADMIN' | 'CLIENT'
+export interface UserProps {
   name: string
   email: string
   password: string
