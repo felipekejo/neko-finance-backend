@@ -1,5 +1,14 @@
 import { CreateUserUseCase } from '@/domain/use-cases/create-user'
-import { Body, Controller, HttpCode, Post, UsePipes } from '@nestjs/common'
+import { UserAlreadyExistError } from '@/domain/use-cases/errors/user-already-exist-error'
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  HttpCode,
+  Post,
+  UsePipes
+} from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
@@ -28,7 +37,16 @@ export class CreateUserController {
     })
 
     if (result.isLeft()) {
-      throw new Error()
+      if (result.isLeft()) {
+        const error = result.value
+
+        switch (error.constructor) {
+          case UserAlreadyExistError:
+            throw new ConflictException(error.message)
+          default:
+            throw new BadRequestException(error.message)
+        }
+      }
     }
   }
 }

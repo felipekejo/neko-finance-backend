@@ -1,5 +1,13 @@
 import { AuthenticateUserUseCase } from '@/domain/use-cases/authenticate'
-import { Body, Controller, Post, UsePipes } from '@nestjs/common'
+import { WrongCredentialsError } from '@/domain/use-cases/errors/wrong-credentials-error'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UnauthorizedException,
+  UsePipes,
+} from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
@@ -21,7 +29,14 @@ export class AuthenticateController {
     const result = await this.authenticate.execute({ email, password })
 
     if (result.isLeft()) {
-      throw new Error()
+      const error = result.value
+
+      switch (error.constructor) {
+        case WrongCredentialsError:
+          throw new UnauthorizedException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
 
     return {
