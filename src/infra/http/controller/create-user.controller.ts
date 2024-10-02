@@ -20,11 +20,15 @@ export class CreateUserController {
   async handle(@Body() body: CreateUserBodySchema) {
     const { name, email, password, role } = body
 
-    await this.createUser.execute({
+    const result = await this.createUser.execute({
       name,
       email,
       password,
       role,
     })
+
+    if (result.isLeft()) {
+      throw new Error()
+    }
   }
 }
