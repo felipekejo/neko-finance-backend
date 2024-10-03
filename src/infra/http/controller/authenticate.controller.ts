@@ -9,6 +9,8 @@ import {
   UsePipes,
 } from '@nestjs/common'
 import { z } from 'zod'
+
+import { Public } from '@/infra/auth/public'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
 const authenticateBodySchema = z.object({
@@ -19,6 +21,7 @@ const authenticateBodySchema = z.object({
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
 @Controller('/sessions')
+@Public()
 export class AuthenticateController {
   constructor(private authenticate: AuthenticateUserUseCase) {}
 

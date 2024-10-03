@@ -34,6 +34,7 @@ export class CreateUserUseCase {
     role,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     const userWithSameEmail = await this.usersRepository.findByEmail(email)
+    console.log(userWithSameEmail)
     if (userWithSameEmail) {
       return left(new UserAlreadyExistError(email))
     }

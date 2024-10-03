@@ -1,5 +1,6 @@
 import { CreateUserUseCase } from '@/domain/use-cases/create-user'
 import { UserAlreadyExistError } from '@/domain/use-cases/errors/user-already-exist-error'
+import { Public } from '@/infra/auth/public'
 import {
   BadRequestException,
   Body,
@@ -7,7 +8,7 @@ import {
   Controller,
   HttpCode,
   Post,
-  UsePipes
+  UsePipes,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
@@ -20,6 +21,7 @@ const createUserBodySchema = z.object({
 })
 type CreateUserBodySchema = z.infer<typeof createUserBodySchema>
 @Controller('/users')
+@Public()
 export class CreateUserController {
   constructor(private createUser: CreateUserUseCase) {}
 
