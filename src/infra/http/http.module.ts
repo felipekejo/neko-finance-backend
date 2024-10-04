@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 
 import { AuthenticateUserUseCase } from '@/domain/use-cases/authenticate'
 import { CreateAccountUseCase } from '@/domain/use-cases/create-account'
+import { CreateBudgetUseCase } from '@/domain/use-cases/create-budget'
 import { CreateUserUseCase } from '@/domain/use-cases/create-user'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
@@ -20,6 +21,11 @@ import { FetchBudgetController } from './controller/fetch-budget.controller'
     FetchBudgetController,
     CreateAccountController,
   ],
-  providers: [CreateUserUseCase, AuthenticateUserUseCase, CreateAccountUseCase],
+  providers: [
+    CreateUserUseCase,
+    AuthenticateUserUseCase,
+    CreateBudgetUseCase,
+    CreateAccountUseCase,
+  ],
 })
 export class HttpModule {}

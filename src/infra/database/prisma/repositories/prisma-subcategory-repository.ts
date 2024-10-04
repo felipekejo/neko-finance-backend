@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaSubcategoriesRepository implements SubcategoriesRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
   async delete(subcategory: Subcategory) {
     const data = PrismaSubcategoryMapper.toPrisma(subcategory)
 

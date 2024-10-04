@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaBudgetsRepository implements BudgetsRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   async findById(id: string) {
     const budget = await this.prisma.budget.findUnique({

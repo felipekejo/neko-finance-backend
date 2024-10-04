@@ -1,43 +1,40 @@
 import { AppModule } from '@/infra/app.module'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
-import { hash } from 'bcryptjs'
 import request from 'supertest'
+import { UserFactory } from 'test/factories/make-user'
 
 describe('Create Budget (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
+  let userFactory: UserFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [UserFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
     prisma = moduleRef.get(PrismaService)
+    userFactory = moduleRef.get(UserFactory)
     jwt = moduleRef.get(JwtService)
     await app.init()
   })
 
   test('[POST] /budgets', async () => {
-    const user = await prisma.user.create({
-      data: {
-        name: 'John Doe',
-        email: 'j@j.com',
-        password: await hash('123456', 8),
-        role: 'CLIENT',
-      },
-    })
-    const accessToken = jwt.sign({ sub: user.id })
+    const user = await userFactory.makePrismaUser()
+    const accessToken = jwt.sign({ sub: user.id.toString() })
     const response = await request(app.getHttpServer())
       .post('/budgets')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'My budget',
-        ownerId: user.id,
+        ownerId: user.id.toString(),
       })
 
     expect(response.statusCode).toEqual(201)

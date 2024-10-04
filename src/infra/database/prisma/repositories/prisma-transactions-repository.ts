@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaTransactionsRepository implements TransactionsRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   async create(transaction: Transaction) {
     const data = PrismaTransactionsMapper.toPrisma(transaction)
