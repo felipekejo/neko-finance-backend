@@ -1,8 +1,8 @@
 import { Subcategory } from '../entities/subcategory'
 
-export interface SubcategoriesRepository {
-  create(subcategory: Subcategory): Promise<void>
-  findById(id: string): Promise<Subcategory | null>
-  delete(subcategory: Subcategory): Promise<void>
-  save(subcategory: Subcategory): Promise<void>
+export abstract class SubcategoriesRepository {
+  abstract create(subcategory: Subcategory): Promise<void>
+  abstract findById(id: string): Promise<Subcategory | null>
+  abstract delete(subcategory: Subcategory): Promise<void>
+  abstract save(subcategory: Subcategory): Promise<void>
 }

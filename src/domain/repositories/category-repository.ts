@@ -1,8 +1,8 @@
 import { Category } from '../entities/category'
 
-export interface CategoriesRepository {
-  create(category: Category): Promise<void>
-  findById(id: string): Promise<Category | null>
-  delete(category: Category): Promise<void>
-  save(category: Category): Promise<void>
+export abstract class CategoriesRepository {
+  abstract create(category: Category): Promise<void>
+  abstract findById(id: string): Promise<Category | null>
+  abstract delete(category: Category): Promise<void>
+  abstract save(category: Category): Promise<void>
 }

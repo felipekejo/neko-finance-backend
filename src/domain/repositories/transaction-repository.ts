@@ -1,8 +1,8 @@
 import { Transaction } from '../entities/transaction'
 
-export interface TransactionsRepository {
-  create(transaction: Transaction): Promise<void>
-  findById(id: string): Promise<Transaction | null>
+export abstract class TransactionsRepository {
+  abstract create(transaction: Transaction): Promise<void>
+  abstract findById(id: string): Promise<Transaction | null>
   // findManyRecent(params: PaginationParams): Promise<Transaction[]>
   // findManyByMonthAndType(
   //   month: string,
@@ -36,7 +36,7 @@ export interface TransactionsRepository {
   //   type: 'EXPENSES' | 'INCOMES',
   // ): Promise<number>
 
-  save(transaction: Transaction): Promise<void>
+  abstract save(transaction: Transaction): Promise<void>
 
-  delete(transaction: Transaction): Promise<void>
+  abstract delete(transaction: Transaction): Promise<void>
 }

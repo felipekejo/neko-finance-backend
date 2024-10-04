@@ -1,3 +1,8 @@
+import { AccountsRepository } from '@/domain/repositories/account-repository'
+import { BudgetsRepository } from '@/domain/repositories/budget-repository'
+import { CategoriesRepository } from '@/domain/repositories/category-repository'
+import { SubcategoriesRepository } from '@/domain/repositories/subcategory-repository'
+import { TransactionsRepository } from '@/domain/repositories/transaction-repository'
 import { UsersRepository } from '@/domain/repositories/user-repository'
 import { Module } from '@nestjs/common'
 import { PrismaService } from './prisma/prisma.service'
@@ -11,22 +16,42 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
 @Module({
   providers: [
     PrismaService,
-    PrismaAccountsRepository,
-    PrismaBudgetsRepository,
-    PrismaCategoryRepository,
+    {
+      provide: AccountsRepository,
+      useClass: PrismaAccountsRepository,
+    },
+    {
+      provide: BudgetsRepository,
+      useClass: PrismaBudgetsRepository,
+    },
+    {
+      provide: CategoriesRepository,
+      useClass: PrismaCategoryRepository,
+    },
     {
       provide: UsersRepository,
       useClass: PrismaUsersRepository,
     },
-    PrismaTransactionsRepository,
-    PrismaSubcategoriesRepository,
+    {
+      provide: TransactionsRepository,
+      useClass: PrismaTransactionsRepository,
+    },
+    {
+      provide: SubcategoriesRepository,
+      useClass: PrismaSubcategoriesRepository,
+    },
   ],
   exports: [
     PrismaService,
     PrismaAccountsRepository,
     PrismaBudgetsRepository,
     PrismaCategoryRepository,
+    AccountsRepository,
     UsersRepository,
+    BudgetsRepository,
+    CategoriesRepository,
+    TransactionsRepository,
+    SubcategoriesRepository,
     PrismaTransactionsRepository,
     PrismaSubcategoriesRepository,
   ],

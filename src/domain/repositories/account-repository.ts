@@ -1,8 +1,8 @@
 import { Account } from '../entities/account'
 
-export interface AccountsRepository {
-  create(account: Account): Promise<void>
-  findById(id: string): Promise<Account | null>
-  delete(account: Account): Promise<void>
-  save(account: Account): Promise<void>
+export abstract class AccountsRepository {
+  abstract create(account: Account): Promise<void>
+  abstract findById(id: string): Promise<Account | null>
+  abstract delete(account: Account): Promise<void>
+  abstract save(account: Account): Promise<void>
 }
