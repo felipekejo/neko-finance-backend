@@ -39,3 +39,16 @@ Authorization: Bearer {{authToken}}
 GET {{baseUrl}}/budgets
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+###
+
+# @name create_account
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "New Account",
+  "budgetId":"8226d6c9-3287-4d61-9b6b-d8346734b7ad",
+  "balance":0
+}

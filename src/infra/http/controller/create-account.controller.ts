@@ -4,8 +4,7 @@ import {
   Body,
   Controller,
   HttpCode,
-  Post,
-  UsePipes,
+  Post
 } from '@nestjs/common'
 import { CurrentUser } from 'src/infra/auth/current-user-decorator'
 import { UserPayload } from 'src/infra/auth/jwt.strategy'
@@ -18,6 +17,7 @@ const createAccountBodySchema = z.object({
   budgetId: z.string(),
 })
 
+const bodyValidationPipe = new ZodValidationPipe(createAccountBodySchema)
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 
 @Controller('/accounts')
@@ -26,9 +26,8 @@ export class CreateAccountController {
 
   @Post()
   @HttpCode(201)
-  @UsePipes(new ZodValidationPipe(createAccountBodySchema))
   async handle(
-    @Body() body: CreateAccountBodySchema,
+    @Body(bodyValidationPipe) body: CreateAccountBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
     const { name } = body
