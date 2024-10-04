@@ -30,7 +30,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "name": "New Budget"
+  "name": "NewBudget"
 }
 
 ###

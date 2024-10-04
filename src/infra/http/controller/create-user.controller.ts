@@ -20,6 +20,7 @@ const createUserBodySchema = z.object({
   role: z.enum(['ADMIN', 'CLIENT']),
 })
 type CreateUserBodySchema = z.infer<typeof createUserBodySchema>
+
 @Controller('/users')
 @Public()
 export class CreateUserController {

@@ -1,5 +1,6 @@
 import { Either, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 import { Budget } from '../entities/budget'
 import { BudgetsRepository } from '../repositories/budget-repository'
 
@@ -14,6 +15,8 @@ type CreateBudgetUseCaseResponse = Either<
     budget: Budget
   }
 >
+
+@Injectable()
 export class CreateBudgetUseCase {
   constructor(private budgetsRepository: BudgetsRepository) {}
 

@@ -29,12 +29,12 @@ describe('Create Budget (E2E)', () => {
   test('[POST] /budgets', async () => {
     const user = await userFactory.makePrismaUser()
     const accessToken = jwt.sign({ sub: user.id.toString() })
+
     const response = await request(app.getHttpServer())
       .post('/budgets')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'My budget',
-        ownerId: user.id.toString(),
       })
 
     expect(response.statusCode).toEqual(201)

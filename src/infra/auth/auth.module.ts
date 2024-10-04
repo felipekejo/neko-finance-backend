@@ -27,8 +27,8 @@ import { JwtStrategy } from './jwt.strategy'
     }),
   ],
   providers: [
-    EnvService,
     JwtStrategy,
+    EnvService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

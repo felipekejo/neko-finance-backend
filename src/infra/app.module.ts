@@ -10,8 +10,8 @@ import { HttpModule } from './http/http.module'
       validate: (env) => envSchema.parse(env),
       isGlobal: true,
     }),
-    HttpModule,
     AuthModule,
+    HttpModule,
     EnvModule,
   ],
 })

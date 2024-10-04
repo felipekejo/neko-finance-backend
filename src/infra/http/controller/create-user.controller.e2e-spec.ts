@@ -23,6 +23,7 @@ describe('Create User (E2E)', () => {
       name: 'John Doe',
       email: 'j@j.com',
       password: '123456',
+      role: 'CLIENT',
     })
 
     expect(response.statusCode).toEqual(201)
