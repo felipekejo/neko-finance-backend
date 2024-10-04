@@ -47,11 +47,12 @@ describe('Create Account (E2E)', () => {
 
     expect(response.statusCode).toEqual(201)
 
-    const accountOnDB = await prisma.budget.findFirst({
+    const accountOnDB = await prisma.account.findFirst({
       where: {
         name: 'My Account',
       },
     })
+    console.log(accountOnDB)
 
     expect(accountOnDB).toBeTruthy()
   })
