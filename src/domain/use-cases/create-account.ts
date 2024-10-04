@@ -1,5 +1,6 @@
 import { Either, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 import { Account } from '../entities/account'
 import { AccountsRepository } from '../repositories/account-repository'
 
@@ -17,6 +18,7 @@ type CreateAccountUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class CreateAccountUseCase {
   constructor(private accountsRepository: AccountsRepository) {}
 

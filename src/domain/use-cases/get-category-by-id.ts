@@ -1,4 +1,5 @@
 import { Either, left, right } from '@/core/either'
+import { Injectable } from '@nestjs/common'
 import { Category } from '../entities/category'
 import { CategoriesRepository } from '../repositories/category-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
@@ -14,6 +15,7 @@ type GetCategoryByIdUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class GetCategoryByIdUseCase {
   constructor(private categoriesRepository: CategoriesRepository) {}
 

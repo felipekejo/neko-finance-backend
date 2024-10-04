@@ -13,6 +13,7 @@
 //   }
 // >
 
+// @Injectable()
 // export class ListRecentTransactionsUseCase {
 //   constructor(private transactionsRepository: TransactionsRepository) {}
 

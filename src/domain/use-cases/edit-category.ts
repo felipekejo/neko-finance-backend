@@ -1,4 +1,5 @@
 import { Either, left, right } from '@/core/either'
+import { Injectable } from '@nestjs/common'
 import { TypeTransaction } from '../entities/category'
 import { BudgetsRepository } from '../repositories/budget-repository'
 import { CategoriesRepository } from '../repositories/category-repository'
@@ -18,6 +19,7 @@ type EditCategoryUseCaseResponse = Either<
   {}
 >
 
+@Injectable()
 export class EditCategoryUseCase {
   constructor(
     private categoriesRepository: CategoriesRepository,

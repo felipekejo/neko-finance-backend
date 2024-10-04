@@ -1,4 +1,5 @@
 import { Either, left, right } from '@/core/either'
+import { Injectable } from '@nestjs/common'
 import { Budget } from '../entities/budget'
 import { BudgetsRepository } from '../repositories/budget-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
@@ -14,6 +15,7 @@ type GetBudgetByIdUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class GetBudgetByIdUseCase {
   constructor(private budgetsRepository: BudgetsRepository) {}
 

@@ -1,5 +1,6 @@
 import { Either, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 import { Category } from '../entities/category'
 import { CategoriesRepository } from '../repositories/category-repository'
 
@@ -17,6 +18,7 @@ type CreateCategoryUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class CreateCategoryUseCase {
   constructor(private categoriesRepository: CategoriesRepository) {}
 

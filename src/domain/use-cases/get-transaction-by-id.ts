@@ -1,4 +1,5 @@
 import { Either, left, right } from '@/core/either'
+import { Injectable } from '@nestjs/common'
 import { Transaction } from '../entities/transaction'
 import { TransactionsRepository } from '../repositories/transaction-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
@@ -14,6 +15,7 @@ type GetTransactionByIdUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class GetTransactionByIdUseCase {
   constructor(private transactionsRepository: TransactionsRepository) {}
 

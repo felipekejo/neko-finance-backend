@@ -1,4 +1,5 @@
 import { Either, left, right } from '@/core/either'
+import { Injectable } from '@nestjs/common'
 import { BudgetsRepository } from '../repositories/budget-repository'
 import { CategoriesRepository } from '../repositories/category-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
@@ -15,6 +16,7 @@ type DeleteCategoryUseCaseResponse = Either<
   {}
 >
 
+@Injectable()
 export class DeleteCategoryUseCase {
   constructor(
     private categoriesRepository: CategoriesRepository,

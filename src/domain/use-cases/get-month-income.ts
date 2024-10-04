@@ -16,6 +16,7 @@
 //   }
 // >
 
+// @Injectable()
 // export class GetCategoryByIdUseCase {
 //   constructor(private transactionRepository: TransactionsRepository) {}
 
