@@ -4,7 +4,7 @@ import {
   Body,
   Controller,
   HttpCode,
-  Post
+  Post,
 } from '@nestjs/common'
 import { CurrentUser } from 'src/infra/auth/current-user-decorator'
 import { UserPayload } from 'src/infra/auth/jwt.strategy'

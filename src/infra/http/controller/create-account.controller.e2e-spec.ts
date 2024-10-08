@@ -52,7 +52,6 @@ describe('Create Account (E2E)', () => {
         name: 'My Account',
       },
     })
-    console.log(accountOnDB)
 
     expect(accountOnDB).toBeTruthy()
   })
