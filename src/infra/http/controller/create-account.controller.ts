@@ -30,14 +30,14 @@ export class CreateAccountController {
     @Body(bodyValidationPipe) body: CreateAccountBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const { name } = body
+    const { name, balance, budgetId } = body
     const { sub: ownerId } = user
 
     const result = await this.createAccount.execute({
       name,
       ownerId,
-      budgetId: body.budgetId,
-      balance: body.balance,
+      budgetId,
+      balance,
     })
     if (result.isLeft()) {
       throw new BadRequestException()
