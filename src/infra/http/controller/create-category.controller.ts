@@ -30,7 +30,6 @@ export class CreateCategoryController {
   ) {
     const { name, budgetId, type } = body
     // const { sub: ownerId } = user
-    console.log(name, budgetId, type)
     const result = await this.createCategory.execute({
       name,
       type,
