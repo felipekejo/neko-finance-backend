@@ -45,7 +45,7 @@ export class CreateTransactionController {
       date,
       categoryId,
     })
-    console.log(result)
+
     if (result.isLeft()) {
       throw new BadRequestException()
     }

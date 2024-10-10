@@ -10,6 +10,7 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
 
   async create(transaction: Transaction) {
     const data = PrismaTransactionsMapper.toPrisma(transaction)
+
     await this.prisma.transaction.create({
       data,
     })

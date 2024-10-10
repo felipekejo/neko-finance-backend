@@ -28,7 +28,7 @@ export class PrismaTransactionsMapper {
       amount: transaction.amount,
       type: transaction.type,
       description: transaction.description,
-      categoryId: transaction.accountId.toString(),
+      categoryId: transaction.categoryId.toString(),
       accountId: transaction.accountId.toString(),
       budgetId: transaction.budgetId.toString(),
       createdAt: transaction.createdAt,

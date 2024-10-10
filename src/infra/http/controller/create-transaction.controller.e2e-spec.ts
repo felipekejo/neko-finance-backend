@@ -50,10 +50,6 @@ describe('Create Transaction (E2E)', () => {
       type: 'INCOMES',
     })
     const accessToken = jwt.sign({ sub: user.id.toString() })
-    console.log(user)
-    console.log(budget)
-    console.log(account)
-    console.log(category)
 
     const response = await request(app.getHttpServer())
       .post('/transactions')
@@ -67,7 +63,7 @@ describe('Create Transaction (E2E)', () => {
         date: '2021-10-10',
         categoryId: category.id.toString(),
       })
-    console.log(response.body.errors.details)
+
     expect(response.statusCode).toEqual(201)
 
     const transactionOnDB = await prisma.transaction.findFirst({
