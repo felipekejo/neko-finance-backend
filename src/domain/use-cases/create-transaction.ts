@@ -11,7 +11,8 @@ interface CreateTransactionUseCaseRequest {
   description: string
   amount: number
   type: TypeTransaction
-  date: Date
+  date: string
+  categoryId: string
 }
 
 type CreateTransactionUseCaseResponse = Either<
@@ -35,6 +36,7 @@ export class CreateTransactionUseCase {
     amount,
     type,
     date,
+    categoryId,
   }: CreateTransactionUseCaseRequest): Promise<CreateTransactionUseCaseResponse> {
     const transaction = Transaction.create({
       date,
@@ -43,6 +45,7 @@ export class CreateTransactionUseCase {
       budgetId: new UniqueEntityID(budgetId),
       amount,
       type,
+      categoryId: new UniqueEntityID(categoryId),
     })
     await this.transactionsRepository.create(transaction)
 

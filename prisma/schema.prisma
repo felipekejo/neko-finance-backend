@@ -78,7 +78,7 @@ model Transaction {
   amount      Float
   budgetId    String
   categoryId  String
-  date        DateTime
+  date        String
   accountId   String
 
   type TypeTransaction

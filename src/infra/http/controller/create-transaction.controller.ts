@@ -6,8 +6,6 @@ import {
   HttpCode,
   Post,
 } from '@nestjs/common'
-import { CurrentUser } from 'src/infra/auth/current-user-decorator'
-import { UserPayload } from 'src/infra/auth/jwt.strategy'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
@@ -16,8 +14,9 @@ const createTransactionBodySchema = z.object({
   amount: z.number(),
   budgetId: z.string(),
   type: z.enum(['INCOMES', 'EXPENSES']),
-  date: z.date(),
+  date: z.string().date(),
   accountId: z.string(),
+  categoryId: z.string(),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(createTransactionBodySchema)
@@ -31,10 +30,11 @@ export class CreateTransactionController {
   @HttpCode(201)
   async handle(
     @Body(bodyValidationPipe) body: CreateTransactionBodySchema,
-    @CurrentUser() user: UserPayload,
+    // @CurrentUser() user: UserPayload,
   ) {
-    const { description, accountId, amount, budgetId, date, type } = body
-    const { sub: ownerId } = user
+    const { description, accountId, amount, budgetId, date, type, categoryId } =
+      body
+    // const { sub: ownerId } = user
 
     const result = await this.createTransaction.execute({
       description,
@@ -43,7 +43,9 @@ export class CreateTransactionController {
       amount,
       accountId,
       date,
+      categoryId,
     })
+    console.log(result)
     if (result.isLeft()) {
       throw new BadRequestException()
     }

@@ -7,6 +7,7 @@ import { Test } from '@nestjs/testing'
 import request from 'supertest'
 import { AccountFactory } from 'test/factories/make-account'
 import { BudgetFactory } from 'test/factories/make-budget'
+import { CategoryFactory } from 'test/factories/make-category'
 import { UserFactory } from 'test/factories/make-user'
 
 describe('Create Transaction (E2E)', () => {
@@ -16,11 +17,12 @@ describe('Create Transaction (E2E)', () => {
   let userFactory: UserFactory
   let budgetFactory: BudgetFactory
   let accountFactory: AccountFactory
+  let categoryFactory: CategoryFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [UserFactory, BudgetFactory, AccountFactory],
+      providers: [UserFactory, BudgetFactory, AccountFactory, CategoryFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -28,6 +30,7 @@ describe('Create Transaction (E2E)', () => {
     userFactory = moduleRef.get(UserFactory)
     budgetFactory = moduleRef.get(BudgetFactory)
     accountFactory = moduleRef.get(AccountFactory)
+    categoryFactory = moduleRef.get(CategoryFactory)
     jwt = moduleRef.get(JwtService)
     await app.init()
   })
@@ -41,7 +44,16 @@ describe('Create Transaction (E2E)', () => {
       budgetId: budget.id,
       ownerId: user.id,
     })
+
+    const category = await categoryFactory.makePrismaCategory({
+      budgetId: budget.id,
+      type: 'INCOMES',
+    })
     const accessToken = jwt.sign({ sub: user.id.toString() })
+    console.log(user)
+    console.log(budget)
+    console.log(account)
+    console.log(category)
 
     const response = await request(app.getHttpServer())
       .post('/transactions')
@@ -49,12 +61,13 @@ describe('Create Transaction (E2E)', () => {
       .send({
         description: 'My Transaction',
         type: 'INCOMES',
-        budgetId: budget.id,
+        budgetId: budget.id.toString(),
         amount: 100,
-        accountId: account.id,
-        date: new Date(),
+        accountId: account.id.toString(),
+        date: '2021-10-10',
+        categoryId: category.id.toString(),
       })
-
+    console.log(response.body.errors.details)
     expect(response.statusCode).toEqual(201)
 
     const transactionOnDB = await prisma.transaction.findFirst({

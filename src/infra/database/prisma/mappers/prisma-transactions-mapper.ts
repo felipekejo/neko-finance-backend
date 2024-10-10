@@ -14,6 +14,7 @@ export class PrismaTransactionsMapper {
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
         date: raw.date,
+        categoryId: new UniqueEntityID(raw.categoryId),
       },
       new UniqueEntityID(raw.id),
     )

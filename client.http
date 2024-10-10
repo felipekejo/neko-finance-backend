@@ -61,10 +61,23 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-      "description":"First Transaction",
-      "type":"INCOMES",
-      "budgetId":"8226d6c9-3287-4d61-9b6b-d8346734b7ad",
-      "amount":100,
-      "accountId":"42e5e08a-c81b-43f1-a9fa-9b0af9886d94",
-      "date":"2024-10-04T05:28:36.450Z",
+  "description":"First Transaction",
+  "type":"INCOMES",
+  "budgetId":"8226d6c9-3287-4d61-9b6b-d8346734b7ad",
+  "amount":100,
+  "accountId":"42e5e08a-c81b-43f1-a9fa-9b0af9886d94",
+  "date":"2024-10-04T05:28:36.450Z",
+}
+
+###
+
+# @name create_category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name":"New Category",
+  "type":"INCOMES",
+  "budgetId":"8226d6c9-3287-4d61-9b6b-d8346734b7ad",
 }
