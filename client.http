@@ -62,11 +62,12 @@ Authorization: Bearer {{authToken}}
 
 {
   "description":"First Transaction",
-  "type":"INCOMES",
+  "type":"EXPENSES",
   "budgetId":"8226d6c9-3287-4d61-9b6b-d8346734b7ad",
   "amount":100,
   "accountId":"42e5e08a-c81b-43f1-a9fa-9b0af9886d94",
-  "date":"2024-10-04T05:28:36.450Z",
+  "date":"2024-10-04",
+  "categoryId":"165a82f9-ba7c-42d8-95fa-09d822df5dad"
 }
 
 ###
@@ -77,7 +78,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "name":"New Category",
-  "type":"INCOMES",
-  "budgetId":"8226d6c9-3287-4d61-9b6b-d8346734b7ad",
+  "name":"New Category EXPENSES",
+  "type":"EXPENSES",
+  "budgetId":"8226d6c9-3287-4d61-9b6b-d8346734b7ad"
 }

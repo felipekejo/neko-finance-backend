@@ -1,9 +1,10 @@
+import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Transaction } from '../entities/transaction'
 
 export abstract class TransactionsRepository {
   abstract create(transaction: Transaction): Promise<void>
   abstract findById(id: string): Promise<Transaction | null>
-  // findManyRecent(params: PaginationParams): Promise<Transaction[]>
+  abstract findManyRecent(params: PaginationParams): Promise<Transaction[]>
   // findManyByMonthAndType(
   //   month: string,
   //   type: 'INCOMES' | 'EXPENSES',

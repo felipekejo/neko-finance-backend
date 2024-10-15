@@ -32,7 +32,7 @@ export class CreateCategoryUseCase {
       budgetId: new UniqueEntityID(budgetId),
       type,
     })
-    console.log(category)
+
     await this.categoriesRepository.create(category)
 
     return right({ category })
