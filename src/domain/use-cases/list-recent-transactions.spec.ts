@@ -16,7 +16,7 @@ describe('List Recent Transactions Use Case', () => {
       makeTransaction({ createdAt: new Date('2021-01-01') }),
     )
     await inMemoryTransactionsRepository.create(
-      makeTransaction({ createdAt: new Date('2021-01-02') }),
+      makeTransaction({ createdAt: new Date('2021-01-25') }),
     )
     await inMemoryTransactionsRepository.create(
       makeTransaction({ createdAt: new Date('2021-01-03') }),
@@ -25,8 +25,8 @@ describe('List Recent Transactions Use Case', () => {
     const result = await sut.execute({ page: 1 })
 
     expect(result.value?.transactions).toEqual([
+      expect.objectContaining({ createdAt: new Date('2021-01-25') }),
       expect.objectContaining({ createdAt: new Date('2021-01-03') }),
-      expect.objectContaining({ createdAt: new Date('2021-01-02') }),
       expect.objectContaining({ createdAt: new Date('2021-01-01') }),
     ])
   })
