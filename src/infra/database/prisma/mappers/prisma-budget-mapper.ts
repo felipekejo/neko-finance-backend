@@ -7,7 +7,6 @@ export class PrismaBudgetMapper {
     return Budget.create(
       {
         name: raw.name,
-        ownerId: new UniqueEntityID(raw.ownerId),
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
@@ -19,7 +18,6 @@ export class PrismaBudgetMapper {
     return {
       id: budget.id.toString(),
       name: budget.name,
-      ownerId: budget.ownerId.toString(),
       createdAt: budget.createdAt,
       updatedAt: budget.updatedAt,
     }

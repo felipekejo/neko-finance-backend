@@ -1,14 +1,19 @@
 import { InMemoryBudgetsRepository } from 'test/repositories/in-memory-budgets-repository'
+import { InMemoryUserBudgetRepository } from 'test/repositories/in-memory-user-budget-repository'
 import { CreateBudgetUseCase } from './create-budget'
 
 let inMemoryBudgetsRepository: InMemoryBudgetsRepository
+let inMemoryUserBudgetRepository: InMemoryUserBudgetRepository
 let sut: CreateBudgetUseCase
 
 describe('Create Budget Use Case', () => {
   beforeEach(() => {
     inMemoryBudgetsRepository = new InMemoryBudgetsRepository()
 
-    sut = new CreateBudgetUseCase(inMemoryBudgetsRepository)
+    sut = new CreateBudgetUseCase(
+      inMemoryBudgetsRepository,
+      inMemoryUserBudgetRepository,
+    )
   })
 
   it('should be able to create a new budget', async () => {

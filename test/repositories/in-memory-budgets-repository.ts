@@ -13,16 +13,7 @@ export class InMemoryBudgetsRepository implements BudgetsRepository {
   }
 
   async create(data: Budget) {
-    // const budget = {
-    //   name: data.name,
-    //   ownerId: data.ownerId,
-    //   createdAt: new Date(),
-    //   updatedAt: null,
-    // }
-
     this.items.push(data)
-
-    // return { budget }
   }
 
   async delete(budget: Budget): Promise<void> {
