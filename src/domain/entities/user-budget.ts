@@ -15,22 +15,8 @@ export class UserBudget extends Entity<UserBudgetProps> {
     return this.props.budgetId
   }
 
-  set userId(userId: UniqueEntityID) {
-    this.props.userId = userId
-  }
-
-  set budgetId(budgetId: UniqueEntityID) {
-    this.props.budgetId = budgetId
-  }
-
   static create(props: UserBudgetProps, id?: UniqueEntityID) {
-    console.log(props)
-    const userBudget = new UserBudget(
-      {
-        ...props,
-      },
-      id,
-    )
+    const userBudget = new UserBudget(props, id)
     // console.log(userBudget)
     return userBudget
   }

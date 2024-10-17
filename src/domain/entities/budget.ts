@@ -1,4 +1,4 @@
-import { Entity } from '@/core/entities/entity'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
@@ -8,7 +8,7 @@ export interface BudgetProps {
   updatedAt?: Date | null
 }
 
-export class Budget extends Entity<BudgetProps> {
+export class Budget extends AggregateRoot<BudgetProps> {
   get name() {
     return this.props.name
   }

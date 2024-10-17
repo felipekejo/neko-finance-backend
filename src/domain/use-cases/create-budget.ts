@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common'
 import { Budget } from '../entities/budget'
 import { UserBudget } from '../entities/user-budget'
 import { BudgetsRepository } from '../repositories/budget-repository'
-import { UserBudgetRepository } from '../repositories/user-budget-repository'
 
 interface CreateBudgetUseCaseRequest {
   name: string
@@ -20,10 +19,7 @@ type CreateBudgetUseCaseResponse = Either<
 
 @Injectable()
 export class CreateBudgetUseCase {
-  constructor(
-    private budgetsRepository: BudgetsRepository,
-    private userBudgetRepository: UserBudgetRepository,
-  ) {}
+  constructor(private budgetsRepository: BudgetsRepository) {}
 
   async execute({
     name,
@@ -32,13 +28,13 @@ export class CreateBudgetUseCase {
     const budget = Budget.create({
       name,
     })
-    const userBudget = UserBudget.create({
+    UserBudget.create({
       userId: new UniqueEntityID(ownerId),
       budgetId: budget.id,
     })
 
     await this.budgetsRepository.create(budget)
-    await this.userBudgetRepository.create(userBudget)
+
     return right({ budget })
   }
 }
