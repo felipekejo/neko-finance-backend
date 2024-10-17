@@ -2,22 +2,18 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeBudget } from 'test/factories/make-budget'
 import { makeUserBudget } from 'test/factories/make-user-budget'
 import { InMemoryBudgetsRepository } from 'test/repositories/in-memory-budgets-repository'
-import { InMemoryUserBudgetRepository } from 'test/repositories/in-memory-user-budget-repository'
 import { DeleteBudgetUseCase } from './delete-budget'
 import { UnauthorizedError } from './errors/unauthorized-error'
 
 let inMemoryBudgetsRepository: InMemoryBudgetsRepository
-let inMemoryUserBudgetRepository: InMemoryUserBudgetRepository
+
 let sut: DeleteBudgetUseCase
 
 describe('Delete Budget Use Case', () => {
   beforeEach(() => {
     inMemoryBudgetsRepository = new InMemoryBudgetsRepository()
 
-    sut = new DeleteBudgetUseCase(
-      inMemoryBudgetsRepository,
-      inMemoryUserBudgetRepository,
-    )
+    sut = new DeleteBudgetUseCase(inMemoryBudgetsRepository)
   })
 
   it('should be able to delete a budget', async () => {

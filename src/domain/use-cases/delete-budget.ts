@@ -1,7 +1,6 @@
 import { Either, left, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
 import { BudgetsRepository } from '../repositories/budget-repository'
-import { UserBudgetRepository } from '../repositories/user-budget-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { UnauthorizedError } from './errors/unauthorized-error'
 
@@ -17,10 +16,7 @@ type DeleteBudgetUseCaseResponse = Either<
 
 @Injectable()
 export class DeleteBudgetUseCase {
-  constructor(
-    private budgetsRepository: BudgetsRepository,
-    private userBudgetRepository: UserBudgetRepository,
-  ) {}
+  constructor(private budgetsRepository: BudgetsRepository) {}
 
   async execute({
     budgetId,
