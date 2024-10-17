@@ -2,12 +2,13 @@ import { Either, left, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
 import { BudgetsRepository } from '../repositories/budget-repository'
 import { CategoriesRepository } from '../repositories/category-repository'
+import { UserBudgetRepository } from '../repositories/user-budget-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { UnauthorizedError } from './errors/unauthorized-error'
 
 interface DeleteCategoryUseCaseRequest {
   categoryId: string
-  ownerId: string
+  userId: string
   budgetId: string
 }
 
@@ -21,11 +22,12 @@ export class DeleteCategoryUseCase {
   constructor(
     private categoriesRepository: CategoriesRepository,
     private budgetsRepository: BudgetsRepository,
+    private userBudgetRepository: UserBudgetRepository,
   ) {}
 
   async execute({
     categoryId,
-    ownerId,
+    userId,
     budgetId,
   }: DeleteCategoryUseCaseRequest): Promise<DeleteCategoryUseCaseResponse> {
     const category = await this.categoriesRepository.findById(categoryId)
@@ -39,7 +41,12 @@ export class DeleteCategoryUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    if (budget.ownerId.toString() !== ownerId) {
+    const userBudget = await this.userBudgetRepository.findByUserIdAndBudgetId(
+      userId,
+      budgetId,
+    )
+
+    if (!userBudget) {
       return left(new UnauthorizedError())
     }
 
