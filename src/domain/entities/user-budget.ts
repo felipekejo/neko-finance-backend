@@ -17,7 +17,6 @@ export class UserBudget extends Entity<UserBudgetProps> {
 
   static create(props: UserBudgetProps, id?: UniqueEntityID) {
     const userBudget = new UserBudget(props, id)
-    // console.log(userBudget)
     return userBudget
   }
 }
