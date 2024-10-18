@@ -36,7 +36,7 @@ describe('Fetch Budget (E2E)', () => {
     await prisma.budget.create({
       data: {
         name: 'My budget',
-        ownerId: user.id,
+        userId: user.id,
       },
     })
 

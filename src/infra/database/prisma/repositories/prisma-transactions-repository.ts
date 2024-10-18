@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Transaction } from '@/domain/entities/transaction'
 import { TransactionsRepository } from '@/domain/repositories/transaction-repository'
 import { Injectable } from '@nestjs/common'
@@ -7,6 +8,17 @@ import { PrismaService } from '../prisma.service'
 @Injectable()
 export class PrismaTransactionsRepository implements TransactionsRepository {
   constructor(private prisma: PrismaService) {}
+  async findManyRecent({ page }: PaginationParams): Promise<Transaction[]> {
+    const transactions = await this.prisma.transaction.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 10,
+      skip: (page - 1) * 10,
+    })
+
+    return transactions.map(PrismaTransactionsMapper.toDomain)
+  }
 
   async create(transaction: Transaction) {
     const data = PrismaTransactionsMapper.toPrisma(transaction)

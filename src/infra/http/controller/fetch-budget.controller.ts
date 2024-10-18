@@ -11,7 +11,7 @@ export class FetchBudgetController {
   async handle(@CurrentUser() user: UserPayload) {
     const budgets = await this.prisma.budget.findFirst({
       where: {
-        ownerId: user.sub,
+        userId: user.sub,
       },
     })
     return { budgets }

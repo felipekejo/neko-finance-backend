@@ -3,7 +3,6 @@ import { BudgetsRepository } from '@/domain/repositories/budget-repository'
 import { CategoriesRepository } from '@/domain/repositories/category-repository'
 import { SubcategoriesRepository } from '@/domain/repositories/subcategory-repository'
 import { TransactionsRepository } from '@/domain/repositories/transaction-repository'
-import { UserBudgetRepository } from '@/domain/repositories/user-budget-repository'
 import { UsersRepository } from '@/domain/repositories/user-repository'
 import { Module } from '@nestjs/common'
 import { PrismaService } from './prisma/prisma.service'
@@ -50,7 +49,6 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
     CategoriesRepository,
     TransactionsRepository,
     SubcategoriesRepository,
-    UserBudgetRepository,
   ],
 })
 export class DatabaseModule {}
