@@ -23,11 +23,11 @@ export class CreateBudgetController {
     @CurrentUser() user: UserPayload,
   ) {
     const { name } = body
-    const { sub: ownerId } = user
+    const { sub: userId } = user
 
     await this.createBudget.execute({
       name,
-      ownerId,
+      userId,
     })
   }
 }

@@ -7,7 +7,7 @@ import { BudgetsRepository } from '../repositories/budget-repository'
 
 interface CreateBudgetUseCaseRequest {
   name: string
-  ownerId: string
+  userId: string
 }
 
 type CreateBudgetUseCaseResponse = Either<
@@ -23,13 +23,13 @@ export class CreateBudgetUseCase {
 
   async execute({
     name,
-    ownerId,
+    userId,
   }: CreateBudgetUseCaseRequest): Promise<CreateBudgetUseCaseResponse> {
     const budget = Budget.create({
       name,
     })
     UserBudget.create({
-      userId: new UniqueEntityID(ownerId),
+      userId: new UniqueEntityID(userId),
       budgetId: budget.id,
     })
 

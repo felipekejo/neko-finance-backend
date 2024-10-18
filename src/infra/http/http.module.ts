@@ -6,6 +6,7 @@ import { CreateBudgetUseCase } from '@/domain/use-cases/create-budget'
 import { CreateCategoryUseCase } from '@/domain/use-cases/create-category'
 import { CreateTransactionUseCase } from '@/domain/use-cases/create-transaction'
 import { CreateUserUseCase } from '@/domain/use-cases/create-user'
+import { GetBudgetByIdUseCase } from '@/domain/use-cases/get-budget-by-id'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
 import { AuthenticateController } from './controller/authenticate.controller'
@@ -34,6 +35,7 @@ import { FetchBudgetController } from './controller/fetch-budget.controller'
     CreateAccountUseCase,
     CreateTransactionUseCase,
     CreateCategoryUseCase,
+    GetBudgetByIdUseCase,
   ],
 })
 export class HttpModule {}

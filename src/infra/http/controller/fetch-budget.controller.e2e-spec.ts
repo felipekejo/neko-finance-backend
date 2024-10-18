@@ -44,12 +44,11 @@ describe('Fetch Budget (E2E)', () => {
       .get('/budgets')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        name: 'My budget',
-        ownerId: user.id,
+        userId: user.id,
       })
 
     expect(response.statusCode).toEqual(200)
-
+    console.log(response.body.budgets)
     expect(response.body).toEqual({
       budgets: expect.objectContaining({
         name: 'My budget',
