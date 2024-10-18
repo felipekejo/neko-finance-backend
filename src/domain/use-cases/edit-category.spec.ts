@@ -1,22 +1,27 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeBudget } from 'test/factories/make-budget'
 import { makeCategory } from 'test/factories/make-category'
+import { makeUserBudget } from 'test/factories/make-user-budget'
 import { InMemoryBudgetsRepository } from 'test/repositories/in-memory-budgets-repository'
 import { InMemoryCategoriesRepository } from 'test/repositories/in-memory-category-repository'
+import { InMemoryUserBudgetRepository } from 'test/repositories/in-memory-user-budget-repository'
 import { EditCategoryUseCase } from './edit-category'
 import { UnauthorizedError } from './errors/unauthorized-error'
 
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository
 let inMemoryBudgetsRepository: InMemoryBudgetsRepository
+let inMemoryUserBudgetRepository: InMemoryUserBudgetRepository
 let sut: EditCategoryUseCase
 
 describe('Edit Category Use Case', () => {
   beforeEach(() => {
     inMemoryCategoriesRepository = new InMemoryCategoriesRepository()
     inMemoryBudgetsRepository = new InMemoryBudgetsRepository()
+    inMemoryUserBudgetRepository = new InMemoryUserBudgetRepository()
     sut = new EditCategoryUseCase(
       inMemoryCategoriesRepository,
       inMemoryBudgetsRepository,
+      inMemoryUserBudgetRepository,
     )
   })
 
@@ -30,19 +35,27 @@ describe('Edit Category Use Case', () => {
     )
     const newBudget = makeBudget(
       {
-        ownerId: new UniqueEntityID('user-01'),
+        name: 'Budget 01',
       },
       new UniqueEntityID('budget-01'),
+    )
+    const userBudget = makeUserBudget(
+      {
+        userId: new UniqueEntityID('user-01'),
+        budgetId: new UniqueEntityID('budget-01'),
+      },
+      new UniqueEntityID('user-budget-01'),
     )
 
     await inMemoryCategoriesRepository.create(newCategory)
     await inMemoryBudgetsRepository.create(newBudget)
+    inMemoryUserBudgetRepository.items.push(userBudget)
     await sut.execute({
       categoryId: 'category-01',
       type: 'INCOMES',
       name: 'new category',
       budgetId: 'budget-01',
-      ownerId: 'user-01',
+      userId: 'user-01',
     })
 
     expect(inMemoryCategoriesRepository.items[0]).toMatchObject({
@@ -61,20 +74,26 @@ describe('Edit Category Use Case', () => {
     )
     const newBudget = makeBudget(
       {
-        ownerId: new UniqueEntityID('user-01'),
+        name: 'Budget 01',
       },
       new UniqueEntityID('budget-01'),
     )
-
+    const userBudget = makeUserBudget(
+      {
+        userId: new UniqueEntityID('user-01'),
+        budgetId: new UniqueEntityID('budget-01'),
+      },
+      new UniqueEntityID('user-budget-01'),
+    )
     await inMemoryCategoriesRepository.create(newCategory)
     await inMemoryBudgetsRepository.create(newBudget)
-
+    inMemoryUserBudgetRepository.items.push(userBudget)
     const result = await sut.execute({
       categoryId: 'category-01',
       type: 'INCOMES',
       name: 'new category',
       budgetId: 'budget-01',
-      ownerId: 'user-02',
+      userId: 'user-02',
     })
 
     expect(result.isLeft()).toBe(true)

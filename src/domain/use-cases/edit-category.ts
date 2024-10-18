@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { TypeTransaction } from '../entities/category'
 import { BudgetsRepository } from '../repositories/budget-repository'
 import { CategoriesRepository } from '../repositories/category-repository'
+import { UserBudgetRepository } from '../repositories/user-budget-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { UnauthorizedError } from './errors/unauthorized-error'
 
@@ -11,7 +12,7 @@ interface EditCategoryUseCaseRequest {
   budgetId: string
   name: string
   type: TypeTransaction
-  ownerId: string
+  userId: string
 }
 
 type EditCategoryUseCaseResponse = Either<
@@ -24,6 +25,7 @@ export class EditCategoryUseCase {
   constructor(
     private categoriesRepository: CategoriesRepository,
     private budgetsRepository: BudgetsRepository,
+    private userBudgetRepository: UserBudgetRepository,
   ) {}
 
   async execute({
@@ -31,7 +33,7 @@ export class EditCategoryUseCase {
     budgetId,
     name,
     type,
-    ownerId,
+    userId,
   }: EditCategoryUseCaseRequest): Promise<EditCategoryUseCaseResponse> {
     const category = await this.categoriesRepository.findById(categoryId)
     const budget = await this.budgetsRepository.findById(budgetId)
@@ -41,8 +43,11 @@ export class EditCategoryUseCase {
     if (!budget) {
       return left(new ResourceNotFoundError())
     }
-
-    if (budget.ownerId.toString() !== ownerId) {
+    const userBudget = await this.userBudgetRepository.findByUserIdAndBudgetId(
+      userId,
+      budgetId,
+    )
+    if (!userBudget) {
       return left(new UnauthorizedError())
     }
 
