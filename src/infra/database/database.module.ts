@@ -12,6 +12,8 @@ import { PrismaCategoryRepository } from './prisma/repositories/prisma-category-
 import { PrismaSubcategoriesRepository } from './prisma/repositories/prisma-subcategory-repository'
 import { PrismaTransactionsRepository } from './prisma/repositories/prisma-transactions-repository'
 import { PrismaUsersRepository } from './prisma/repositories/prisma-users-repository'
+import { UserBudgetRepository } from '@/domain/repositories/user-budget-repository'
+import { PrismaUserBudgetRepository } from './prisma/repositories/prisma-user-budget-repository'
 
 @Module({
   providers: [
@@ -40,6 +42,10 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
       provide: SubcategoriesRepository,
       useClass: PrismaSubcategoriesRepository,
     },
+    {
+      provide: UserBudgetRepository,
+      useClass: PrismaUserBudgetRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -49,6 +55,7 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
     CategoriesRepository,
     TransactionsRepository,
     SubcategoriesRepository,
+    UserBudgetRepository
   ],
 })
 export class DatabaseModule {}
