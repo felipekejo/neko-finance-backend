@@ -33,24 +33,20 @@ describe('Fetch Budget (E2E)', () => {
     })
     const accessToken = jwt.sign({ sub: user.id })
 
-    await prisma.budget.create({
+    const budget = await prisma.budget.create({
       data: {
         name: 'My budget',
-        userId: user.id,
       },
     })
 
     const response = await request(app.getHttpServer())
-      .get('/budgets')
+      .get(`/budgets/${budget.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        userId: user.id,
-      })
 
     expect(response.statusCode).toEqual(200)
-    console.log(response.body.budgets)
+
     expect(response.body).toEqual({
-      budgets: expect.objectContaining({
+      budget: expect.objectContaining({
         name: 'My budget',
       }),
     })

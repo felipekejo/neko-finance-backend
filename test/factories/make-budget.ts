@@ -11,7 +11,6 @@ export function makeBudget(
   const budget = Budget.create(
     {
       name: faker.lorem.sentence(),
-      ownerId: new UniqueEntityID(),
       ...override,
     },
     id,

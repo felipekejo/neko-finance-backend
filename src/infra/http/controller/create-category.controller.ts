@@ -6,6 +6,7 @@ import {
   HttpCode,
   Post,
 } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
@@ -18,6 +19,7 @@ const createCategoryBodySchema = z.object({
 const bodyValidationPipe = new ZodValidationPipe(createCategoryBodySchema)
 type CreateCategoryBodySchema = z.infer<typeof createCategoryBodySchema>
 
+@ApiTags('Categories')
 @Controller('/categories')
 export class CreateCategoryController {
   constructor(private createCategory: CreateCategoryUseCase) {}

@@ -12,6 +12,7 @@ import {
 import { z } from 'zod'
 
 import { Public } from '@/infra/auth/public'
+import { ApiTags } from '@nestjs/swagger'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
 const authenticateBodySchema = z.object({
@@ -21,6 +22,7 @@ const authenticateBodySchema = z.object({
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
+@ApiTags('Authentication')
 @Controller('/sessions')
 @Public()
 export class AuthenticateController {

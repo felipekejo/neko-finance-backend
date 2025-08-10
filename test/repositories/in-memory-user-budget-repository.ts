@@ -15,4 +15,20 @@ export class InMemoryUserBudgetRepository implements UserBudgetRepository {
 
     return budget
   }
+
+  async create(userBudget: UserBudget) {
+    this.items.push(userBudget)
+  }
+
+  async delete(userId: string, budgetId: string) {
+    const index = this.items.findIndex(
+      (item) =>
+        item.budgetId.toString() === budgetId &&
+        item.userId.toString() === userId,
+    )
+
+    if (index >= 0) {
+      this.items.splice(index, 1)
+    }
+  }
 }

@@ -10,8 +10,10 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common'
+import { ApiBody, ApiTags } from '@nestjs/swagger'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+import { CreateUserSwaggerDto } from '../swagger-dtos/create-user.swagger.dto'
 
 const createUserBodySchema = z.object({
   name: z.string(),
@@ -21,11 +23,13 @@ const createUserBodySchema = z.object({
 })
 type CreateUserBodySchema = z.infer<typeof createUserBodySchema>
 
+@ApiTags('Users')
 @Controller('/users')
 @Public()
 export class CreateUserController {
   constructor(private createUser: CreateUserUseCase) {}
 
+  @ApiBody({ type: CreateUserSwaggerDto })
   @Post()
   @HttpCode(201)
   @UsePipes(new ZodValidationPipe(createUserBodySchema))
@@ -40,15 +44,13 @@ export class CreateUserController {
     })
 
     if (result.isLeft()) {
-      if (result.isLeft()) {
-        const error = result.value
+      const error = result.value
 
-        switch (error.constructor) {
-          case UserAlreadyExistError:
-            throw new ConflictException(error.message)
-          default:
-            throw new BadRequestException(error.message)
-        }
+      switch (error.constructor) {
+        case UserAlreadyExistError:
+          throw new ConflictException(error.message)
+        default:
+          throw new BadRequestException(error.message)
       }
     }
   }

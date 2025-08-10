@@ -4,12 +4,10 @@ import { Prisma, UserBudget as PrismaUserBudget } from '@prisma/client'
 
 export class PrismaUserBudgetMapper {
   static toDomain(raw: PrismaUserBudget): UserBudget {
-    return UserBudget.create(
-      {
-        budgetId: new UniqueEntityID(raw.budgetId),
-        userId: new UniqueEntityID(raw.userId),
-      },
-    )
+    return UserBudget.create({
+      budgetId: new UniqueEntityID(raw.budgetId),
+      userId: new UniqueEntityID(raw.userId),
+    })
   }
 
   static toPrisma(user: UserBudget): Prisma.UserBudgetUncheckedCreateInput {

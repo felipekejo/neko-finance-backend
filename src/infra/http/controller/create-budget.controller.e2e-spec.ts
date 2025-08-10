@@ -45,6 +45,14 @@ describe('Create Budget (E2E)', () => {
       },
     })
 
+    const userBudgetOnDB = await prisma.userBudget.findFirst({
+      where: {
+        userId: user.id.toString(),
+        budgetId: budgetOnDB?.id,
+      },
+    })
+
     expect(budgetOnDB).toBeTruthy()
+    expect(userBudgetOnDB).toBeTruthy()
   })
 })

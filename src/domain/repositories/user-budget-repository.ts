@@ -5,4 +5,7 @@ export abstract class UserBudgetRepository {
     userId: string,
     budgetId: string,
   ): Promise<UserBudget | null>
+
+  abstract create(userBudget: UserBudget): Promise<void>
+  abstract delete(userId: string, budgetId: string): Promise<void>
 }

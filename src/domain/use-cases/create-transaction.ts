@@ -11,7 +11,7 @@ interface CreateTransactionUseCaseRequest {
   description: string
   amount: number
   type: TypeTransaction
-  date: string
+  date: Date
   categoryId: string
 }
 

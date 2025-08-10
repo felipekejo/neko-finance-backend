@@ -55,7 +55,7 @@ import { PrismaUserBudgetRepository } from './prisma/repositories/prisma-user-bu
     CategoriesRepository,
     TransactionsRepository,
     SubcategoriesRepository,
-    UserBudgetRepository
+    UserBudgetRepository,
   ],
 })
 export class DatabaseModule {}

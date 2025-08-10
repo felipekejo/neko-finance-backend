@@ -6,6 +6,7 @@ import {
   HttpCode,
   Post,
 } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { CurrentUser } from 'src/infra/auth/current-user-decorator'
 import { UserPayload } from 'src/infra/auth/jwt.strategy'
 import { z } from 'zod'
@@ -20,6 +21,7 @@ const createAccountBodySchema = z.object({
 const bodyValidationPipe = new ZodValidationPipe(createAccountBodySchema)
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 
+@ApiTags('Accounts')
 @Controller('/accounts')
 export class CreateAccountController {
   constructor(private createAccount: CreateAccountUseCase) {}

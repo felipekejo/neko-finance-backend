@@ -15,7 +15,6 @@ describe('Create Budget Use Case', () => {
   it('should be able to create a new budget', async () => {
     const result = await sut.execute({
       name: 'New Budget',
-      ownerId: 'user-01',
     })
 
     expect(result.isRight()).toBe(true)

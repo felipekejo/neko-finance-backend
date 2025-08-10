@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 
+import { AssignBudgetUseCase } from '@/domain/use-cases/assign-budget'
 import { AuthenticateUserUseCase } from '@/domain/use-cases/authenticate'
 import { CreateAccountUseCase } from '@/domain/use-cases/create-account'
 import { CreateBudgetUseCase } from '@/domain/use-cases/create-budget'
@@ -36,6 +37,7 @@ import { FetchBudgetController } from './controller/fetch-budget.controller'
     CreateTransactionUseCase,
     CreateCategoryUseCase,
     GetBudgetByIdUseCase,
+    AssignBudgetUseCase,
   ],
 })
 export class HttpModule {}

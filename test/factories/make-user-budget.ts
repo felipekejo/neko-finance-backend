@@ -1,5 +1,8 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { UserBudget } from '@/domain/entities/user-budget'
+import { UserBudget, type UserBudgetProps } from '@/domain/entities/user-budget'
+import { PrismaUserBudgetMapper } from '@/infra/database/prisma/mappers/prisma-user-budget-mapper'
+import type { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { Injectable } from '@nestjs/common'
 
 export function makeUserBudget(
   override: Partial<UserBudget> = {},
@@ -18,18 +21,18 @@ export function makeUserBudget(
   return userBudget
 }
 
-// @Injectable()
-// export class UserBudgetFactory {
-//   constructor(private prisma: PrismaService) {}
+@Injectable()
+export class UserBudgetFactory {
+  constructor(private prisma: PrismaService) {}
 
-//   async makePrismaUserBudget(
-//     data: Partial<UserBudgetProps> = {},
-//   ): Promise<UserBudget> {
-//     const userBudget = makeUserBudget(data)
-//     await this.prisma.userBudget.create({
-//       data: PrismaUserBudgetMapper.toPrisma(userBudget),
-//     })
+  async makePrismaUserBudget(
+    data: Partial<UserBudgetProps> = {},
+  ): Promise<UserBudget> {
+    const userBudget = makeUserBudget(data)
+    await this.prisma.userBudget.create({
+      data: PrismaUserBudgetMapper.toPrisma(userBudget),
+    })
 
-//     return userBudget
-//   }
-// }
+    return userBudget
+  }
+}

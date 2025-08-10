@@ -11,7 +11,7 @@ export interface TransactionProps {
   createdAt: Date
   updatedAt?: Date | null
   type: TypeTransaction
-  date: string
+  date: Date
   categoryId: UniqueEntityID
 }
 
@@ -81,7 +81,7 @@ export class Transaction extends Entity<TransactionProps> {
     return this.props.date
   }
 
-  set date(date: string) {
+  set date(date: Date) {
     this.props.date = date
     this.touch()
   }

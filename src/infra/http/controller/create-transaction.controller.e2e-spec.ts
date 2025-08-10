@@ -38,7 +38,7 @@ describe('Create Transaction (E2E)', () => {
   test('[POST] /transactions', async () => {
     const user = await userFactory.makePrismaUser()
     const budget = await budgetFactory.makePrismaBudget({
-      ownerId: user.id,
+      name: 'My Budget',
     })
     const account = await accountFactory.makePrismaAccount({
       budgetId: budget.id,
@@ -60,10 +60,9 @@ describe('Create Transaction (E2E)', () => {
         budgetId: budget.id.toString(),
         amount: 100,
         accountId: account.id.toString(),
-        date: '2021-10-10',
+        date: '2023-10-01',
         categoryId: category.id.toString(),
       })
-
     expect(response.statusCode).toEqual(201)
 
     const transactionOnDB = await prisma.transaction.findFirst({

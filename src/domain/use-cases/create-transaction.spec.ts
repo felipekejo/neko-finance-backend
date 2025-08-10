@@ -27,6 +27,7 @@ describe('Create Transaction Use Case', () => {
       type: 'INCOMES',
       amount: 100,
       date: new Date(),
+      categoryId: 'category-01',
     })
 
     expect(result.isRight()).toBe(true)
@@ -51,6 +52,7 @@ describe('Create Transaction Use Case', () => {
       type: 'INCOMES',
       amount: 100,
       date: new Date(),
+      categoryId: 'category-01',
     })
 
     expect(inMemoryAccountsRepository.items[0].balance).toEqual(200)
@@ -72,6 +74,7 @@ describe('Create Transaction Use Case', () => {
       type: 'EXPENSES',
       amount: 100,
       date: new Date(),
+      categoryId: 'category-01',
     })
 
     expect(inMemoryAccountsRepository.items[0].balance).toEqual(100)
