@@ -26,10 +26,17 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
     this.items[itemIndex] = category
   }
 
-  async findMany(filters: { type?: 'EXPENSES' | 'INCOMES' }): Promise<Category[]> {
+  async findMany(filters: { type?: 'EXPENSES' | 'INCOMES' },budgetId:string): Promise<Category[]> {
+    let categories = this.items.filter((item) => item.budgetId.toString() === budgetId)
     if (filters.type) {
       filters.type = filters.type.toUpperCase() as 'EXPENSES' | 'INCOMES'
+      categories = categories.filter((item) => item.type === filters.type)
+      
     }
-    return this.items.filter((item) => item.type === filters.type)
+
+    return categories.sort((a, b) => {
+      return a.createdAt.getTime() - b.createdAt.getTime()
+    }
+    )
   }
 }

@@ -5,4 +5,5 @@ export abstract class AccountsRepository {
   abstract findById(id: string): Promise<Account | null>
   abstract delete(account: Account): Promise<void>
   abstract save(account: Account): Promise<void>
+  abstract findMany(budgetId:string): Promise<Account[]>
 }

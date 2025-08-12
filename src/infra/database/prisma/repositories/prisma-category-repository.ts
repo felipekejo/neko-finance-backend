@@ -46,13 +46,14 @@ export class PrismaCategoryRepository implements CategoriesRepository {
 
     return PrismaCategoryMapper.toDomain(category)
   }
-  async findMany(filters:CategoriesFilter){
+  async findMany(filters:CategoriesFilter,budgetId:string) {
     if (filters.type) {
       filters.type = filters.type.toUpperCase() as 'EXPENSES' | 'INCOMES'
     }
     const categories = await this.prisma.category.findMany({
       where: {
         type: filters.type,
+        budgetId: budgetId,
       },
       orderBy: {
         createdAt: 'desc',

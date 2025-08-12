@@ -49,4 +49,16 @@ export class PrismaAccountsRepository implements AccountsRepository {
       data,
     })
   }
+  async findMany(budgetId:string): Promise<Account[]> {
+    const accounts = await this.prisma.account.findMany({
+      where: {
+        budgetId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return accounts.map(PrismaAccountMapper.toDomain)
+  }
 }

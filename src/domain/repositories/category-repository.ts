@@ -9,5 +9,5 @@ export abstract class CategoriesRepository {
   abstract findById(id: string): Promise<Category | null>
   abstract delete(category: Category): Promise<void>
   abstract save(category: Category): Promise<void>
-  abstract findMany(filters:CategoriesFilter): Promise<Category[]>
+  abstract findMany(filters:CategoriesFilter, budgetId:string): Promise<Category[]>
 }

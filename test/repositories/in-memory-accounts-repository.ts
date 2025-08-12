@@ -29,7 +29,9 @@ export class InMemoryAccountsRepository implements AccountsRepository {
 
     this.items[itemIndex] = account
   }
-  async findMany(): Promise<Account[]> {
-    return this.items
+  
+  async findMany(budgetId:string): Promise<Account[]> {
+    const accounts = this.items.filter((item) => item.budgetId.toString() === budgetId)
+    return accounts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
   }
 }
