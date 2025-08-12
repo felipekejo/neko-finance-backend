@@ -1,5 +1,5 @@
 import { Category } from '@/domain/entities/category'
-import { CategoriesRepository } from '@/domain/repositories/category-repository'
+import { CategoriesFilter, CategoriesRepository } from '@/domain/repositories/category-repository'
 import { Injectable } from '@nestjs/common'
 import { PrismaCategoryMapper } from '../mappers/prisma-category-mapper'
 import { PrismaService } from '../prisma.service'
@@ -45,5 +45,20 @@ export class PrismaCategoryRepository implements CategoriesRepository {
     }
 
     return PrismaCategoryMapper.toDomain(category)
+  }
+  async findMany(filters:CategoriesFilter){
+    if (filters.type) {
+      filters.type = filters.type.toUpperCase() as 'EXPENSES' | 'INCOMES'
+    }
+    const categories = await this.prisma.category.findMany({
+      where: {
+        type: filters.type,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return categories.map(PrismaCategoryMapper.toDomain)
   }
 }

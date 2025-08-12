@@ -29,4 +29,7 @@ export class InMemoryAccountsRepository implements AccountsRepository {
 
     this.items[itemIndex] = account
   }
+  async findMany(): Promise<Account[]> {
+    return this.items
+  }
 }

@@ -25,4 +25,11 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
 
     this.items[itemIndex] = category
   }
+
+  async findMany(filters: { type?: 'EXPENSES' | 'INCOMES' }): Promise<Category[]> {
+    if (filters.type) {
+      filters.type = filters.type.toUpperCase() as 'EXPENSES' | 'INCOMES'
+    }
+    return this.items.filter((item) => item.type === filters.type)
+  }
 }
