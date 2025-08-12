@@ -32,4 +32,7 @@ export class InMemorySubcategoriesRepository
 
     this.items[itemIndex] = subcategory
   }
+  async findMany(categoryId: string): Promise<Subcategory[]> {
+    return this.items.filter((item) => item.categoryId.toString() === categoryId)
+  }
 }

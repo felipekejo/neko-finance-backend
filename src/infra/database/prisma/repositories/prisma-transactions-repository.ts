@@ -60,18 +60,21 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
       where: {
         id,
       },
-      // include: {
-      //   Category: {
-      //     select: {
-      //       name: true,
-      //     },
-      //   },
-      //   SubCategory: {
-      //     select: {
-      //       name: true,
-      //     },
-      //   },
-      // },
+      include: {
+        Category: {
+          select: {
+            name: true,
+          },
+          include:{
+            SubCategory: {
+              select: {
+                name: true,
+              },
+            },
+          }
+        },
+
+      },
     })
 
     if (!transaction) {

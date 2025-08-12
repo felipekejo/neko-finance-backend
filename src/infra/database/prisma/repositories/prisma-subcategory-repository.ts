@@ -48,4 +48,17 @@ export class PrismaSubcategoriesRepository implements SubcategoriesRepository {
       data,
     })
   }
+
+  async findMany(categoryId: string){
+    const data =  await this.prisma.subCategory.findMany({
+      where:{
+        categoryId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return data.map(PrismaSubcategoryMapper.toDomain)
+  }
 }
