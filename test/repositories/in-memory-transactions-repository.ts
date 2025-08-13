@@ -1,16 +1,51 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Transaction } from '@/domain/entities/transaction'
-import { TransactionsRepository } from '@/domain/repositories/transaction-repository'
+import { TransactionsRepository, type TransactionFilters } from '@/domain/repositories/transaction-repository'
 
 export class InMemoryTransactionsRepository implements TransactionsRepository {
   public items: Transaction[] = []
 
-  // async findByBudgetId(budgetId: string): Promise<Transaction[]> {
-  //   const transactions = this.items.filter(
-  //     (item) => item.account_id === budgetId,
-  //   )
-  //   return transactions
-  // }
+  async findMany(filters: any, { page, perPage = 10 }: PaginationParams) {
+    const transactions = this.items.filter((transaction) => {
+      let matches = true
+      if (filters.accountId) {
+        matches = matches && transaction.accountId.toString() === filters.accountId
+      }
+      if (filters.categoryId) {
+        matches = matches && transaction.categoryId.toString() === filters.categoryId
+      }
+      if (filters.budgetId) {
+        matches = matches && transaction.budgetId.toString() === filters.budgetId
+      }
+      if (filters.type) {
+        matches = matches && transaction.type === filters.type
+      }
+      return matches
+    })
+
+    return transactions.slice((page - 1) * perPage, page * perPage)
+  }
+
+  async sumAmountBy(filters: Omit<TransactionFilters, 'date'>){
+    const transactions = this.items.filter((transaction) => {
+      let matches = true
+      if (filters.accountId) {
+        matches = matches && transaction.accountId.toString() === filters.accountId
+      }
+      if (filters.categoryId) {
+        matches = matches && transaction.categoryId.toString() === filters.categoryId
+      }
+      if (filters.budgetId) {
+        matches = matches && transaction.budgetId.toString() === filters.budgetId
+      }
+      if (filters.type) {
+        matches = matches && transaction.type === filters.type
+      }
+      return matches
+    })
+
+    return transactions.reduce((sum, transaction) => sum + transaction.amount, 0)
+  }
 
   async create(transaction: Transaction): Promise<void> {
     this.items.push(transaction)
@@ -40,85 +75,6 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
 
     return transactions
   }
-
-  // async findByAccountId(accountId: string) {
-  //   const transactions = this.items.filter(
-  //     (item) => item.account_id === accountId,
-  //   )
-
-  //   return transactions
-  // }
-
-  // async findByCategoryId(categoryId: string, accountId: string) {
-  //   const transactions = this.items.filter(
-  //     (item) =>
-  //       item.account_id === accountId && item.category_id === categoryId,
-  //   )
-  //   return transactions
-  // }
-
-  // async findByType(type: 'INCOMES' | 'EXPENSES', accountId: string) {
-  //   const transactions = this.items.filter(
-  //     (item) => item.account_id === accountId && item.type === type,
-  //   )
-  //   return transactions
-  // }
-
-  // async findByYear(year: string, accountId: string) {
-  //   const transactions = this.items.filter(
-  //     (item) =>
-  //       item.account_id === accountId &&
-  //       new Date(item.created_at).getFullYear().toString() === year,
-  //   )
-  //   return transactions
-  // }
-
-  // async findByYearAndMonth(year: string, month: string, accountId: string) {
-  //   const transactions = this.items.filter(
-  //     (item) =>
-  //       item.account_id === accountId &&
-  //       new Date(item.created_at).getFullYear().toString() === year &&
-  //       new Date(item.created_at).getMonth().toString() === month,
-  //   )
-  //   return transactions
-  // }
-
-  // async findByDate(date: Date, accountId: string) {
-  //   const transactions = this.items.filter(
-  //     (item) =>
-  //       item.account_id === accountId &&
-  //       new Date(item.created_at).toDateString() === date.toDateString(),
-  //   )
-  //   return transactions
-  // }
-
-  // async sumAmountByType(type: 'INCOMES' | 'EXPENSES', accountId: string) {
-  //   const sumAmount = this.items.reduce((acc, item) => {
-  //     if (item.account_id === accountId && item.type === type) {
-  //       acc += item.amount
-  //     }
-  //     return acc
-  //   }, 0)
-  //   return sumAmount
-  // }
-
-  // async sumAmountByYear(
-  //   year: string,
-  //   accountId: string,
-  //   type: 'INCOMES' | 'EXPENSES',
-  // ) {
-  //   const sumAmount = this.items.reduce((acc, item) => {
-  //     if (
-  //       item.account_id === accountId &&
-  //       new Date(item.created_at).getFullYear().toString() === year &&
-  //       item.type === type
-  //     ) {
-  //       acc += item.amount
-  //     }
-  //     return acc
-  //   }, 0)
-  //   return sumAmount
-  // }
 
   async save(transaction: Transaction) {
     const index = this.items.findIndex((item) => item.id === transaction.id)

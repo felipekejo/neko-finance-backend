@@ -19,7 +19,7 @@ describe('Create Transaction Use Case', () => {
     )
   })
 
-  it('should be able to create a new account', async () => {
+  it('should be able to create a new transaction', async () => {
     const result = await sut.execute({
       description: 'New transaction',
       accountId: 'account-01',

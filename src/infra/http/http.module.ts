@@ -16,7 +16,7 @@ import { CreateBudgetController } from './controller/create-budget.controller'
 import { CreateCategoryController } from './controller/create-category.controller'
 import { CreateTransactionController } from './controller/create-transaction.controller'
 import { CreateUserController } from './controller/create-user.controller'
-import { FetchBudgetController } from './controller/fetch-budget.controller'
+import { GetBudgetByIdController } from './controller/get-budget-by-id.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -24,7 +24,7 @@ import { FetchBudgetController } from './controller/fetch-budget.controller'
     CreateUserController,
     AuthenticateController,
     CreateBudgetController,
-    FetchBudgetController,
+    GetBudgetByIdController,
     CreateAccountController,
     CreateTransactionController,
     CreateCategoryController,

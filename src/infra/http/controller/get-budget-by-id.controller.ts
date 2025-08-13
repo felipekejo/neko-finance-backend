@@ -7,7 +7,7 @@ import { BudgetPresenter } from '../presenters/budget-presenter'
 
 @ApiTags('Budgets')
 @Controller('/budgets/:budgetId')
-export class FetchBudgetController {
+export class GetBudgetByIdController {
   constructor(private fetchBudget: GetBudgetByIdUseCase) {}
 
   @Get()

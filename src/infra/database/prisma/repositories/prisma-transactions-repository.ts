@@ -32,6 +32,21 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
       orderBy: { createdAt: 'desc' },
       skip: (page - 1) * perPage,
       take: perPage,
+      include: {
+        Category: {
+          select: {
+            name: true,
+          },
+          include:{
+            subcategories: {
+              select: {
+                name: true,
+              },
+            },
+          }
+        },
+
+      },
     })
   
     return transactions.map(PrismaTransactionsMapper.toDomain)
@@ -66,7 +81,7 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
             name: true,
           },
           include:{
-            SubCategory: {
+            subcategories: {
               select: {
                 name: true,
               },

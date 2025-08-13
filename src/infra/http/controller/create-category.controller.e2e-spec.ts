@@ -33,7 +33,7 @@ describe('Create Category (E2E)', () => {
   test('[POST] /categories', async () => {
     const user = await userFactory.makePrismaUser()
     const budget = await budgetFactory.makePrismaBudget({
-      ownerId: user.id,
+      name: 'Test Budget',
     })
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
