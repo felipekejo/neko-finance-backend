@@ -7,7 +7,23 @@ import { CreateBudgetUseCase } from '@/domain/use-cases/create-budget'
 import { CreateCategoryUseCase } from '@/domain/use-cases/create-category'
 import { CreateTransactionUseCase } from '@/domain/use-cases/create-transaction'
 import { CreateUserUseCase } from '@/domain/use-cases/create-user'
+import { DeleteAccountUseCase } from '@/domain/use-cases/delete-account'
+import { DeleteBudgetUseCase } from '@/domain/use-cases/delete-budget'
+import { DeleteCategoryUseCase } from '@/domain/use-cases/delete-category'
+import { DeleteSubcategoryUseCase } from '@/domain/use-cases/delete-subcategory'
+import { DeleteTransactionUseCase } from '@/domain/use-cases/delete-transaction'
+import { EditAccountUseCase } from '@/domain/use-cases/edit-account'
+import { EditCategoryUseCase } from '@/domain/use-cases/edit-category'
+import { EditSubcategoryUseCase } from '@/domain/use-cases/edit-subcategory'
+import { EditTransactionUseCase } from '@/domain/use-cases/edit-transaction'
+import { FetchAccountsUseCase } from '@/domain/use-cases/fetch-accounts'
+import { FetchCategoriesUseCase } from '@/domain/use-cases/fetch-categories'
+import { FetchSubcategoriesUseCase } from '@/domain/use-cases/fetch-subcategories'
+import { GetAccountByIdUseCase } from '@/domain/use-cases/get-account-by-id'
 import { GetBudgetByIdUseCase } from '@/domain/use-cases/get-budget-by-id'
+import { GetCategoryByIdUseCase } from '@/domain/use-cases/get-category-by-id'
+import { GetSubcategoryByIdUseCase } from '@/domain/use-cases/get-subcategory-by-id'
+import { GetTransactionByIdUseCase } from '@/domain/use-cases/get-transaction-by-id'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
 import { AuthenticateController } from './controller/authenticate.controller'
@@ -16,6 +32,7 @@ import { CreateBudgetController } from './controller/create-budget.controller'
 import { CreateCategoryController } from './controller/create-category.controller'
 import { CreateTransactionController } from './controller/create-transaction.controller'
 import { CreateUserController } from './controller/create-user.controller'
+import { FetchAccountsController } from './controller/fetch-accounts.controller'
 import { GetBudgetByIdController } from './controller/get-budget-by-id.controller'
 
 @Module({
@@ -28,6 +45,7 @@ import { GetBudgetByIdController } from './controller/get-budget-by-id.controlle
     CreateAccountController,
     CreateTransactionController,
     CreateCategoryController,
+    FetchAccountsController
   ],
   providers: [
     CreateUserUseCase,
@@ -38,6 +56,22 @@ import { GetBudgetByIdController } from './controller/get-budget-by-id.controlle
     CreateCategoryUseCase,
     GetBudgetByIdUseCase,
     AssignBudgetUseCase,
+    DeleteAccountUseCase,
+    DeleteBudgetUseCase,
+    DeleteTransactionUseCase,
+    DeleteCategoryUseCase,
+    DeleteSubcategoryUseCase,
+    EditAccountUseCase,
+    EditCategoryUseCase,
+    EditSubcategoryUseCase,
+    EditTransactionUseCase,
+    FetchAccountsUseCase,
+    FetchCategoriesUseCase,
+    FetchSubcategoriesUseCase,
+    GetAccountByIdUseCase,
+    GetCategoryByIdUseCase,
+    GetSubcategoryByIdUseCase,
+    GetTransactionByIdUseCase
   ],
 })
 export class HttpModule {}

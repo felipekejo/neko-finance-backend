@@ -1,4 +1,4 @@
-import type { FetchAccountsUseCase } from '@/domain/use-cases/fetch-accounts'
+import { FetchAccountsUseCase } from '@/domain/use-cases/fetch-accounts'
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { CurrentUser } from 'src/infra/auth/current-user-decorator'

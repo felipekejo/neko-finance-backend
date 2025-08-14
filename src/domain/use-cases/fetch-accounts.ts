@@ -1,7 +1,7 @@
-import { left, right, type Either } from "@/core/either";
+import { Either, left, right } from "@/core/either";
 import { Injectable } from "@nestjs/common";
-import type { Account } from "../entities/account";
-import type { AccountsRepository } from "../repositories/account-repository";
+import { Account } from "../entities/account";
+import { AccountsRepository } from "../repositories/account-repository";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 interface FetchAccountsUseCaseRequest {
@@ -16,7 +16,10 @@ type FetchAccountsUseCaseResponse = Either<ResourceNotFoundError, {
 @Injectable()
 export class FetchAccountsUseCase {
   constructor(private accountsRepository: AccountsRepository) {}
-  async execute({ budgetId }: FetchAccountsUseCaseRequest): Promise<FetchAccountsUseCaseResponse> {
+
+  async execute({ 
+    budgetId 
+  }: FetchAccountsUseCaseRequest): Promise<FetchAccountsUseCaseResponse> {
     const accounts = await this.accountsRepository.findMany(budgetId);
     if (accounts.length === 0) {
       return left(new ResourceNotFoundError());

@@ -3,6 +3,7 @@ import { BudgetsRepository } from '@/domain/repositories/budget-repository'
 import { CategoriesRepository } from '@/domain/repositories/category-repository'
 import { SubcategoriesRepository } from '@/domain/repositories/subcategory-repository'
 import { TransactionsRepository } from '@/domain/repositories/transaction-repository'
+import { UserBudgetRepository } from '@/domain/repositories/user-budget-repository'
 import { UsersRepository } from '@/domain/repositories/user-repository'
 import { Module } from '@nestjs/common'
 import { PrismaService } from './prisma/prisma.service'
@@ -11,9 +12,8 @@ import { PrismaBudgetsRepository } from './prisma/repositories/prisma-budgets-re
 import { PrismaCategoryRepository } from './prisma/repositories/prisma-category-repository'
 import { PrismaSubcategoriesRepository } from './prisma/repositories/prisma-subcategory-repository'
 import { PrismaTransactionsRepository } from './prisma/repositories/prisma-transactions-repository'
-import { PrismaUsersRepository } from './prisma/repositories/prisma-users-repository'
-import { UserBudgetRepository } from '@/domain/repositories/user-budget-repository'
 import { PrismaUserBudgetRepository } from './prisma/repositories/prisma-user-budget-repository'
+import { PrismaUsersRepository } from './prisma/repositories/prisma-users-repository'
 
 @Module({
   providers: [

@@ -1,6 +1,6 @@
-import { left, right, type Either } from "@/core/either";
+import { Either, left, right } from "@/core/either";
 import { Injectable } from "@nestjs/common";
-import type { Category } from "../entities/category";
+import { Category } from "../entities/category";
 import { CategoriesRepository } from "../repositories/category-repository";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
