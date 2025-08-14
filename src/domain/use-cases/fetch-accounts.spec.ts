@@ -11,13 +11,27 @@ describe('Fetch Accounts Use Case', () => {
     inMemoryAccountsRepository = new InMemoryAccountsRepository()
     sut = new FetchAccountsUseCase(inMemoryAccountsRepository)
   })
+  it('should return accounts sorted by createdAt in descending order', async () => {
+    const account1 = makeAccount({ createdAt: new Date('2023-01-01'), budgetId: new UniqueEntityID('budget-01') })
+    const account2 = makeAccount({ createdAt: new Date('2023-02-01'), budgetId: new UniqueEntityID('budget-01') })
+    await inMemoryAccountsRepository.create(account1)
+    await inMemoryAccountsRepository.create(account2)
 
+    const result = await sut.execute({
+      budgetId: 'budget-01',
+    })
+    expect(result.isRight()).toBe(true)
+    expect(result.value?.accounts).toEqual([account2, account1])
+  })
   it('should be able to get accounts by budgetId', async () => {
-    const newAccount = makeAccount()
+    const newAccount = makeAccount(
+      { budgetId: new UniqueEntityID('budget-test') },
+      new UniqueEntityID('account-01')
+    )
     await inMemoryAccountsRepository.create(newAccount)
 
     const result = await sut.execute({
-      budgetId: newAccount.budgetId.toValue(),
+      budgetId: 'budget-test',
     })
 
     expect(result.isRight()).toBe(true)
@@ -32,16 +46,4 @@ describe('Fetch Accounts Use Case', () => {
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
-  it('should return accounts sorted by createdAt in descending order', async () => {
-    const account1 = makeAccount({ createdAt: new Date('2023-01-01'), budgetId: new UniqueEntityID('budget-01') })
-    const account2 = makeAccount({ createdAt: new Date('2023-02-01'), budgetId: new UniqueEntityID('budget-01') })
-    await inMemoryAccountsRepository.create(account1)
-    await inMemoryAccountsRepository.create(account2)
 
-    const result = await sut.execute({
-      budgetId: 'budget-01',
-    })
-
-    expect(result.isRight()).toBe(true)
-    expect(result.value?.accounts).toEqual([account2, account1])
-  })
