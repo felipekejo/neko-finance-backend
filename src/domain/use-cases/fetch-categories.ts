@@ -14,9 +14,9 @@ type FetchCategoriesUseCaseResponse = Either<ResourceNotFoundError, {
 export class FetchCategoriesUseCase{
   constructor(private categoriesRepository: CategoriesRepository) {}
   async execute(
-    request: FetchCategoriesUseCaseRequest
+    {budgetId}: FetchCategoriesUseCaseRequest
   ): Promise<FetchCategoriesUseCaseResponse> {
-    const { budgetId } = request;
+
 
     const categories = await this.categoriesRepository.findMany({}, budgetId);
 

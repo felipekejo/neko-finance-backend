@@ -1,9 +1,8 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { makeCategory } from 'test/factories/make-category'
-import { inMemorySubcategoriesRepository } from 'test/repositories/in-memory-category-repository'
+import { makeSubcategory } from 'test/factories/make-subcategory'
 import { InMemorySubcategoriesRepository } from 'test/repositories/in-memory-subcategories-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
-import type { FetchSubcategoriesUseCase } from './fetch-subcategories'
+import { FetchSubcategoriesUseCase } from './fetch-subcategories'
 
 let inMemorySubcategoriesRepository: InMemorySubcategoriesRepository
 let sut: FetchSubcategoriesUseCase
@@ -13,35 +12,34 @@ describe('Fetch Subcategories Use Case', () => {
     sut = new FetchSubcategoriesUseCase(inMemorySubcategoriesRepository)
   })
   it('should return categories sorted by createdAt in descending order', async () => {
-    const category1 = makeCategory({ createdAt: new Date('2023-01-01'), budgetId: new UniqueEntityID('budget-01') })
-    const category2 = makeCategory({ createdAt: new Date('2023-02-01'), budgetId: new UniqueEntityID('budget-01') })
-    await inMemorySubcategoriesRepository.create(category1)
-    await inMemorySubcategoriesRepository.create(category2)
+    const subcategory1 = makeSubcategory({ createdAt: new Date('2023-01-01'), categoryId: new UniqueEntityID('category-01') })
+    const subcategory2 = makeSubcategory({ createdAt: new Date('2023-02-01'), categoryId: new UniqueEntityID('category-01') })
+    await inMemorySubcategoriesRepository.create(subcategory1)
+    await inMemorySubcategoriesRepository.create(subcategory2)
 
     const result = await sut.execute({
-      budgetId: 'budget-01',
+      categoryId: 'category-01',
     })
     expect(result.isRight()).toBe(true)
-    expect(result.value?.categories).toEqual([category1, category2])
+    expect(result.value?.subcategories).toEqual([subcategory1, subcategory2])
   })
-  it('should be able to get categories by budgetId', async () => {
-    const newCategory = makeCategory(
-      { budgetId: new UniqueEntityID('budget-test') },
-      new UniqueEntityID('category-01')
+  it('should be able to get subcategories by categoryId', async () => {
+    const newSubcategory = makeSubcategory(
+      { categoryId: new UniqueEntityID('category-test') }
     )
-    await inMemorySubcategoriesRepository.create(newCategory)
+    await inMemorySubcategoriesRepository.create(newSubcategory)
 
     const result = await sut.execute({
-      budgetId: 'budget-test',
+      categoryId: 'category-test',
     })
 
     expect(result.isRight()).toBe(true)
-    expect(result.value?.categories).toContainEqual(newCategory)
+    expect(result.value?.subcategories).toContainEqual(newSubcategory)
   })
 })
-  it('should return ResourceNotFoundError if no categories are found for the budgetId', async () => {
+  it('should return ResourceNotFoundError if no subcategories are found for the categoryId', async () => {
     const result = await sut.execute({
-      budgetId: 'non-existing-budget-id',
+      categoryId: 'non-existing-budget-id',
     })
 
     expect(result.isLeft()).toBe(true)
