@@ -6,7 +6,7 @@ import { UserPayload } from 'src/infra/auth/jwt.strategy'
 import { AccountPresenter } from '../presenters/account-presenter'
 
 @ApiTags('Accounts')
-@Controller('/accounts')
+@Controller('/accounts/:budgetId')
 export class FetchAccountsController {
   constructor(private fetchAccounts:FetchAccountsUseCase ) {}
 
