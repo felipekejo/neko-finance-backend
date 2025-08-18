@@ -59,16 +59,18 @@ describe('Edit Transaction (E2E)', () => {
       budgetId: budget.id,
       amount: 100,
       accountId: account.id,
-      categoryId: category.id,
+      categoryId: category.id
     })
 
     const response = await request(app.getHttpServer())
-      .post(`/transactions/${transaction.id}`)
+      .put(`/transactions/${transaction.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         description: 'My Transaction 1',
         type: 'EXPENSES',
         amount: 200,
+        ownerId:user.id,
+        accountId:account.id.toString()
       })
     expect(response.statusCode).toEqual(204)
 
@@ -81,5 +83,7 @@ describe('Edit Transaction (E2E)', () => {
     })
 
     expect(transactionOnDB).toBeTruthy()
+    expect(transactionOnDB?.type).toBe('EXPENSES')
+    expect(transactionOnDB?.description).toBe('My Transaction 1')
   })
 })

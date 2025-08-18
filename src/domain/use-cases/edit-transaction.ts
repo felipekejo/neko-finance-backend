@@ -9,14 +9,13 @@ import { UnauthorizedError } from './errors/unauthorized-error'
 
 interface EditTransactionUseCaseRequest {
   transactionId: string
-  budgetId: string
   ownerId: string
   accountId: string
-  description: string
-  amount: number
-  type: TypeTransaction
-  date: Date
-  categoryId: string
+  description?: string
+  amount?: number
+  type?: TypeTransaction
+  date?: Date
+  categoryId?: string
 }
 
 type EditTransactionUseCaseResponse = Either<
@@ -54,12 +53,14 @@ export class EditTransactionUseCase {
       return left(new UnauthorizedError())
     }
 
-    transaction.description = description
-    transaction.amount = amount
-    transaction.type = type
-    transaction.accountId = new UniqueEntityID(accountId)
-    transaction.date = date
-    transaction.categoryId =  new UniqueEntityID(categoryId)
+  if (description !== undefined) transaction.description = description
+    if (amount !== undefined) transaction.amount = amount
+    if (type !== undefined) transaction.type = type
+    if (date !== undefined) transaction.date = date
+    if (categoryId !== undefined) {
+      transaction.categoryId = new UniqueEntityID(categoryId)
+    }
+
 
     if (oldAccountId !== accountId) {
       const oldAccount = await this.accountsRepository.findById(oldAccountId)
@@ -73,9 +74,9 @@ export class EditTransactionUseCase {
       }
     } else {
       if (type === 'INCOMES') {
-        account.balance += amount
+        account.balance += transaction.amount
       } else {
-        account.balance -= amount
+        account.balance -= transaction.amount
       }
     }
 

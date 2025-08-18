@@ -5,6 +5,7 @@ import { AuthenticateUserUseCase } from '@/domain/use-cases/authenticate'
 import { CreateAccountUseCase } from '@/domain/use-cases/create-account'
 import { CreateBudgetUseCase } from '@/domain/use-cases/create-budget'
 import { CreateCategoryUseCase } from '@/domain/use-cases/create-category'
+import { CreateSubcategoryUseCase } from '@/domain/use-cases/create-subcategory'
 import { CreateTransactionUseCase } from '@/domain/use-cases/create-transaction'
 import { CreateUserUseCase } from '@/domain/use-cases/create-user'
 import { DeleteAccountUseCase } from '@/domain/use-cases/delete-account'
@@ -30,11 +31,12 @@ import { AuthenticateController } from './controller/authenticate.controller'
 import { CreateAccountController } from './controller/create-account.controller'
 import { CreateBudgetController } from './controller/create-budget.controller'
 import { CreateCategoryController } from './controller/create-category.controller'
+import { CreateSubcategoryController } from './controller/create-subcategory.controller'
 import { CreateTransactionController } from './controller/create-transaction.controller'
 import { CreateUserController } from './controller/create-user.controller'
+import { EditTransactionController } from './controller/edit-transaction.controller'
 import { FetchAccountsController } from './controller/fetch-accounts.controller'
 import { GetBudgetByIdController } from './controller/get-budget-by-id.controller'
-import { EditTransactionController } from './controller/edit-transaction.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -47,7 +49,8 @@ import { EditTransactionController } from './controller/edit-transaction.control
     CreateTransactionController,
     CreateCategoryController,
     FetchAccountsController,
-    EditTransactionController
+    EditTransactionController,
+    CreateSubcategoryController
   ],
   providers: [
     CreateUserUseCase,
@@ -56,6 +59,7 @@ import { EditTransactionController } from './controller/edit-transaction.control
     CreateAccountUseCase,
     CreateTransactionUseCase,
     CreateCategoryUseCase,
+    CreateSubcategoryUseCase,
     GetBudgetByIdUseCase,
     AssignBudgetUseCase,
     DeleteAccountUseCase,

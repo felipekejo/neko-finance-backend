@@ -53,9 +53,11 @@ describe('Fetch Accounts (E2E)', () => {
     expect(response.statusCode).toEqual(200)
 
     expect(response.body).toEqual({
-      account: expect.objectContaining({
-        name: 'account1',
-      }),
+      accounts: expect.arrayContaining([
+        expect.objectContaining({
+          name: 'account1',
+        }),
+      ]),
     })
   })
 })

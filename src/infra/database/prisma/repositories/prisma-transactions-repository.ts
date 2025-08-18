@@ -34,19 +34,15 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
       take: perPage,
       include: {
         Category: {
-          select: {
-            name: true,
-          },
-          include:{
+          include: {
             subcategories: {
               select: {
                 name: true,
               },
             },
-          }
+          },
         },
-
-      },
+      }
     })
   
     return transactions.map(PrismaTransactionsMapper.toDomain)
@@ -77,19 +73,15 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
       },
       include: {
         Category: {
-          select: {
-            name: true,
-          },
-          include:{
+          include: {
             subcategories: {
               select: {
                 name: true,
               },
             },
-          }
+          },
         },
-
-      },
+      }
     })
 
     if (!transaction) {
