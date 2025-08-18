@@ -30,16 +30,14 @@ describe('Create Category (E2E)', () => {
     await app.init()
   })
 
-  test('[POST] /categories', async () => {
+  test('[POST] /subcategories', async () => {
     const user = await userFactory.makePrismaUser()
-    const budget = await budgetFactory.makePrismaBudget({
-      name: 'Test Budget',
-    })
+    const budget = await budgetFactory.makePrismaBudget()
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())
-      .post('/categories')
+      .post('/subcategories')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'First Category',

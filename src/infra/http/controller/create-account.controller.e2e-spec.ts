@@ -31,9 +31,7 @@ describe('Create Account (E2E)', () => {
 
   test('[POST] /accounts', async () => {
     const user = await userFactory.makePrismaUser()
-    const budget = await budgetFactory.makePrismaBudget({
-      ownerId: user.id,
-    })
+    const budget = await budgetFactory.makePrismaBudget()
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())

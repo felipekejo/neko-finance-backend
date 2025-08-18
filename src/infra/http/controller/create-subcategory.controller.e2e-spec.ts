@@ -5,70 +5,59 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-import { AccountFactory } from 'test/factories/make-account'
 import { BudgetFactory } from 'test/factories/make-budget'
 import { CategoryFactory } from 'test/factories/make-category'
 import { UserFactory } from 'test/factories/make-user'
 
-describe('Create Transaction (E2E)', () => {
+describe('Create Subcategory (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
   let userFactory: UserFactory
   let budgetFactory: BudgetFactory
-  let accountFactory: AccountFactory
-  let categoryFactory: CategoryFactory
+  let categoryFactory:CategoryFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [UserFactory, BudgetFactory, AccountFactory, CategoryFactory],
+      providers: [UserFactory, BudgetFactory,CategoryFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
     prisma = moduleRef.get(PrismaService)
     userFactory = moduleRef.get(UserFactory)
     budgetFactory = moduleRef.get(BudgetFactory)
-    accountFactory = moduleRef.get(AccountFactory)
     categoryFactory = moduleRef.get(CategoryFactory)
+
     jwt = moduleRef.get(JwtService)
     await app.init()
   })
 
-  test('[POST] /transactions', async () => {
+  test('[POST] /subcategories', async () => {
     const user = await userFactory.makePrismaUser()
     const budget = await budgetFactory.makePrismaBudget()
-    const account = await accountFactory.makePrismaAccount({
-      budgetId: budget.id,
-      ownerId: user.id,
+    const category = await categoryFactory.makePrismaCategory({
+      budgetId:budget.id
     })
 
-    const category = await categoryFactory.makePrismaCategory({
-      budgetId: budget.id,
-      type: 'INCOMES',
-    })
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())
-      .post('/transactions')
+      .post('/subcategories')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        description: 'My Transaction',
-        type: 'INCOMES',
-        budgetId: budget.id.toString(),
-        amount: 100,
-        accountId: account.id.toString(),
-        date: '2023-10-01',
-        categoryId: category.id.toString(),
+        name: 'First Subcategory',
+        categoryId:category.id.toString()
       })
+
     expect(response.statusCode).toEqual(201)
 
-    const transactionOnDB = await prisma.transaction.findFirst({
+    const subcategoryOnDB = await prisma.subCategory.findFirst({
       where: {
-        description: 'My Transaction',
+        name: 'First Subcategory',
       },
     })
 
-    expect(transactionOnDB).toBeTruthy()
+    expect(subcategoryOnDB).toBeTruthy()
   })
 })
