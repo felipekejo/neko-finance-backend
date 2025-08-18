@@ -18,6 +18,7 @@ export function makeTransaction(
       description: faker.lorem.sentence(),
       accountId: new UniqueEntityID(),
       budgetId: new UniqueEntityID(),
+      categoryId: new UniqueEntityID(),
       amount: faker.number.int(),
       type: faker.helpers.enumValue(TypeTransaction),
       date: faker.date.recent(),

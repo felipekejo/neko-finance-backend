@@ -34,6 +34,7 @@ import { CreateTransactionController } from './controller/create-transaction.con
 import { CreateUserController } from './controller/create-user.controller'
 import { FetchAccountsController } from './controller/fetch-accounts.controller'
 import { GetBudgetByIdController } from './controller/get-budget-by-id.controller'
+import { EditTransactionController } from './controller/edit-transaction.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -45,7 +46,8 @@ import { GetBudgetByIdController } from './controller/get-budget-by-id.controlle
     CreateAccountController,
     CreateTransactionController,
     CreateCategoryController,
-    FetchAccountsController
+    FetchAccountsController,
+    EditTransactionController
   ],
   providers: [
     CreateUserUseCase,

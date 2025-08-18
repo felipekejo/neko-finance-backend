@@ -15,6 +15,8 @@ interface EditTransactionUseCaseRequest {
   description: string
   amount: number
   type: TypeTransaction
+  date: Date
+  categoryId: string
 }
 
 type EditTransactionUseCaseResponse = Either<
@@ -36,6 +38,8 @@ export class EditTransactionUseCase {
     amount,
     description,
     type,
+    date,
+    categoryId
   }: EditTransactionUseCaseRequest): Promise<EditTransactionUseCaseResponse> {
     const transaction =
       await this.transactionsRepository.findById(transactionId)
@@ -54,6 +58,8 @@ export class EditTransactionUseCase {
     transaction.amount = amount
     transaction.type = type
     transaction.accountId = new UniqueEntityID(accountId)
+    transaction.date = date
+    transaction.categoryId =  new UniqueEntityID(categoryId)
 
     if (oldAccountId !== accountId) {
       const oldAccount = await this.accountsRepository.findById(oldAccountId)
