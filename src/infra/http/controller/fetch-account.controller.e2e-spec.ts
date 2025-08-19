@@ -1,50 +1,53 @@
 import { AppModule } from '@/infra/app.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { DatabaseModule } from '@/infra/database/database.module'
+
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
-import { hash } from 'bcryptjs'
 import request from 'supertest'
+import { AccountFactory } from 'test/factories/make-account'
+import { BudgetFactory } from 'test/factories/make-budget'
+import { UserFactory } from 'test/factories/make-user'
 
 describe('Fetch Accounts (E2E)', () => {
   let app: INestApplication
-  let prisma: PrismaService
   let jwt: JwtService
+  let userFactory: UserFactory
+  let budgetFactory: BudgetFactory
+  let accountFactory: AccountFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [UserFactory, BudgetFactory, AccountFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
-    prisma = moduleRef.get(PrismaService)
+    userFactory = moduleRef.get(UserFactory)
+    budgetFactory = moduleRef.get(BudgetFactory)
+    accountFactory = moduleRef.get(AccountFactory)
     jwt = moduleRef.get(JwtService)
     await app.init()
   })
 
   test('[GET] /accounts/$budgetId', async () => {
-    const user = await prisma.user.create({
-      data: {
-        name: 'John Doe',
-        email: 'j@j.com',
-        password: await hash('123456', 8),
-        role: 'CLIENT',
-      },
-    })
-
-    const budget = await prisma.budget.create({
-      data: {
-        name: 'My budget',
-      },
-    })
-    const accessToken = jwt.sign({ sub: user.id })
-    await prisma.account.create({
-      data:{
+    const user = await userFactory.makePrismaUser()
+    const budget = await budgetFactory.makePrismaBudget()
+    const accessToken = jwt.sign({ sub: user.id.toString() })
+    await Promise.all([
+      accountFactory.makePrismaAccount({
         name:"account1",
         budgetId:budget.id,
         ownerId:user.id
-      }
-    })
+      }),
+      accountFactory.makePrismaAccount({
+        name:"account2",
+        budgetId:budget.id,
+        ownerId:user.id
+      })
+    ])
+
+
 
     const response = await request(app.getHttpServer())
       .get(`/accounts/${budget.id}`)
@@ -56,6 +59,9 @@ describe('Fetch Accounts (E2E)', () => {
       accounts: expect.arrayContaining([
         expect.objectContaining({
           name: 'account1',
+        }),
+        expect.objectContaining({
+          name: 'account2',
         }),
       ]),
     })
