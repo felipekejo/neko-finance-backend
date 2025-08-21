@@ -36,6 +36,7 @@ import { CreateTransactionController } from './controller/create-transaction.con
 import { CreateUserController } from './controller/create-user.controller'
 import { EditTransactionController } from './controller/edit-transaction.controller'
 import { FetchAccountsController } from './controller/fetch-accounts.controller'
+import { FetchCategoriesController } from './controller/fetch-categories.controller'
 import { GetBudgetByIdController } from './controller/get-budget-by-id.controller'
 
 @Module({
@@ -50,7 +51,8 @@ import { GetBudgetByIdController } from './controller/get-budget-by-id.controlle
     CreateCategoryController,
     FetchAccountsController,
     EditTransactionController,
-    CreateSubcategoryController
+    CreateSubcategoryController,
+    FetchCategoriesController
   ],
   providers: [
     CreateUserUseCase,
