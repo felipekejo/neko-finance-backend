@@ -47,7 +47,6 @@ describe('Edit Transaction Use Case', () => {
       type: 'INCOMES',
       amount: 200,
       description: 'new description',
-      budgetId: 'budget-01',
     })
 
     expect(inMemoryTransactionsRepository.items[0]).toMatchObject({
@@ -82,61 +81,62 @@ describe('Edit Transaction Use Case', () => {
       type: 'INCOMES',
       amount: 200,
       description: 'new description',
-      budgetId: 'budget-01',
+
     })
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(UnauthorizedError)
   })
 
-  // it('should be able to update the balance of the new and old account', async () => {
-  //   const oldAccount = makeAccount(
-  //     {
-  //       ownerId: new UniqueEntityID('user-01'),
-  //       balance: 300,
-  //       budgetId: new UniqueEntityID('budget-01'),
-  //     },
-  //     new UniqueEntityID('account-01'),
-  //   )
-  //   const newAccount = makeAccount(
-  //     {
-  //       ownerId: new UniqueEntityID('user-01'),
-  //       balance: 300,
-  //       budgetId: new UniqueEntityID('budget-01'),
-  //     },
-  //     new UniqueEntityID('account-02'),
-  //   )
-  //   await inMemoryAccountsRepository.create(oldAccount)
-  //   await inMemoryAccountsRepository.create(newAccount)
+  it('should be able to update the balance of the new and old account', async () => {
 
-  //   const newTransaction = makeTransaction(
-  //     {
-  //       type: 'INCOMES',
-  //       accountId: new UniqueEntityID('account-01'),
-  //       amount: 100,
-  //       budgetId: new UniqueEntityID('budget-01'),
-  //     },
-  //     new UniqueEntityID('transaction-01'),
-  //   )
+    const oldAccount = makeAccount(
+      {
+        ownerId: new UniqueEntityID('user-01'),
+        balance: 300,
+        budgetId: new UniqueEntityID('budget-01'),
+      },
+      new UniqueEntityID('account-01'),
+    )
+    const newAccount = makeAccount(
+      {
+        ownerId: new UniqueEntityID('user-01'),
+        balance: 300,
+        budgetId: new UniqueEntityID('budget-01'),
+      },
+      new UniqueEntityID('account-02'),
+    )
+    await inMemoryAccountsRepository.create(oldAccount)
+    await inMemoryAccountsRepository.create(newAccount)
 
-  //   await inMemoryTransactionsRepository.create(newTransaction)
+    const newTransaction = makeTransaction(
+      {
+        type: 'INCOMES',
+        accountId: new UniqueEntityID('account-01'),
+        amount: 100,
+        budgetId: new UniqueEntityID('budget-01'),
+      },
+      new UniqueEntityID('transaction-01'),
+    )
+    oldAccount.balance+=100
+    await inMemoryAccountsRepository.save(oldAccount)
+    await inMemoryTransactionsRepository.create(newTransaction)
 
-  //   await sut.execute({
-  //     budgetId: 'budget-01',
-  //     ownerId: 'user-01',
-  //     transactionId: 'transaction-01',
-  //     accountId: 'account-02',
-  //     type: 'INCOMES',
-  //     amount: 200,
-  //     description: 'new description',
-  //   })
+    await sut.execute({
+      ownerId: 'user-01',
+      transactionId: 'transaction-01',
+      accountId: 'account-02',
+      type: 'INCOMES',
+      amount: 200,
+      description: 'new description',
+    })
 
-  //   // console.log(inMemoryAccountsRepository.items)
-  //   // expect(inMemoryAccountsRepository.items[0]).toMatchObject({
-  //   //   balance: 300,
-  //   // })
-  //   expect(inMemoryAccountsRepository.items[1]).toMatchObject({
-  //     balance: 500,
-  //   })
-  // })
+    
+    expect(inMemoryAccountsRepository.items[0]).toMatchObject({
+      balance: 300,
+    })
+    expect(inMemoryAccountsRepository.items[1]).toMatchObject({
+      balance: 500,
+    })
+  })
 })

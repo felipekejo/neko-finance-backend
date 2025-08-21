@@ -52,34 +52,42 @@ export class EditTransactionUseCase {
     if (!account || account.ownerId.toString() !== ownerId) {
       return left(new UnauthorizedError())
     }
+        const oldAccount = await this.accountsRepository.findById(oldAccountId)
+        if (!oldAccount) return left(new ResourceNotFoundError())
 
-  if (description !== undefined) transaction.description = description
-    if (amount !== undefined) transaction.amount = amount
+    if (description !== undefined) transaction.description = description
     if (type !== undefined) transaction.type = type
     if (date !== undefined) transaction.date = date
     if (categoryId !== undefined) {
       transaction.categoryId = new UniqueEntityID(categoryId)
     }
-
-
+    
     if (oldAccountId !== accountId) {
-      const oldAccount = await this.accountsRepository.findById(oldAccountId)
-      if (oldAccount) {
-        if (oldType === 'INCOMES') {
-          oldAccount.balance -= oldAmount
-        } else {
-          oldAccount.balance += oldAmount
-        }
-        await this.accountsRepository.save(oldAccount)
-      }
-    } else {
-      if (type === 'INCOMES') {
-        account.balance += transaction.amount
+      if (oldType === 'INCOMES') {
+        oldAccount.balance -= oldAmount
       } else {
-        account.balance -= transaction.amount
+        oldAccount.balance += oldAmount
       }
     }
 
+    if(amount !== undefined && amount !== transaction.amount){
+      transaction.amount = amount
+      if (oldAccountId !== accountId) {
+        if (type === 'INCOMES') {
+          account.balance += amount
+        } else {
+          account.balance -= amount
+        }
+      }else{
+        if (type === 'INCOMES') {
+          oldAccount.balance += amount
+        } else {
+          oldAccount.balance -= amount
+        }
+      }
+    }
+
+    await this.accountsRepository.save(oldAccount)
     await this.accountsRepository.save(account)
     await this.transactionsRepository.save(transaction)
 
