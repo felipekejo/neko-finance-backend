@@ -35,7 +35,7 @@ describe('Create Transaction (E2E)', () => {
     await app.init()
   })
 
-  test('[POST] /transactions', async () => {
+  test('[POST] /budgets/:budgetId/transactions', async () => {
     const user = await userFactory.makePrismaUser()
     const budget = await budgetFactory.makePrismaBudget()
     const account = await accountFactory.makePrismaAccount({
@@ -50,12 +50,11 @@ describe('Create Transaction (E2E)', () => {
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())
-      .post('/transactions')
+      .post(`/budgets/${budget.id}/transactions`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         description: 'My Transaction',
         type: 'INCOMES',
-        budgetId: budget.id.toString(),
         amount: 100,
         accountId: account.id.toString(),
         date: '2023-10-01',

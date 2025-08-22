@@ -7,7 +7,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { CategoryPresenter } from "../presenters/category-presenter";
 
 @ApiTags('Categories')
-@Controller('/categories/:budgetId')
+@Controller('/budgets/:budgetId/categories')
 export class FetchCategoriesController{
   constructor(private fetchCategories:FetchCategoriesUseCase){}
 

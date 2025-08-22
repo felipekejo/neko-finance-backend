@@ -29,17 +29,16 @@ describe('Create Account (E2E)', () => {
     await app.init()
   })
 
-  test('[POST] /accounts', async () => {
+  test('[POST] /budgets/:budgetId/accounts', async () => {
     const user = await userFactory.makePrismaUser()
     const budget = await budgetFactory.makePrismaBudget()
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())
-      .post('/accounts')
+      .post(`/budgets/${budget.id}/accounts`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'My Account',
-        budgetId: budget.id.toString(),
         balance: 0,
       })
 

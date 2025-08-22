@@ -4,6 +4,7 @@ import {
   Body,
   Controller,
   HttpCode,
+  Param,
   Post,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
@@ -22,7 +23,7 @@ const bodyValidationPipe = new ZodValidationPipe(createAccountBodySchema)
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 
 @ApiTags('Accounts')
-@Controller('/accounts')
+@Controller('/budgets/:budgetId/accounts')
 export class CreateAccountController {
   constructor(private createAccount: CreateAccountUseCase) {}
 
@@ -31,8 +32,9 @@ export class CreateAccountController {
   async handle(
     @Body(bodyValidationPipe) body: CreateAccountBodySchema,
     @CurrentUser() user: UserPayload,
+    @Param('budgetId') budgetId: string,
   ) {
-    const { name, balance, budgetId } = body
+    const { name, balance } = body
     const { sub: ownerId } = user
 
     const result = await this.createAccount.execute({

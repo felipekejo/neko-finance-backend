@@ -4,6 +4,7 @@ import {
   Body,
   Controller,
   HttpCode,
+  Param,
   Post,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
@@ -20,7 +21,7 @@ const bodyValidationPipe = new ZodValidationPipe(createCategoryBodySchema)
 type CreateCategoryBodySchema = z.infer<typeof createCategoryBodySchema>
 
 @ApiTags('Categories')
-@Controller('/categories')
+@Controller('/budgets/:budgetId/categories')
 export class CreateCategoryController {
   constructor(private createCategory: CreateCategoryUseCase) {}
 
@@ -28,10 +29,9 @@ export class CreateCategoryController {
   @HttpCode(201)
   async handle(
     @Body(bodyValidationPipe) body: CreateCategoryBodySchema,
-    // @CurrentUser() user: UserPayload,
+    @Param('budgetId') budgetId: string,
   ) {
-    const { name, budgetId, type } = body
-    // const { sub: ownerId } = user
+    const { name, type } = body
     const result = await this.createCategory.execute({
       name,
       type,

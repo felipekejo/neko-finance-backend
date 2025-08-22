@@ -30,7 +30,7 @@ describe('Fetch Categories (E2E)', () => {
     await app.init()
   })
 
-  test('[GET] /categories/$budgetId', async () => {
+  test('[GET] /budgets/:budgetId/categories/', async () => {
     const user = await userFactory.makePrismaUser()
     const budget = await budgetFactory.makePrismaBudget()
     const accessToken = jwt.sign({ sub: user.id.toString() })
@@ -48,7 +48,7 @@ describe('Fetch Categories (E2E)', () => {
 
 
     const response = await request(app.getHttpServer())
-      .get(`/categories/${budget.id}`)
+      .get(`/budgets/${budget.id}/categories`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toEqual(200)

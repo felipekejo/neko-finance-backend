@@ -4,6 +4,7 @@ import {
   Body,
   Controller,
   HttpCode,
+  Param,
   Post,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
@@ -24,7 +25,7 @@ const bodyValidationPipe = new ZodValidationPipe(createTransactionBodySchema)
 type CreateTransactionBodySchema = z.infer<typeof createTransactionBodySchema>
 
 @ApiTags('Transactions')
-@Controller('/transactions')
+@Controller('/budgets/:budgetId/transactions')
 export class CreateTransactionController {
   constructor(private createTransaction: CreateTransactionUseCase) {}
 
@@ -32,11 +33,10 @@ export class CreateTransactionController {
   @HttpCode(201)
   async handle(
     @Body(bodyValidationPipe) body: CreateTransactionBodySchema,
-    // @CurrentUser() user: UserPayload,
+    @Param('budgetId') budgetId: string,
   ) {
-    const { description, accountId, amount, budgetId, date, type, categoryId } =
+    const { description, accountId, amount, date, type, categoryId } =
       body
-    // const { sub: ownerId } = user
 
     const result = await this.createTransaction.execute({
       description,
