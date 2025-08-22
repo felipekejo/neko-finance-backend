@@ -5,7 +5,7 @@ export class SubcategoryPresenter {
     return {
       id: subcategory.id.toString(),
       name:subcategory.name,
-      categoryId: subcategory.categoryId,
+      categoryId: subcategory.categoryId.toString(),
       createdAt:subcategory.createdAt,
       updatedAt:subcategory.updatedAt
     }
