@@ -8,25 +8,23 @@ import { PrismaService } from '../prisma.service'
 @Injectable()
 export class PrismaTransactionsRepository implements TransactionsRepository {
   constructor(private prisma: PrismaService) {}
-  async findMany(filters: TransactionFilters, { page, perPage = 10 }: PaginationParams): Promise<Transaction[]> {
+  async findMany(
+    filters: TransactionFilters,
+    { page = 1, perPage = 10 }: PaginationParams,
+  ): Promise<Transaction[]> {
     const where: any = {}
-  
+
     if (filters.accountId) where.accountId = filters.accountId
     if (filters.categoryId) where.categoryId = filters.categoryId
     if (filters.budgetId) where.budgetId = filters.budgetId
     if (filters.type) where.type = filters.type
-    if (filters.date) where.date = filters.date
-  
-    if (filters.year) {
-      where.date = { ...(where.date || {}), gte: new Date(filters.year, 0, 1), lte: new Date(filters.year, 11, 31) }
+
+    if (filters.dateFrom || filters.dateTo) {
+      where.date = {}
+      if (filters.dateFrom) where.date.gte = filters.dateFrom
+      if (filters.dateTo) where.date.lte = filters.dateTo
     }
-  
-    if (filters.month && filters.year) {
-      const start = new Date(filters.year, filters.month - 1, 1)
-      const end = new Date(filters.year, filters.month, 0)
-      where.date = { gte: start, lte: end }
-    }
-  
+
     const transactions = await this.prisma.transaction.findMany({
       where,
       orderBy: { createdAt: 'desc' },
@@ -42,9 +40,9 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
             },
           },
         },
-      }
+      },
     })
-  
+
     return transactions.map(PrismaTransactionsMapper.toDomain)
   }
 
@@ -91,28 +89,26 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     return PrismaTransactionsMapper.toDomain(transaction)
   }
 
+
   async sumAmountBy(filters: TransactionFilters): Promise<number> {
     const where: any = {}
-  
+
     if (filters.accountId) where.accountId = filters.accountId
     if (filters.categoryId) where.categoryId = filters.categoryId
+    if (filters.budgetId) where.budgetId = filters.budgetId
     if (filters.type) where.type = filters.type
-  
-    if (filters.year) {
-      where.date = { gte: new Date(filters.year, 0, 1), lte: new Date(filters.year, 11, 31) }
+
+    if (filters.dateFrom || filters.dateTo) {
+      where.date = {}
+      if (filters.dateFrom) where.date.gte = filters.dateFrom
+      if (filters.dateTo) where.date.lte = filters.dateTo
     }
-  
-    if (filters.month && filters.year) {
-      const start = new Date(filters.year, filters.month - 1, 1)
-      const end = new Date(filters.year, filters.month, 0)
-      where.date = { gte: start, lte: end }
-    }
-  
+
     const result = await this.prisma.transaction.aggregate({
       _sum: { amount: true },
       where,
     })
-  
+
     return result._sum.amount || 0
   }
 

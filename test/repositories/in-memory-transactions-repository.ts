@@ -5,9 +5,10 @@ import { TransactionsRepository, type TransactionFilters } from '@/domain/reposi
 export class InMemoryTransactionsRepository implements TransactionsRepository {
   public items: Transaction[] = []
 
-  async findMany(filters: any, { page, perPage = 10 }: PaginationParams) {
+  async findMany(filters: TransactionFilters, { page = 1, perPage = 10 }: PaginationParams) {
     const transactions = this.items.filter((transaction) => {
       let matches = true
+
       if (filters.accountId) {
         matches = matches && transaction.accountId.toString() === filters.accountId
       }
@@ -20,15 +21,23 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
       if (filters.type) {
         matches = matches && transaction.type === filters.type
       }
+      if (filters.dateFrom) {
+        matches = matches && transaction.date >= filters.dateFrom
+      }
+      if (filters.dateTo) {
+        matches = matches && transaction.date <= filters.dateTo
+      }
+
       return matches
     })
 
     return transactions.slice((page - 1) * perPage, page * perPage)
   }
 
-  async sumAmountBy(filters: Omit<TransactionFilters, 'date'>){
+  async sumAmountBy(filters: Omit<TransactionFilters, 'dateFrom' | 'dateTo'>) {
     const transactions = this.items.filter((transaction) => {
       let matches = true
+
       if (filters.accountId) {
         matches = matches && transaction.accountId.toString() === filters.accountId
       }
@@ -41,6 +50,7 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
       if (filters.type) {
         matches = matches && transaction.type === filters.type
       }
+
       return matches
     })
 

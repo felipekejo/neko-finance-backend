@@ -6,9 +6,8 @@ export interface TransactionFilters {
   categoryId?: string
   budgetId?: string
   type?: 'INCOMES' | 'EXPENSES'
-  year?: number
-  month?: number
-  date?: Date
+  dateFrom?: Date
+  dateTo?: Date
 }
 
 export abstract class TransactionsRepository {
