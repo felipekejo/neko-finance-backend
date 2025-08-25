@@ -45,7 +45,7 @@ export class FetchTransactionsController {
       page: query.page ?? 1,
       perPage: query.perPage ?? 10,
     }
-    console.log(filters)
+
     const result = await this.fetchTransactions.execute({
       filters,
       pagination,

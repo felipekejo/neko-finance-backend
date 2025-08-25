@@ -58,7 +58,7 @@ describe('Fetch Transactions (E2E)', () => {
 
         description: "Transaction 1",
       }),
-            transactionFactory.makePrismaTransaction({
+      transactionFactory.makePrismaTransaction({
         budgetId: budget.id,
         accountId: account.id,
         categoryId: category.id,
@@ -81,7 +81,6 @@ describe('Fetch Transactions (E2E)', () => {
       .get(`/budgets/${budget.id}/transactions`)
       .set('Authorization', `Bearer ${accessToken}`)
       .query({ type: 'EXPENSES', page: 1, perPage: 10 })
-      console.log(response)
     expect(response.statusCode).toEqual(200)
 
     expect(response.body).toEqual({
@@ -96,5 +95,6 @@ describe('Fetch Transactions (E2E)', () => {
         }),
       ]),
     })
+
   })
 })

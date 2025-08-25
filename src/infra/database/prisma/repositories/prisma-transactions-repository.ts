@@ -21,10 +21,15 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     if (filters.budgetId) where.budgetId = filters.budgetId
     if (filters.type) where.type = filters.type
 
-    if (filters.dateFrom || filters.dateTo) {
-      where.date = {}
-      if (filters.dateFrom) where.date.gte = filters.dateFrom
-      if (filters.dateTo) where.date.lte = filters.dateTo
+   if (filters.dateFrom || filters.dateTo) {
+      where.createdAt = {}
+
+      if (filters.dateFrom) {
+        where.createdAt.gte = filters.dateFrom
+      }
+      if (filters.dateTo) {
+        where.createdAt.lte = filters.dateTo
+      }
     }
 
     
