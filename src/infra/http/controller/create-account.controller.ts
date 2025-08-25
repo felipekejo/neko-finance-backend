@@ -15,8 +15,7 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
 const createAccountBodySchema = z.object({
   name: z.string(),
-  balance: z.number(),
-  budgetId: z.string(),
+  balance: z.number()
 })
 
 const bodyValidationPipe = new ZodValidationPipe(createAccountBodySchema)
@@ -46,5 +45,7 @@ export class CreateAccountController {
     if (result.isLeft()) {
       throw new BadRequestException()
     }
+
+
   }
 }

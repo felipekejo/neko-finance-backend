@@ -20,6 +20,7 @@ import { EditTransactionUseCase } from '@/domain/use-cases/edit-transaction'
 import { FetchAccountsUseCase } from '@/domain/use-cases/fetch-accounts'
 import { FetchCategoriesUseCase } from '@/domain/use-cases/fetch-categories'
 import { FetchSubcategoriesUseCase } from '@/domain/use-cases/fetch-subcategories'
+import { FetchTransactionsUseCase } from '@/domain/use-cases/fetch-transactions'
 import { GetAccountByIdUseCase } from '@/domain/use-cases/get-account-by-id'
 import { GetBudgetByIdUseCase } from '@/domain/use-cases/get-budget-by-id'
 import { GetCategoryByIdUseCase } from '@/domain/use-cases/get-category-by-id'
@@ -38,6 +39,8 @@ import { EditTransactionController } from './controller/edit-transaction.control
 import { FetchAccountsController } from './controller/fetch-accounts.controller'
 import { FetchCategoriesController } from './controller/fetch-categories.controller'
 import { FetchSubcategoriesController } from './controller/fetch-subcategories.controller'
+import { FetchTransactionsController } from './controller/fetch-transactions.controller'
+import { GetAccountByIdController } from './controller/get-accounts-by-id.controller'
 import { GetBudgetByIdController } from './controller/get-budget-by-id.controller'
 
 @Module({
@@ -54,7 +57,9 @@ import { GetBudgetByIdController } from './controller/get-budget-by-id.controlle
     EditTransactionController,
     CreateSubcategoryController,
     FetchCategoriesController,
-    FetchSubcategoriesController
+    FetchSubcategoriesController,
+    FetchTransactionsController,
+    GetAccountByIdController
   ],
   providers: [
     CreateUserUseCase,
@@ -81,7 +86,8 @@ import { GetBudgetByIdController } from './controller/get-budget-by-id.controlle
     GetAccountByIdUseCase,
     GetCategoryByIdUseCase,
     GetSubcategoryByIdUseCase,
-    GetTransactionByIdUseCase
+    GetTransactionByIdUseCase,
+    FetchTransactionsUseCase
   ],
 })
 export class HttpModule {}

@@ -36,7 +36,8 @@ describe('Get Account (E2E)', () => {
     })
     const account1 = await accountFactory.makePrismaAccount({
       budgetId:budget.id,
-      name:"Account 1"
+      name:"Account 1",
+      ownerId: user.id,
     }) 
 
     const accessToken = jwt.sign({ sub: user.id.toString() })

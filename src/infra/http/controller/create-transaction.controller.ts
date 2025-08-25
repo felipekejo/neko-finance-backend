@@ -14,7 +14,6 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 const createTransactionBodySchema = z.object({
   description: z.string(),
   amount: z.number(),
-  budgetId: z.string(),
   type: z.enum(['INCOMES', 'EXPENSES']),
   date: z.coerce.date(),
   accountId: z.string(),

@@ -13,7 +13,6 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
 const createCategoryBodySchema = z.object({
   name: z.string(),
-  budgetId: z.string(),
   type: z.enum(['INCOMES', 'EXPENSES']),
 })
 

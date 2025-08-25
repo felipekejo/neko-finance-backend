@@ -54,7 +54,7 @@ export class FetchTransactionsController {
       throw new BadRequestException()
     }
 
-    const transactions = result.value?.transactions
+    const transactions = result.value.transactions
     return { transactions: transactions.map(TransactionPresenter.toHTTP) }
   }
 }

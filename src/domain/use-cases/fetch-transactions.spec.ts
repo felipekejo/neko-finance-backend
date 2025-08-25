@@ -4,22 +4,29 @@ import { FetchTransactionsUseCase } from "./fetch-transactions"
 
 let inMemoryTransactionsRepository: InMemoryTransactionsRepository
 let sut: FetchTransactionsUseCase
-describe('Fetch Subcategories Use Case', () => {
+describe('Fetch Transactions Use Case', () => {
   beforeEach(() => {
     inMemoryTransactionsRepository = new InMemoryTransactionsRepository()
     sut = new FetchTransactionsUseCase(inMemoryTransactionsRepository)
   })
   it('should be able to bring all transactions in specific period',async ()=>{
-        const transaction1= makeTransaction({
+      const [transaction1, transaction2, transaction3] = await Promise.all([
+        makeTransaction({
           createdAt: new Date('2025-08-22'),
           description:'transaction1'
-        })
-         const transaction2 = makeTransaction({
+        }),
+        makeTransaction({
           createdAt: new Date('2025-07-22'),
           description:'transaction2'
+        }),
+        makeTransaction({
+          createdAt: new Date('2025-08-01'),
+          description:'transaction3'
         })
+      ])
         await inMemoryTransactionsRepository.create(transaction1)
         await inMemoryTransactionsRepository.create(transaction2)
+        await inMemoryTransactionsRepository.create(transaction3)
 
         const filters = {
           year:2025,
@@ -33,6 +40,7 @@ describe('Fetch Subcategories Use Case', () => {
         })
           expect(result.isRight()).toBe(true)
         expect(result.value?.transactions).toContainEqual(transaction1)
+        expect(result.value?.transactions).toContainEqual(transaction3)
 
   })
 })

@@ -1,7 +1,9 @@
 
-import { left, right, type Either } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { PaginationParams } from '@/core/repositories/pagination-params'
-import type { Transaction } from '@prisma/client'
+
+import { Injectable } from '@nestjs/common'
+import { Transaction } from '../entities/transaction'
 import { TransactionFilters, TransactionsRepository } from '../repositories/transaction-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
@@ -15,10 +17,12 @@ interface FetchTransactionsRequest {
 type FetchTransactionsUseCaseResponse = Either<ResourceNotFoundError, {
   transactions: Transaction[]
 }>;
+
+@Injectable()
 export class FetchTransactionsUseCase {
   constructor(private transactionsRepository: TransactionsRepository) {}
 
-  async execute({ filters, pagination }: FetchTransactionsRequest) {
+  async execute({ filters, pagination }: FetchTransactionsRequest): Promise<FetchTransactionsUseCaseResponse> {
     let parsedFilters: TransactionFilters = { ...filters }
 
     if (filters.month && filters.year) {
