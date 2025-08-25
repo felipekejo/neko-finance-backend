@@ -53,21 +53,35 @@ describe('Fetch Transactions (E2E)', () => {
         budgetId: budget.id,
         accountId: account.id,
         categoryId: category.id,
+        type: 'EXPENSES',
         amount: 100,
+
         description: "Transaction 1",
+      }),
+            transactionFactory.makePrismaTransaction({
+        budgetId: budget.id,
+        accountId: account.id,
+        categoryId: category.id,
+        type: 'EXPENSES',
+        amount: 100,
+
+        description: "Transaction 2",
       }),
       transactionFactory.makePrismaTransaction({
         budgetId: budget.id,
         accountId: account.id,
         categoryId: category.id,
+        type: 'INCOMES',
         amount: 200,
-        description: "Transaction 2",
+        description: "Transaction 3",
       }),
     ])
 
     const response = await request(app.getHttpServer())
       .get(`/budgets/${budget.id}/transactions`)
       .set('Authorization', `Bearer ${accessToken}`)
+      .query({ type: 'EXPENSES', page: 1, perPage: 10 })
+      console.log(response)
     expect(response.statusCode).toEqual(200)
 
     expect(response.body).toEqual({
@@ -78,7 +92,7 @@ describe('Fetch Transactions (E2E)', () => {
         }),
         expect.objectContaining({
           description: 'Transaction 2',
-          amount: 200,
+          amount: 100,
         }),
       ]),
     })

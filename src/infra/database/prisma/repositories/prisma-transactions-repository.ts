@@ -13,6 +13,8 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     { page = 1, perPage = 10 }: PaginationParams,
   ): Promise<Transaction[]> {
     const where: any = {}
+      const pageNumber = Number(page) || 1
+  const perPageNumber = Number(perPage) || 10
 
     if (filters.accountId) where.accountId = filters.accountId
     if (filters.categoryId) where.categoryId = filters.categoryId
@@ -25,11 +27,12 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
       if (filters.dateTo) where.date.lte = filters.dateTo
     }
 
+    
     const transactions = await this.prisma.transaction.findMany({
       where,
       orderBy: { createdAt: 'desc' },
-      skip: (page - 1) * perPage,
-      take: perPage,
+      skip: (pageNumber - 1) * perPageNumber,
+      take: perPageNumber,
       include: {
         Category: {
           include: {
