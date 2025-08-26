@@ -43,6 +43,7 @@ import { FetchTransactionsController } from './controller/fetch-transactions.con
 import { GetAccountByIdController } from './controller/get-accounts-by-id.controller'
 import { GetBudgetByIdController } from './controller/get-budget-by-id.controller'
 import { GetCategoryByIdController } from './controller/get-category-by-id.controller'
+import { GetSubcategoryByIdController } from './controller/get-subcategory-by-id.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -61,7 +62,8 @@ import { GetCategoryByIdController } from './controller/get-category-by-id.contr
     FetchSubcategoriesController,
     FetchTransactionsController,
     GetAccountByIdController,
-    GetCategoryByIdController
+    GetCategoryByIdController,
+    GetSubcategoryByIdController,
   ],
   providers: [
     CreateUserUseCase,
