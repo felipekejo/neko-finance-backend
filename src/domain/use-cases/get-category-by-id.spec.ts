@@ -11,11 +11,13 @@ describe('Get Account by Id Use Case', () => {
   })
 
   it('should be able to get an account by id', async () => {
+    
     const newCategory = makeCategory()
     await inMemoryCategoriesRepository.create(newCategory)
 
     const result = await sut.execute({
-      id: newCategory.id.toValue(),
+      categoryId: newCategory.id.toValue(),
+      budgetId: newCategory.budgetId.toValue()
     })
 
     expect(result.isRight()).toBe(true)

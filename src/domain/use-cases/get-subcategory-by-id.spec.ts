@@ -15,7 +15,7 @@ describe('Get Subcategory by Id Use Case', () => {
     await inMemorySubcategoriesRepository.create(newSubcategory)
 
     const result = await sut.execute({
-      id: newSubcategory.id.toValue(),
+      subcategoryId: newSubcategory.id.toValue(),
     })
 
     expect(result.isRight()).toBe(true)
