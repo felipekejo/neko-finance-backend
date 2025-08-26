@@ -42,6 +42,7 @@ import { FetchSubcategoriesController } from './controller/fetch-subcategories.c
 import { FetchTransactionsController } from './controller/fetch-transactions.controller'
 import { GetAccountByIdController } from './controller/get-accounts-by-id.controller'
 import { GetBudgetByIdController } from './controller/get-budget-by-id.controller'
+import { GetCategoryByIdController } from './controller/get-category-by-id.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -59,7 +60,8 @@ import { GetBudgetByIdController } from './controller/get-budget-by-id.controlle
     FetchCategoriesController,
     FetchSubcategoriesController,
     FetchTransactionsController,
-    GetAccountByIdController
+    GetAccountByIdController,
+    GetCategoryByIdController
   ],
   providers: [
     CreateUserUseCase,
@@ -87,7 +89,7 @@ import { GetBudgetByIdController } from './controller/get-budget-by-id.controlle
     GetCategoryByIdUseCase,
     GetSubcategoryByIdUseCase,
     GetTransactionByIdUseCase,
-    FetchTransactionsUseCase
+    FetchTransactionsUseCase,
   ],
 })
 export class HttpModule {}

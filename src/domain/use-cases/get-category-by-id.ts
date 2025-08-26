@@ -5,7 +5,8 @@ import { CategoriesRepository } from '../repositories/category-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface GetCategoryByIdUseCaseRequest {
-  id: string
+  categoryId: string,
+  budgetId: string
 }
 
 type GetCategoryByIdUseCaseResponse = Either<
@@ -20,10 +21,14 @@ export class GetCategoryByIdUseCase {
   constructor(private categoriesRepository: CategoriesRepository) {}
 
   async execute({
-    id,
+    categoryId,
+    budgetId,
   }: GetCategoryByIdUseCaseRequest): Promise<GetCategoryByIdUseCaseResponse> {
-    const category = await this.categoriesRepository.findById(id)
+    const category = await this.categoriesRepository.findById(categoryId)
     if (!category) {
+      return left(new ResourceNotFoundError())
+    }
+    if (category.budgetId.toString() !== budgetId) {
       return left(new ResourceNotFoundError())
     }
     return right({ category })
