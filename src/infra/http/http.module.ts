@@ -35,6 +35,7 @@ import { CreateCategoryController } from './controller/create-category.controlle
 import { CreateSubcategoryController } from './controller/create-subcategory.controller'
 import { CreateTransactionController } from './controller/create-transaction.controller'
 import { CreateUserController } from './controller/create-user.controller'
+import { EditAccountController } from './controller/edit-account.controller'
 import { EditTransactionController } from './controller/edit-transaction.controller'
 import { FetchAccountsController } from './controller/fetch-accounts.controller'
 import { FetchCategoriesController } from './controller/fetch-categories.controller'
@@ -64,6 +65,7 @@ import { GetSubcategoryByIdController } from './controller/get-subcategory-by-id
     GetAccountByIdController,
     GetCategoryByIdController,
     GetSubcategoryByIdController,
+    EditAccountController
   ],
   providers: [
     CreateUserUseCase,

@@ -7,7 +7,6 @@ import {
   Controller,
   HttpCode,
   Param,
-
   Put,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
@@ -31,7 +30,7 @@ const bodyValidationPipe = new ZodValidationPipe(editTransactionBodySchema)
 type EditTransactionBodySchema = z.infer<typeof editTransactionBodySchema>
 
 @ApiTags('Transactions')
-@Controller('/transactions/:id')
+@Controller('/budgets/:budgetId/transactions/:id')
 export class EditTransactionController {
   constructor(private editTransaction: EditTransactionUseCase) {}
 
