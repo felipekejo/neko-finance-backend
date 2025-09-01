@@ -1,4 +1,4 @@
-import type { EditCategoryUseCase } from '@/domain/use-cases/edit-category'
+import { EditCategoryUseCase } from '@/domain/use-cases/edit-category'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import {
@@ -43,7 +43,6 @@ export class EditCategoryController {
       categoryId,
       name,
       type,
-      userId: ownerId,
       budgetId
     })
 

@@ -33,7 +33,6 @@ export class EditSubcategoryController {
   async handle(
     @Body(bodyValidationPipe) body: EditSubcategoryBodySchema,
     @Param('id') subcategoryId: string,
-    @Param('budgetId') budgetId: string,
     @CurrentUser() user: UserPayload,
   ) {
     const { name, categoryId } = body
@@ -42,10 +41,8 @@ export class EditSubcategoryController {
     const result = await this.editSubcategory.execute({
       subcategoryId,
       name,
-      categoryId,
-      budgetId
+      categoryId
     })
-
     if (result.isLeft()) {
       throw new BadRequestException()
     }

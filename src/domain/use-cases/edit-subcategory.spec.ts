@@ -2,25 +2,21 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeBudget } from 'test/factories/make-budget'
 import { makeCategory } from 'test/factories/make-category'
 import { makeSubcategory } from 'test/factories/make-subcategory'
-import { InMemoryBudgetsRepository } from 'test/repositories/in-memory-budgets-repository'
 import { InMemoryCategoriesRepository } from 'test/repositories/in-memory-category-repository'
 import { InMemorySubcategoriesRepository } from 'test/repositories/in-memory-subcategories-repository'
 import { EditSubcategoryUseCase } from './edit-subcategory'
 
 let inMemorySubcategoriesRepository: InMemorySubcategoriesRepository
 let inMemoryCategoriesRepository: InMemoryCategoriesRepository
-let inMemoryBudgetsRepository: InMemoryBudgetsRepository
 let sut: EditSubcategoryUseCase
 
 describe('Edit Subcategory Use Case', () => {
   beforeEach(() => {
     inMemorySubcategoriesRepository = new InMemorySubcategoriesRepository()
     inMemoryCategoriesRepository = new InMemoryCategoriesRepository()
-    inMemoryBudgetsRepository = new InMemoryBudgetsRepository()
     sut = new EditSubcategoryUseCase(
       inMemorySubcategoriesRepository,
       inMemoryCategoriesRepository,
-      inMemoryBudgetsRepository
     )
   })
 
@@ -43,14 +39,12 @@ describe('Edit Subcategory Use Case', () => {
       },
       new UniqueEntityID('subcategory-01'),
     )
-    await inMemoryBudgetsRepository.create(newBudget)
     await inMemoryCategoriesRepository.create(newCategory)
     await inMemorySubcategoriesRepository.create(newSubcategory)
     await sut.execute({
       subcategoryId: 'subcategory-01',
       name: 'new subcategory',
-      categoryId: 'category-01',
-      budgetId: 'budget-01'
+      categoryId: 'category-01'
     })
 
     expect(inMemorySubcategoriesRepository.items[0]).toMatchObject({

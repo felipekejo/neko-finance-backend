@@ -1,6 +1,5 @@
 import { Either, left, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
-import { BudgetsRepository } from '../repositories/budget-repository'
 import { CategoriesRepository } from '../repositories/category-repository'
 import { SubcategoriesRepository } from '../repositories/subcategory-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
@@ -10,7 +9,6 @@ interface EditSubcategoryUseCaseRequest {
   subcategoryId: string
   categoryId: string
   name: string
-  budgetId: string
 }
 
 type EditSubcategoryUseCaseResponse = Either<
@@ -22,21 +20,14 @@ type EditSubcategoryUseCaseResponse = Either<
 export class EditSubcategoryUseCase {
   constructor(
     private subcategoriesRepository: SubcategoriesRepository,
-    private categoriesRepository: CategoriesRepository,
-    private budgetsRepository: BudgetsRepository,
+    private categoriesRepository: CategoriesRepository
   ) {}
 
   async execute({
     subcategoryId,
     categoryId,
-    name,
-    budgetId
+    name
   }: EditSubcategoryUseCaseRequest): Promise<EditSubcategoryUseCaseResponse> {
-    const budget = await this.budgetsRepository.findById(budgetId)
-
-    if (!budget) {
-      return left(new UnauthorizedError())
-    }
 
     const subcategory =
       await this.subcategoriesRepository.findById(subcategoryId)
