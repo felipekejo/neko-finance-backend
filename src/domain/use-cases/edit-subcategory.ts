@@ -1,16 +1,16 @@
 import { Either, left, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
 import { BudgetsRepository } from '../repositories/budget-repository'
+import { CategoriesRepository } from '../repositories/category-repository'
 import { SubcategoriesRepository } from '../repositories/subcategory-repository'
-import { UserBudgetRepository } from '../repositories/user-budget-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { UnauthorizedError } from './errors/unauthorized-error'
 
 interface EditSubcategoryUseCaseRequest {
   subcategoryId: string
-  budgetId: string
+  categoryId: string
   name: string
-  userId: string
+  budgetId: string
 }
 
 type EditSubcategoryUseCaseResponse = Either<
@@ -22,34 +22,32 @@ type EditSubcategoryUseCaseResponse = Either<
 export class EditSubcategoryUseCase {
   constructor(
     private subcategoriesRepository: SubcategoriesRepository,
+    private categoriesRepository: CategoriesRepository,
     private budgetsRepository: BudgetsRepository,
-    private userBudgetRepository: UserBudgetRepository,
   ) {}
 
   async execute({
     subcategoryId,
-    budgetId,
+    categoryId,
     name,
-    userId,
+    budgetId
   }: EditSubcategoryUseCaseRequest): Promise<EditSubcategoryUseCaseResponse> {
+    const budget = await this.budgetsRepository.findById(budgetId)
+
+    if (!budget) {
+      return left(new UnauthorizedError())
+    }
+
     const subcategory =
       await this.subcategoriesRepository.findById(subcategoryId)
 
-    const budget = await this.budgetsRepository.findById(budgetId)
+    const category = await this.categoriesRepository.findById(categoryId)
 
     if (!subcategory) {
       return left(new ResourceNotFoundError())
     }
-    if (!budget) {
+    if (!category) {
       return left(new ResourceNotFoundError())
-    }
-    const userBudget = await this.userBudgetRepository.findByUserIdAndBudgetId(
-      userId,
-      budgetId,
-    )
-
-    if (!userBudget) {
-      return left(new UnauthorizedError())
     }
 
     subcategory.name = name

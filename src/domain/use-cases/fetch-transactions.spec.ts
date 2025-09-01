@@ -12,15 +12,15 @@ describe('Fetch Transactions Use Case', () => {
   it('should be able to bring all transactions in specific period',async ()=>{
       const [transaction1, transaction2, transaction3] = await Promise.all([
         makeTransaction({
-          createdAt: new Date('2025-08-22'),
+          date: new Date('2024-08-22'),
           description:'transaction1'
         }),
         makeTransaction({
-          createdAt: new Date('2025-07-22'),
+          date: new Date('2024-07-22'),
           description:'transaction2'
         }),
         makeTransaction({
-          createdAt: new Date('2025-08-01'),
+          date: new Date('2024-08-01'),
           description:'transaction3'
         })
       ])
@@ -29,7 +29,7 @@ describe('Fetch Transactions Use Case', () => {
         await inMemoryTransactionsRepository.create(transaction3)
 
         const filters = {
-          year:2025,
+          year:2024,
           month:8
         }
         const pagination =
@@ -38,7 +38,7 @@ describe('Fetch Transactions Use Case', () => {
           filters,
           pagination
         })
-          expect(result.isRight()).toBe(true)
+        expect(result.isRight()).toBe(true)
         expect(result.value?.transactions).toContainEqual(transaction1)
         expect(result.value?.transactions).toContainEqual(transaction3)
 

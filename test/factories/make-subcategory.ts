@@ -13,7 +13,6 @@ export function makeSubcategory(
     {
       name: faker.lorem.sentence(),
       categoryId: new UniqueEntityID(),
-
       ...override,
     },
     id,
