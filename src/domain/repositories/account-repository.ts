@@ -1,4 +1,9 @@
-import { Account } from '../entities/account'
+import { Account } from '../entities/account';
+
+export interface FindByNameProps {
+  name: string
+  budgetId: string
+}
 
 export abstract class AccountsRepository {
   abstract create(account: Account): Promise<void>
@@ -6,4 +11,5 @@ export abstract class AccountsRepository {
   abstract delete(account: Account): Promise<void>
   abstract save(account: Account): Promise<void>
   abstract findMany(budgetId:string): Promise<Account[]>
+  abstract findByName({name, budgetId}: FindByNameProps): Promise<Account | null>
 }

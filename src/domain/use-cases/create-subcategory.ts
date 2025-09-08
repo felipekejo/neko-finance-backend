@@ -1,9 +1,8 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 import { Either, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
 import { Subcategory } from '../entities/subcategory'
-import { SubcategoriesRepository } from '../repositories/subcategory-repository'
+import { SubcategoryService } from '../service/subcategory.service'
 
 interface CreateSubcategoryUseCaseRequest {
   name: string
@@ -19,19 +18,21 @@ type CreateSubcategoryUseCaseResponse = Either<
 
 @Injectable()
 export class CreateSubcategoryUseCase {
-  constructor(private subcategoriesRepository: SubcategoriesRepository) {}
+  constructor(private subcategoryService: SubcategoryService) {}
 
   async execute({
     name,
     categoryId,
   }: CreateSubcategoryUseCaseRequest): Promise<CreateSubcategoryUseCaseResponse> {
-    const subcategory = Subcategory.create({
+    const result = await this.subcategoryService.create({
       name,
-      categoryId: new UniqueEntityID(categoryId),
+      categoryId,
     })
 
-    await this.subcategoriesRepository.create(subcategory)
+   if (result.isLeft()) {
+      return result 
+    }
 
-    return right({ subcategory })
+    return right({ subcategory: result.value.subcategory })
   }
 }

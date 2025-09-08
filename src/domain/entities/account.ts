@@ -1,6 +1,7 @@
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { TypeTransaction } from './transaction'
 
 export interface AccountProps {
   ownerId: UniqueEntityID
@@ -47,6 +48,25 @@ export class Account extends AggregateRoot<AccountProps> {
 
   set balance(balance: number) {
     this.props.balance = balance
+    this.touch()
+  }
+
+  applyTransaction(amount: number, type: TypeTransaction) {
+    if (type === 'INCOMES') {
+      this.props.balance += amount
+    } else if (type === 'EXPENSES') {
+      this.props.balance -= amount
+    }
+    this.touch()
+  }
+
+
+  revertTransaction(amount: number, type: TypeTransaction) {
+    if (type === 'INCOMES') {
+      this.props.balance -= amount
+    } else if (type === 'EXPENSES') {
+      this.props.balance += amount
+    }
     this.touch()
   }
 

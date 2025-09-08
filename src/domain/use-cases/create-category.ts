@@ -1,8 +1,7 @@
 import { Either, right } from '@/core/either'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Injectable } from '@nestjs/common'
 import { Category } from '../entities/category'
-import { CategoriesRepository } from '../repositories/category-repository'
+import { CategoryService } from '../service/category.service'
 
 type TypeTransaction = 'INCOMES' | 'EXPENSES'
 interface CreateCategoryUseCaseRequest {
@@ -20,21 +19,23 @@ type CreateCategoryUseCaseResponse = Either<
 
 @Injectable()
 export class CreateCategoryUseCase {
-  constructor(private categoriesRepository: CategoriesRepository) {}
+  constructor(private categoryService: CategoryService) {}
 
   async execute({
     name,
     budgetId,
     type,
   }: CreateCategoryUseCaseRequest): Promise<CreateCategoryUseCaseResponse> {
-    const category = Category.create({
+    const result = await this.categoryService.create({
       name,
-      budgetId: new UniqueEntityID(budgetId),
+      budgetId,
       type,
     })
 
-    await this.categoriesRepository.create(category)
+    if (result.isLeft()) {
+      return result
+    }
 
-    return right({ category })
+    return right({ category: result.value.category })
   }
 }

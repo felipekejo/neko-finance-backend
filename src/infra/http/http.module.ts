@@ -1,5 +1,9 @@
 import { Module } from '@nestjs/common'
 
+import { AccountService } from '@/domain/service/account.service'
+import { CategoryService } from '@/domain/service/category.service'
+import { SubcategoryService } from '@/domain/service/subcategory.service'
+import { TransactionService } from '@/domain/service/transaction.service'
 import { AssignBudgetUseCase } from '@/domain/use-cases/assign-budget'
 import { AuthenticateUserUseCase } from '@/domain/use-cases/authenticate'
 import { CreateAccountUseCase } from '@/domain/use-cases/create-account'
@@ -98,6 +102,10 @@ import { GetSubcategoryByIdController } from './controller/get-subcategory-by-id
     GetSubcategoryByIdUseCase,
     GetTransactionByIdUseCase,
     FetchTransactionsUseCase,
+    TransactionService,
+    AccountService,
+    CategoryService,
+    SubcategoryService
   ],
 })
 export class HttpModule {}

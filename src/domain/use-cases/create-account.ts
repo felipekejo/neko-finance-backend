@@ -1,8 +1,8 @@
 import { Either, right } from '@/core/either'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Injectable } from '@nestjs/common'
 import { Account } from '../entities/account'
-import { AccountsRepository } from '../repositories/account-repository'
+import { AccountService } from '../service/account.service'
+
 
 interface CreateAccountUseCaseRequest {
   ownerId: string
@@ -20,7 +20,7 @@ type CreateAccountUseCaseResponse = Either<
 
 @Injectable()
 export class CreateAccountUseCase {
-  constructor(private accountsRepository: AccountsRepository) {}
+  constructor(private accountService: AccountService) {}
 
   async execute({
     name,
@@ -28,13 +28,16 @@ export class CreateAccountUseCase {
     budgetId,
     balance,
   }: CreateAccountUseCaseRequest): Promise<CreateAccountUseCaseResponse> {
-    const account = Account.create({
+    const result = await this.accountService.createAccount({
       name,
-      ownerId: new UniqueEntityID(ownerId),
-      budgetId: new UniqueEntityID(budgetId),
+      ownerId,
+      budgetId,
       balance,
     })
-    await this.accountsRepository.create(account)
-    return right({ account })
+    if (result.isLeft()) {
+      return result
+    }
+
+    return right({ account:  result.value.account })
   }
 }

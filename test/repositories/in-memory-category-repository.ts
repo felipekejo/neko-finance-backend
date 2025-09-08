@@ -1,5 +1,5 @@
 import { Category } from '@/domain/entities/category'
-import { CategoriesRepository } from '@/domain/repositories/category-repository'
+import { CategoriesRepository, type FindByNameProps } from '@/domain/repositories/category-repository'
 
 export class InMemoryCategoriesRepository implements CategoriesRepository {
   public items: Category[] = []
@@ -38,5 +38,15 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
       return a.createdAt.getTime() - b.createdAt.getTime()
     }
     )
+  }
+
+  async findByName({name, budgetId}: FindByNameProps): Promise<Category | null> {
+    const category = this.items.find(
+      (item) => item.name === name && item.budgetId.toString() === budgetId
+    )
+    if (!category) {
+      return null
+    }
+    return category
   }
 }

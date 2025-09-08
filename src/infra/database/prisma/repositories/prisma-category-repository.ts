@@ -1,5 +1,5 @@
 import { Category } from '@/domain/entities/category'
-import { CategoriesFilter, CategoriesRepository } from '@/domain/repositories/category-repository'
+import { CategoriesFilter, CategoriesRepository, type FindByNameProps } from '@/domain/repositories/category-repository'
 import { Injectable } from '@nestjs/common'
 import { PrismaCategoryMapper } from '../mappers/prisma-category-mapper'
 import { PrismaService } from '../prisma.service'
@@ -61,5 +61,20 @@ export class PrismaCategoryRepository implements CategoriesRepository {
     })
 
     return categories.map(PrismaCategoryMapper.toDomain)
+  }
+
+  async findByName({name, budgetId}: FindByNameProps) {
+    const category = await this.prisma.category.findFirst({
+      where: {
+        name,
+        budgetId,
+      },
+    })
+
+    if (!category) {
+      return null
+    }
+
+    return PrismaCategoryMapper.toDomain(category)
   }
 }

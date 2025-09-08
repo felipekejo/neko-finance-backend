@@ -1,9 +1,8 @@
 import { Either, right } from '@/core/either'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Injectable } from '@nestjs/common'
 import { Transaction, TypeTransaction } from '../entities/transaction'
-import { AccountsRepository } from '../repositories/account-repository'
-import { TransactionsRepository } from '../repositories/transaction-repository'
+import { TransactionService } from '../service/transaction.service'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface CreateTransactionUseCaseRequest {
   budgetId: string
@@ -16,7 +15,7 @@ interface CreateTransactionUseCaseRequest {
 }
 
 type CreateTransactionUseCaseResponse = Either<
-  null,
+  ResourceNotFoundError,
   {
     transaction: Transaction
   }
@@ -25,40 +24,16 @@ type CreateTransactionUseCaseResponse = Either<
 @Injectable()
 export class CreateTransactionUseCase {
   constructor(
-    private transactionsRepository: TransactionsRepository,
-    private accountsRepository: AccountsRepository,
+    private transactionService: TransactionService,
   ) {}
 
-  async execute({
-    description,
-    accountId,
-    budgetId,
-    amount,
-    type,
-    date,
-    categoryId,
-  }: CreateTransactionUseCaseRequest): Promise<CreateTransactionUseCaseResponse> {
-    const transaction = Transaction.create({
-      date,
-      description,
-      accountId: new UniqueEntityID(accountId),
-      budgetId: new UniqueEntityID(budgetId),
-      amount,
-      type,
-      categoryId: new UniqueEntityID(categoryId),
-    })
-    await this.transactionsRepository.create(transaction)
+  async execute(request: CreateTransactionUseCaseRequest): Promise<CreateTransactionUseCaseResponse> {
+    const result = await this.transactionService.createTransaction(request)
 
-    const account = await this.accountsRepository.findById(accountId)
-    if (account && type === 'INCOMES') {
-      account.balance += amount
-      await this.accountsRepository.save(account)
-    }
-    if (account && type === 'EXPENSES') {
-      account.balance -= amount
-      await this.accountsRepository.save(account)
+    if (result.isLeft()) {
+      return result 
     }
 
-    return right({ transaction })
+    return right({ transaction: result.value.transaction })
   }
 }

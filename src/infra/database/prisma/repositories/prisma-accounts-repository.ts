@@ -1,5 +1,5 @@
 import { Account } from '@/domain/entities/account'
-import { AccountsRepository } from '@/domain/repositories/account-repository'
+import { AccountsRepository, FindByNameProps } from '@/domain/repositories/account-repository'
 import { Injectable } from '@nestjs/common'
 import { PrismaAccountMapper } from '../mappers/prisma-accounts-mapper'
 import { PrismaService } from '../prisma.service'
@@ -60,5 +60,20 @@ export class PrismaAccountsRepository implements AccountsRepository {
     })
 
     return accounts.map(PrismaAccountMapper.toDomain)
+  }
+
+  async findByName({name, budgetId}: FindByNameProps) {
+    const account = await this.prisma.account.findFirst({
+      where: {
+        name,
+        budgetId
+      }
+    })
+
+    if (!account) {
+      return null
+    }
+
+    return PrismaAccountMapper.toDomain(account)
   }
 }
