@@ -5,6 +5,12 @@ export interface FindByNameProps {
   budgetId: string
 }
 
+export interface UpdateAmountProps {
+  accountId: string
+  amount: number
+  type: 'INCOMES' | 'EXPENSES'
+}
+
 export abstract class AccountsRepository {
   abstract create(account: Account): Promise<void>
   abstract findById(id: string): Promise<Account | null>
@@ -12,4 +18,6 @@ export abstract class AccountsRepository {
   abstract save(account: Account): Promise<void>
   abstract findMany(budgetId:string): Promise<Account[]>
   abstract findByName({name, budgetId}: FindByNameProps): Promise<Account | null>
+  abstract addTransaction({accountId, amount, type}: UpdateAmountProps): Promise<void>
+  abstract deleteTransaction({accountId, amount, type}: UpdateAmountProps): Promise<void>
 }
