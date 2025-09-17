@@ -18,6 +18,4 @@ export abstract class AccountsRepository {
   abstract save(account: Account): Promise<void>
   abstract findMany(budgetId:string): Promise<Account[]>
   abstract findByName({name, budgetId}: FindByNameProps): Promise<Account | null>
-  abstract addTransaction({accountId, amount, type}: UpdateAmountProps): Promise<void>
-  abstract deleteTransaction({accountId, amount, type}: UpdateAmountProps): Promise<void>
 }

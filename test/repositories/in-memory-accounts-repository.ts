@@ -1,5 +1,5 @@
 import { Account } from '@/domain/entities/account'
-import { AccountsRepository, type FindByNameProps, type UpdateAmountProps } from '@/domain/repositories/account-repository'
+import { AccountsRepository, type FindByNameProps } from '@/domain/repositories/account-repository'
 
 export class InMemoryAccountsRepository implements AccountsRepository {
   public items: Account[] = []
@@ -33,38 +33,6 @@ export class InMemoryAccountsRepository implements AccountsRepository {
   async findMany(budgetId:string): Promise<Account[]> {
     const accounts = this.items.filter((item) => item.budgetId.toString() === budgetId)
     return accounts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-  }
-
-  async addTransaction({ accountId, amount, type }: UpdateAmountProps): Promise<void> {
-    const account = this.items.find((item) => item.id.toString() === accountId)
-    const itemIndex = this.items.findIndex((item) => item.id.toString() === accountId)
-    if (!account) {
-      return
-    }
-
-    if (type === 'INCOMES') {
-      account.balance += amount
-    } else {
-      account.balance -= amount
-    }
-
-    this.items[itemIndex] = account
-  }
-
-  async deleteTransaction({ accountId, amount, type }: UpdateAmountProps): Promise<void> {
-    const account = this.items.find((item) => item.id.toString() === accountId)
-    const itemIndex = this.items.findIndex((item) => item.id.toString() === accountId)
-    if (!account) {
-      return
-    }
-
-    if (type === 'INCOMES') {
-      account.balance -= amount
-    } else {
-      account.balance += amount
-    }
-
-    this.items[itemIndex] = account
   }
 
   async findByName({ name, budgetId }: FindByNameProps): Promise<Account | null> {

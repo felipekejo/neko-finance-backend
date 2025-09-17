@@ -4,22 +4,37 @@ import { InMemoryAccountsRepository } from 'test/repositories/in-memory-accounts
 import { InMemoryTransactionsRepository } from 'test/repositories/in-memory-transactions-repository'
 import { CreateTransactionUseCase } from './create-transaction'
 
-let inMemoryTransactionsRepository: InMemoryTransactionsRepository
+import { TransactionService } from '../service/transaction.service'
+
+let transactionService: TransactionService
 let inMemoryAccountsRepository: InMemoryAccountsRepository
+let inMemoryTransactionsRepository: InMemoryTransactionsRepository
 let sut: CreateTransactionUseCase
 
 describe('Create Transaction Use Case', () => {
   beforeEach(() => {
-    inMemoryTransactionsRepository = new InMemoryTransactionsRepository()
     inMemoryAccountsRepository = new InMemoryAccountsRepository()
-
-    sut = new CreateTransactionUseCase(
+    inMemoryTransactionsRepository = new InMemoryTransactionsRepository()
+    transactionService = new TransactionService(
       inMemoryTransactionsRepository,
       inMemoryAccountsRepository,
+    )
+
+    
+    sut = new CreateTransactionUseCase(
+      transactionService,
     )
   })
 
   it('should be able to create a new transaction', async () => {
+    const newAccount = makeAccount(
+      {
+        ownerId: new UniqueEntityID('user-01'),
+        balance: 100,
+      },
+      new UniqueEntityID('account-01'),
+    )
+    await inMemoryAccountsRepository.create(newAccount)
     const result = await sut.execute({
       description: 'New transaction',
       accountId: 'account-01',

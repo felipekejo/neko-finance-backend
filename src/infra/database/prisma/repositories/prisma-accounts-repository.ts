@@ -1,5 +1,5 @@
 import { Account } from '@/domain/entities/account'
-import { AccountsRepository, FindByNameProps, type UpdateAmountProps } from '@/domain/repositories/account-repository'
+import { AccountsRepository, FindByNameProps } from '@/domain/repositories/account-repository'
 import { Injectable } from '@nestjs/common'
 import { PrismaAccountMapper } from '../mappers/prisma-accounts-mapper'
 import { PrismaService } from '../prisma.service'
@@ -77,35 +77,4 @@ export class PrismaAccountsRepository implements AccountsRepository {
     return PrismaAccountMapper.toDomain(account)
   }
 
-  async addTransaction({accountId, amount, type}: UpdateAmountProps) {
-    const account = await this.findById(accountId)
-
-    if (!account) {
-      throw new Error('Account not found')
-    }
-
-    if (type === 'INCOMES') {
-      account.balance += amount
-    } else {
-      account.balance -= amount
-    }
-
-    await this.save(account)
-  }
-
-  async deleteTransaction({accountId, amount, type}: UpdateAmountProps){
-    const account = await this.findById(accountId)
-
-    if (!account) {
-      throw new Error('Account not found')
-    }
-
-    if (type === 'INCOMES') {
-      account.balance -= amount
-    } else {
-      account.balance += amount
-    }
-
-    await this.save(account)
-  }
 }
