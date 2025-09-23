@@ -10,7 +10,7 @@ let inMemoryTransactionsRepository: InMemoryTransactionsRepository
 let inMemoryAccountsRepository: InMemoryAccountsRepository
 let sut: TransactionService
 
-describe('Create Transaction Use Case', () => {
+describe('Transaction Service', () => {
   beforeEach(() => {
     inMemoryTransactionsRepository = new InMemoryTransactionsRepository()
     inMemoryAccountsRepository = new InMemoryAccountsRepository()
