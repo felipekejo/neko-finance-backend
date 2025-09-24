@@ -1,13 +1,16 @@
 import { InMemorySubcategoriesRepository } from 'test/repositories/in-memory-subcategories-repository'
+import { SubcategoryService } from '../service/subcategory.service'
 import { CreateSubcategoryUseCase } from './create-subcategory'
 
 let inMemorySubcategoriesRepository: InMemorySubcategoriesRepository
+let subcategoryService: SubcategoryService
 let sut: CreateSubcategoryUseCase
 
 describe('Create Subcategory Use Case', () => {
   beforeEach(() => {
     inMemorySubcategoriesRepository = new InMemorySubcategoriesRepository()
-    sut = new CreateSubcategoryUseCase(inMemorySubcategoriesRepository)
+    subcategoryService = new SubcategoryService(inMemorySubcategoriesRepository)
+    sut = new CreateSubcategoryUseCase(subcategoryService)
   })
 
   it('should be able to create a new category', async () => {
