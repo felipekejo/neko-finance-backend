@@ -6,7 +6,7 @@ import { SubcategoryService } from "./subcategory.service"
 let inMemorySubcategoriesRepository: InMemorySubcategoriesRepository
 let sut: SubcategoryService
 
-describe('Account Service', () => {
+describe('Subcategory Service', () => {
   beforeEach(() => {
     inMemorySubcategoriesRepository = new InMemorySubcategoriesRepository()
 
@@ -15,7 +15,7 @@ describe('Account Service', () => {
     )
   })
 
-  it('should be able to create a new account', async () => {
+  it('should be able to create a new subcategory', async () => {
 
 
     const result = await sut.create({
