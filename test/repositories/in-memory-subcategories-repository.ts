@@ -35,4 +35,11 @@ export class InMemorySubcategoriesRepository
   async findMany(categoryId: string): Promise<Subcategory[]> {
     return this.items.filter((item) => item.categoryId.toString() === categoryId)
   }
+  async findByName(name: string): Promise<Subcategory | null> {
+    const subcategory = this.items.find((item) => item.name === name)
+    if (!subcategory) {
+      return null
+    }
+    return subcategory
+  }
 }

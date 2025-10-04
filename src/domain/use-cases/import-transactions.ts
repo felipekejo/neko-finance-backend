@@ -1,13 +1,14 @@
+import { right } from '@/core/either'
 import { Transaction } from '@/domain/entities/transaction'
 import { Injectable } from '@nestjs/common'
 import { parse } from 'csv-parse/sync'
 import { AccountsRepository } from '../repositories/account-repository'
 import { CategoriesRepository } from '../repositories/category-repository'
-import type { SubcategoriesRepository } from '../repositories/subcategory-repository'
-import type { AccountService } from '../service/account.service'
-import type { CategoryService } from '../service/category.service'
-import type { SubcategoryService } from '../service/subcategory.service'
-import type { TransactionService } from '../service/transaction.service'
+import { SubcategoriesRepository } from '../repositories/subcategory-repository'
+import { AccountService } from '../service/account.service'
+import { CategoryService } from '../service/category.service'
+import { SubcategoryService } from '../service/subcategory.service'
+import { TransactionService } from '../service/transaction.service'
 
 interface ImportTransactionsRequest {
   budgetId: string
@@ -22,6 +23,7 @@ type csvRow = {
   category: string
   account: string
   type: 'INCOMES' | 'EXPENSES'
+  subcategory: string
 }
 
 @Injectable()
@@ -58,6 +60,17 @@ export class ImportTransactionsUseCase {
             })
         }
 
+        subcategory = await this.subcategoriesRepository.findByName( 
+          row.subcategory
+        )
+
+        if(!subcategory){
+          subcategory = await this.subcategoryService.create({
+            name: row.subcategory,
+            categoryId: category.id
+          })
+        }
+
         account = await this.accountsRepository.findByName({
           name: row.account,
           budgetId: budgetId,
@@ -78,9 +91,10 @@ export class ImportTransactionsUseCase {
         amount: parseFloat(row.amount),
         date: new Date(row.date),
         budgetId,
-        categoryId: category.id.toString(),
-        accountId: account.id.toString(),
-        type: row.type
+        categoryId: category.id,
+        accountId: account.id,
+        type: row.type,
+        subcategoryId: subcategory.id,
       })
 
       if (transaction.isLeft()) {
@@ -89,7 +103,7 @@ export class ImportTransactionsUseCase {
       results.push(transaction.value.transaction)
     }
 
-    return { imported: results.length }
+    return right({ imported: results.length })
   }
 
   private parseCsv(buffer: Buffer) {

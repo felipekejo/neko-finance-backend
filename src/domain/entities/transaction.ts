@@ -13,6 +13,7 @@ export interface TransactionProps {
   type: TypeTransaction
   date: Date
   categoryId: UniqueEntityID
+  subcategoryId?: UniqueEntityID | null
 }
 
 export class Transaction extends Entity<TransactionProps> {

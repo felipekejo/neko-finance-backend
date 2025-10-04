@@ -19,16 +19,20 @@ enum UserRole {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  name      String
-  email     String    @unique
-  password  String
-  role      UserRole  @default(CLIENT)
-  createdAt DateTime  @default(now()) @map("create_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          UserRole  @default(CLIENT)
+  createdAt     DateTime  @default(now()) @map("create_at")
+  updatedAt     DateTime? @updatedAt @map("updated_at")
 
-  accounts   Account[]
-  UserBudget UserBudget[]
+  accounts      Account[]
+  UserBudget    UserBudget[]
+  sessions      Session[]
+  accounts_auth Account_Auth[]
 
   @@map("users")
 }
@@ -63,7 +67,7 @@ model Account {
   id           String        @id @default(uuid())
   ownerId      String        @map("owner_id")
   name         String
-  balance      Int         @default(0)
+  balance      Int           @default(0)
   createdAt    DateTime      @default(now()) @map("create_at")
   updatedAt    DateTime?     @updatedAt @map("updated_at")
   budgetId     String
@@ -127,4 +131,51 @@ model SubCategory {
   Category Category @relation(fields: [categoryId], references: [id])
 
   @@map("subcategories")
+}
+
+// Better Auth tables
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account_Auth {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@map("accounts_auth")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+  @@map("verifications")
 }

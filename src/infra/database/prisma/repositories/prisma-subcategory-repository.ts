@@ -61,4 +61,18 @@ export class PrismaSubcategoriesRepository implements SubcategoriesRepository {
 
     return data.map(PrismaSubcategoryMapper.toDomain)
   }
+
+   async findByName(name: string) {
+      const category = await this.prisma.subCategory.findFirst({
+        where: {
+          name,
+        },
+      })
+  
+      if (!category) {
+        return null
+      }
+  
+      return PrismaSubcategoryMapper.toDomain(category)
+    }
 }

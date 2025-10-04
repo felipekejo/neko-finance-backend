@@ -15,6 +15,7 @@ interface CreateTransactionServiceRequest {
   type: TypeTransaction
   date: Date
   categoryId: string
+  subcategoryId?: string
 }
 
 type CreateTransactionServiceResponse = Either<
@@ -39,6 +40,8 @@ export class TransactionService {
     type,
     date,
     categoryId,
+    subcategoryId,
+
   }: CreateTransactionServiceRequest): Promise<CreateTransactionServiceResponse> {
     const transaction = Transaction.create({
       description,
@@ -48,6 +51,7 @@ export class TransactionService {
       type,
       date,
       categoryId: new UniqueEntityID(categoryId),
+      subcategoryId: subcategoryId ? new UniqueEntityID(subcategoryId) : undefined,
     })
     await this.transactionsRepository.create(transaction)
 
